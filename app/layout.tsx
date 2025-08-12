@@ -6,6 +6,7 @@ import { BookMarkedIcon } from 'lucide-react';
 import { auth } from '@/lib/auth';
 import Nav from './Nav';
 import './globals.css';
+import { ThemeProvider } from '@/components/theme-provider';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -34,6 +35,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased px-2`}
       >
+        <ThemeProvider
         <SessionProvider session={session}>
           <div className='flex flex-col containerx justify-between mx-auto h-screen'>
             <header className='flex justify-between'>

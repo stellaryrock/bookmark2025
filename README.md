@@ -35,6 +35,8 @@ pnpm add -D prettier eslint-config-prettier
 pnpm add -D @trivago/prettier-plugin-sort-imports
 ```
 
+.prettierrc
+
 ```json
 {
   "singleQuote": true,
@@ -133,6 +135,18 @@ export function ThemeProvider({
 }: ComponentProps<typeof NextThemesProvider>) {
   return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
 }
+```
+
+app/layout.tsx
+```typescript
+<ThemeProvider
+            attribute='class'
+            defaultTheme='system'
+            enableSystem
+            disableTransitionOnChange
+          >
+  ...
+</ThemeProvider>
 ```
 
 components/theme-changer.tsx
