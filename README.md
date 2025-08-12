@@ -366,3 +366,8 @@ const encPasswd = await hash(passwd, 10);
 const isValid = 
       await compare(passwd, encPasswd);
 ```
+
+12. zod
+```bash
+pnpm add zod
+```
