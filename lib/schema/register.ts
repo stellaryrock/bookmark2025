@@ -9,3 +9,10 @@ export const passwordSchema = z.string()
 export const emailSchema = z.email({error: '잘못된 이메일 형식입니다.'});
 
 export const usernameSchema = z.string().min(4, {error: '4자 이상 입력해주세요.'});
+
+export const regist = z.object({
+  email: emailSchema,
+  password: passwordSchema,
+  password2: passwordSchema,
+  usernameSchema,
+})
