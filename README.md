@@ -18,11 +18,11 @@ bun dev
 1. create next project
 
 ```bash
-pnpm dlx create-next-app@latest bm
+pnpm dlx create-next-app@latest bookmark2025
 ```
 
 ```bash
-cd bm
+cd bookmark2025
 ```
 
 2. prettier & eslint setting
