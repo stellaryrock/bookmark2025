@@ -286,11 +286,12 @@ cf. package.json
 },
 ```
 
+generate해서 prisma-client 설치
 ```
 pnpm dlx prisma generate
 ```
 
-prisma client (db.ts)
+prisma client (lib/db.ts)
 
 ```typescript
 import { PrismaClient } from '@/lib/generated/prisma/client';
