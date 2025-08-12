@@ -285,6 +285,11 @@ cf. package.json
   "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
 },
 ```
+
+```
+pnpm dlx prisma generate
+```
+
 prisma client (db.ts)
 
 ```typescript
@@ -293,10 +298,6 @@ import { PrismaClient } from '@/lib/generated/prisma/client';
 const prisma = new PrismaClient();
 
 export default prisma;
-```
-
-```
-pnpm dlx prisma generate
 ```
 
 seed data (prisma/seed.ts)
