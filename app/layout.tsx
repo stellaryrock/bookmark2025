@@ -32,18 +32,20 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased px-2`}
       >
         <SessionProvider session={session}>
-          <div className='flex flex-col container justify-center mx-auto w-screen'>
+          <div className='flex flex-col containerx justify-between mx-auto h-screen'>
             <header className='flex justify-between'>
               <h1 className='text-3xl flex items-center tracking-tight font-bold text-green-500'>
                 <BookMarkedIcon /> Book & Mark
               </h1>
               <Nav />
             </header>
-            <main className='flex-1 h-screen'>{children}</main>
-            <footer className='mt-auto'>&#169; Indiflex SeniorCoding</footer>
+            <main className='border flex-1'>{children}</main>
+            <footer className='text-center text-green-500'>
+              &#169; Indiflex SeniorCoding 2025
+            </footer>
           </div>
         </SessionProvider>
       </body>
