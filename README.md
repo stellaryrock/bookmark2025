@@ -278,17 +278,13 @@ cf. package.json
   "db:pull": "dotenv -e .env.local prisma db pull",
   "db:gen": "dotenv -e .env.local prisma generate",
   "db:push": "dotenv -e .env.local prisma db push",
+  "db:reset": "dotenv -e .env.local prisma migrate reset",
   "db:seed": "dotenv -e .env.local prisma db seed"
 },
 "prisma": {
   "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
 },
 ```
-
-```
-pnpm dlx prisma generate
-```
-
 prisma client (db.ts)
 
 ```typescript
@@ -297,6 +293,10 @@ import { PrismaClient } from '@/lib/generated/prisma/client';
 const prisma = new PrismaClient();
 
 export default prisma;
+```
+
+```
+pnpm dlx prisma generate
 ```
 
 seed data (prisma/seed.ts)
