@@ -1,12 +1,13 @@
+import { ThemeProvider } from '@/components/theme-provider';
 import { SessionProvider } from 'next-auth/react';
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { use } from 'react';
 import { BookMarkedIcon } from 'lucide-react';
 import { auth } from '@/lib/auth';
 import Nav from './Nav';
 import './globals.css';
-import { ThemeProvider } from '@/components/theme-provider';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -31,25 +32,34 @@ export default function RootLayout({
   const session = use(auth());
 
   return (
-    <html lang='en'>
+    <html lang='en' suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased px-2`}
       >
         <ThemeProvider
-        <SessionProvider session={session}>
-          <div className='flex flex-col containerx justify-between mx-auto h-screen'>
-            <header className='flex justify-between'>
-              <h1 className='text-3xl flex items-center tracking-tight font-bold text-green-500'>
-                <BookMarkedIcon /> Book & Mark
-              </h1>
-              <Nav />
-            </header>
-            <main className='border flex-1'>{children}</main>
-            <footer className='text-center text-green-500'>
-              &#169; Indiflex SeniorCoding 2025
-            </footer>
-          </div>
-        </SessionProvider>
+          attribute='class'
+          defaultTheme='system'
+          enableSystem
+          disableTransitionOnChange
+        >
+          <SessionProvider session={session}>
+            <div className='flex flex-col container justify-between mx-auto h-screen'>
+              <header className='flex justify-between'>
+                <Link
+                  href='/'
+                  className='text-3xl flex items-center tracking-tight font-bold text-green-500 dark:text-amber-300'
+                >
+                  <BookMarkedIcon size={28} /> Book & Mark
+                </Link>
+                <Nav />
+              </header>
+              <main className='border flex-1'>{children}</main>
+              <footer className='text-center text-green-500'>
+                &#169; Indiflex SeniorCoding 2025
+              </footer>
+            </div>
+          </SessionProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

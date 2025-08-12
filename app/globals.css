@@ -119,4 +119,19 @@
   body {
     @apply bg-background text-foreground;
   }
+  a {
+    @apply text-blue-500 hover:text-blue-800;
+  }
+}
+
+@layer utilities {
+  .active-scale {
+    @apply active:scale-75 active:no-underline transition-all duration-[100ms] ease-in-out;
+  }
+}
+
+@layer components {
+  .btn-icon {
+    @apply border border-blue-300 rounded-full p-1 [&>svg]:stroke-blue-500 [&>svg:hover]:stroke-blue-800 cursor-pointer hover:ring-1 hover:ring-blue-500;
+  }
 }
