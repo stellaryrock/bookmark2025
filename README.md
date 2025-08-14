@@ -399,3 +399,8 @@ const isValid =
 ```bash
 pnpm add zod
 ```
+
+13. login & regist (feat. next-auth)
+ - auth.ts
+ - sign.ts (server action)
+ - app/login/page.tsx 작성
