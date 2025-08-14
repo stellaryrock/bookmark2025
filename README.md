@@ -434,6 +434,6 @@ pnpm add zod
 ```
 
 13. login & regist (feat. next-auth)
- 1. auth.ts
- 1. sign.ts (server action)
- 1. app/login/page.tsx 작성
+ - auth.ts
+ - sign.ts (server action)
+ - app/login/page.tsx 작성
