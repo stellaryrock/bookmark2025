@@ -53,7 +53,7 @@ export default function RootLayout({
                 </Link>
                 <Nav />
               </header>
-              <main className='border flex-1'>{children}</main>
+              <main className='flex-1'>{children}</main>
               <footer className='text-center text-green-500'>
                 &#169; Indiflex SeniorCoding 2025
               </footer>

@@ -219,7 +219,7 @@ export { GET, POST } from '@/lib/auth';
 // export const runtime = 'edge'; // 'nodejs'
 ```
 
-app/layout.tsx
+app/layout.tsx 에 SessionProvider 걸기
 
 ```typescript
 import { SessionProvider } from 'next-auth/react';
@@ -230,6 +230,32 @@ const session = use(auth());
 <SessionProvider session={session}>
   ...
 </SessionProvider>
+```
+
+middleware.ts 생성
+
+```typescript
+import { NextResponse, type NextRequest } from 'next/server';
+import { auth } from './lib/auth';
+
+export async function middleware(req: NextRequest) {
+  const session = await auth();
+  const didLogin = !!session?.user;
+  if (!didLogin) {
+    const callbackUrl = encodeURIComponent(req.nextUrl.pathname);
+    return NextResponse.redirect(
+      new URL(`/api/auth/signin?callbackUrl=${callbackUrl}`, req.url)
+    );
+  }
+
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: [
+    '/((?!_next/static|_next/image|favicon.ico|robots.txt|images|api/auth|login|regist|$).*)',
+  ],
+};
 ```
 
 9. next.config.ts 에 이미지 domain 설정
@@ -253,11 +279,12 @@ export default nextConfig;
 
 10. prisma setting
 ```bash
-pnpm i -D prisma
+pnpm add -D prisma
 ```
 
 ```bash
 pnpm dlx prisma init --datasource-provider mysql
+# ==> 이런 후 .env 지우고 .env.local에 연결정보 세팅
 ```
 
 eslint.config.mjs  (to build project)
@@ -266,13 +293,9 @@ eslint.config.mjs  (to build project)
 ignorePatterns: ['lib/generated/prisma/**'],
 ```
 
-table 생성해서 pull
+table 생성 (sqls/ddl.sql)
 
-```
-pnpm dlx prisma db pull
-```
-
-cf. package.json
+package.json에 script 설정 
 ```json
 "scripts": {
   "db:pull": "dotenv -e .env.local prisma db pull",
@@ -286,9 +309,14 @@ cf. package.json
 },
 ```
 
+```
+pnpm db:pull
+```
+
 generate해서 prisma-client 설치
 ```
-pnpm dlx prisma generate
+pnpm db:gen
+# ==> prisma/schema.prisma 생성
 ```
 
 prisma client (lib/db.ts)
