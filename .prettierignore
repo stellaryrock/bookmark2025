@@ -1,0 +1,24 @@
+# Markdown 파일 제외
+*.md
+*.css
+
+# 이미지, JSON, log 제외
+*.png
+*.jpg
+*.json
+*.log
+*.ico
+*.svg
+
+# node_modules와 빌드 폴더 제외
+node_modules
+dist
+build
+LICENSE
+
+.*
+*.sql
+*.yaml
+*.yml
+*.json
+*.prisma
