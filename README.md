@@ -60,7 +60,8 @@ pnpm add -D @trivago/prettier-plugin-sort-imports
 }
 ```
 
-.prettierignore
+.prettierignore 파일 생성해서 prettier에서 제외하기
+
 ```
 # Markdown 파일 제외
 *.md
@@ -93,9 +94,7 @@ package.json에 format script 걸기
 "format": "prettier --write .",
 ```
 
-```bash
-vi eslint.config.mjs
-```
+eslint.config.mjs 파일을 아래 내용으로 수정
 
 ```javascript
 import { FlatCompat } from '@eslint/eslintrc'
@@ -413,7 +412,7 @@ async function main() {
 }
 ```
 
-11. encrypt password
+11. password cryptor module
 
 ```bash
 pnpm add bcryptjs  
@@ -423,9 +422,7 @@ pnpm add bcryptjs
 import { compare, hash } from 'bcryptjs';
 
 const encPasswd = await hash(passwd, 10);
-
-const isValid = 
-      await compare(passwd, encPasswd);
+const isValid = await compare(passwd, encPasswd);
 ```
 
 12. zod
