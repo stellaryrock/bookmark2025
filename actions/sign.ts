@@ -1,7 +1,9 @@
 'use server';
 
 import { AuthError } from 'next-auth';
+import { v4 as uuidv4 } from 'uuid';
 import { signIn, signOut } from '@/lib/auth';
+import { sendRegistCheck } from './mailer';
 
 type Provider = 'google' | 'github' | 'naver' | 'kakao';
 
@@ -9,7 +11,17 @@ export const login = async (provider: Provider, callback?: string) => {
   signIn(provider, { redirectTo: callback || '/' });
 };
 
-// from login page
+export const regist = async (formData: FormData) => {
+  const entries = Object.entries(formData);
+  console.log('🚀 ~ entries:', entries);
+
+  // Todo: zod validate check
+  const authKey = uuidv4();
+  await sendRegistCheck('indiflex.corp@gmail.com', authKey);
+  console.log('Main has sent.');
+};
+
+// Credential: from login page
 export async function authenticate(
   prevState: string | undefined,
   formData: FormData

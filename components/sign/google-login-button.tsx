@@ -4,7 +4,7 @@ export function GoogleLoginButton() {
   return (
     <Button
       variant='outline'
-      className='w-full gap-2 rounded-md border border-gray-300 bg-white text-gray-900 hover:bg-gray-50 h-12'
+      className='w-full gap-2 rounded-md border border-gray-300 bg-white text-gray-900 dark:text-white h-12'
     >
       <svg
         className='w-6 h-6'
