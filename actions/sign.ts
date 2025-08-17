@@ -10,16 +10,13 @@ import { validate, ValidError, ValidSuccess } from '@/lib/validator';
 
 // export const runtime = 'nodejs';
 
-export type Provider = 'google' | 'github' | 'naver' | 'kakao';
+type Provider = 'google' | 'github' | 'naver' | 'kakao';
 
 export const login = async (provider: Provider, callback?: string) => {
   await signIn(provider, { redirectTo: callback || '/bookcase' });
 };
 
-export const loginKakao = async () => {login('kakao')}
-export const loginGoogle = async () => {login('google')}
-export const loginGithub = async () => {login('github')}
-export const loginNaver = async () => {login('naver')}
+export const loginNaver = async () => login('naver');
 
 export const regist = async (formData: FormData) => {
   const zobj = z
