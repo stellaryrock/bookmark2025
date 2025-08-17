@@ -7,12 +7,8 @@ import z from 'zod';
 import { redirect } from 'next/navigation';
 import { signIn, signOut } from '@/lib/auth';
 import prisma from '@/lib/db';
-<<<<<<< HEAD
 import { newToken } from '@/lib/utils';
 import { validate, ValidError, ValidSuccess } from '@/lib/validator';
-=======
-import { validate, ValidSuccess } from '@/lib/validator';
->>>>>>> 526f5b4 (rebase & merge)
 
 // export const runtime = 'nodejs';
 
@@ -50,7 +46,8 @@ export const regist = async (formData: FormData) => {
   }; // as z.infer<typeof zobj>;
   await prisma.member.create({ data });
 
-  await sendEmailByFetch(data, emailcheck);
+  const { email, nickname } = data;
+  await sendEmailByFetch({ email, nickname, emailcheck, emailType: 'Regist' });
   console.log('Mail has sent.');
 
   return { success: true, data } as ValidSuccess<typeof data>;
