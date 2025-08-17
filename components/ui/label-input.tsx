@@ -1,3 +1,4 @@
+import { ValidationError } from '@/app/login/sign-form';
 import { RefObject, useId } from 'react';
 import { cn } from '@/lib/utils';
 import { Input } from './input';
@@ -8,6 +9,7 @@ type Props = {
   name?: string;
   ref?: RefObject<HTMLInputElement | null>;
   placeholder?: string;
+  validationErrors?: ValidationError;
   className?: string;
 };
 
@@ -17,19 +19,27 @@ export default function LabelInput({
   name,
   ref,
   placeholder,
+  validationErrors,
   className,
 }: Props) {
   const uniqName = useId();
   return (
-    <label className='text-sm font-semibold capitalize'>
-      {label}
-      <Input
-        name={name || uniqName}
-        type={type || 'text'}
-        ref={ref}
-        placeholder={placeholder}
-        className={cn('bg-gray-100 focus:bg-white font-normal', className)}
-      />
-    </label>
+    <>
+      <label className='text-sm font-semibold capitalize'>
+        {label}
+        <Input
+          name={name || uniqName}
+          type={type || 'text'}
+          ref={ref}
+          placeholder={placeholder}
+          className={cn('bg-gray-100 focus:bg-white font-normal', className)}
+        />
+        {validationErrors?.errors.map((err, idx) => (
+          <p className='text-red-500 font-normal' key={idx}>
+            {err}
+          </p>
+        ))}
+      </label>
+    </>
   );
 }

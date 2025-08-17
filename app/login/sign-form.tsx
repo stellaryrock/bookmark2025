@@ -3,7 +3,8 @@
 import { regist } from '@/actions/sign';
 import { Button } from '@/components/ui/button';
 import LabelInput from '@/components/ui/label-input';
-import { useEffect, useReducer, useRef } from 'react';
+import z from 'zod';
+import { useEffect, useReducer, useRef, useState } from 'react';
 
 type ToggleLoginProps = {
   toggleLogin: () => void;
@@ -23,11 +24,21 @@ export default function SignForm() {
   );
 }
 
+export type ValidationError = { errors: string[] } | undefined;
+type InputType = 'email' | 'password' | 'passwordConfirm' | 'nickname';
+type RegistError = Partial<Record<InputType, ValidationError>>;
+
 function RegistForm({ toggleLogin }: ToggleLoginProps) {
   const emailRef = useRef<HTMLInputElement>(null);
 
+  const [errMessages, setErrMessages] = useState<RegistError>();
+
   const register = async (formData: FormData) => {
-    await regist(formData);
+    const result = await regist(formData);
+
+    if (result?.error.errors.length) alert(result?.error.errors[0]);
+
+    setErrMessages(result?.error.properties);
   };
 
   useEffect(() => {
@@ -37,22 +48,34 @@ function RegistForm({ toggleLogin }: ToggleLoginProps) {
   return (
     <form action={register} className=''>
       <LabelInput
+        name='email'
         label='email'
         type='email'
         ref={emailRef}
+        validationErrors={errMessages?.email}
         placeholder='example@gmail.com'
       />
       <LabelInput
+        name='password'
         label='password'
         type='password'
+        validationErrors={errMessages?.password}
         placeholder='Your password...'
       />
       <LabelInput
+        name='passwordConfirm'
         label='password confirm'
         type='password'
+        validationErrors={errMessages?.passwordConfirm}
         placeholder='Confirm Your password...'
       />
-      <LabelInput label='nickname' type='text' placeholder='nickname...' />
+      <LabelInput
+        name='nickname'
+        label='nickname'
+        type='text'
+        validationErrors={errMessages?.nickname}
+        placeholder='nickname...'
+      />
       <Button type='submit' variant={'primary'} className='w-full mt-3'>
         Sign up
       </Button>
