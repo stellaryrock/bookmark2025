@@ -6,19 +6,8 @@ import GitHub from 'next-auth/providers/github';
 import Google from 'next-auth/providers/google';
 import Kakao from 'next-auth/providers/kakao';
 import Naver from 'next-auth/providers/naver';
-<<<<<<< HEAD
-import prisma from './db';
-import z from 'zod';
-=======
-<<<<<<< HEAD
-import { v4 as uuidv4 } from 'uuid';
-import prisma from './db';
-=======
 import prisma from './db';
 import {v4 as uuidv4 } from 'uuid';
-
->>>>>>> bd3514f (login-button)
->>>>>>> 1de2e63 (login-button)
 
 export const {
   handlers: { GET, POST },

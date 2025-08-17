@@ -12,8 +12,6 @@ import { validate, ValidError, ValidSuccess } from '@/lib/validator';
 
 type Provider = 'google' | 'github' | 'naver' | 'kakao';
 
-export const githubLogin = 
-export const loginNaver = async () => {login('naver')}
 export const login = async (provider: Provider, callback?: string) => {
   await signIn(provider, { redirectTo: callback || '/bookcase' });
 };
@@ -21,7 +19,6 @@ export const login = async (provider: Provider, callback?: string) => {
 export const loginNaver = async () => login('naver');
 
 export const regist = async (formData: FormData) => {
-<<<<<<< HEAD
   const zobj = z
     .object({
       email: z.email(),
@@ -37,14 +34,6 @@ export const regist = async (formData: FormData) => {
   if (!validator.success) {
     return validator;
   }
-=======
-  const entries = Object.entries(formData);
-  console.log('🚀 ~ entries:', entries);
-  const email = formData.get('email');
-
-<<<<<<< HEAD
-  // Todo: zod validation checking!
->>>>>>> f6e4a95 (fetch upstream)
 
   const encPasswd = await hash(validator.data.passwd, 10);
   const emailcheck = uuidv4();
@@ -123,7 +112,5 @@ export const logout = async () => {
   await signOut({ redirectTo: '/login' }); // QQQ ('/')
 };
 
-export const findMemberByEmail = async (email: string) => {
+export const findMemberByEmail = async (email: string) =>
   prisma.member.findUnique({ where: { email } });
-  await signOut();
-};
