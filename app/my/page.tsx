@@ -1,15 +1,9 @@
 'use client';
-<<<<<<< HEAD
-import { useState } from 'react';
-import Withdrawl from './withdrawl';
-import { Edit } from 'lucide-react';
-=======
 
 import { logout } from '@/actions/sign';
 import { useState } from 'react';
 import Edit from './edit';
 import Withdrawl from './withdrawl';
->>>>>>> b8d05ce (my)
 
 export default function My() {
 
@@ -21,7 +15,7 @@ export default function My() {
         <h1 className='text-3xl'>
           내 정보
         </h1>
-        <button>
+        <button onClick={()=>{ logout(); }}>
           로그아웃
         </button>
       </div>
