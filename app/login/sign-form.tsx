@@ -7,7 +7,6 @@ import { redirect, useSearchParams } from 'next/navigation';
 import {
   FormEvent,
   useActionState,
-//  useActionState,
   useEffect,
   useReducer,
   useRef,
@@ -150,12 +149,12 @@ function LoginForm({ toggleLogin, email }: ToggleLoginProps) {
   const [validError, loginAction, _isPending] = useActionState(
     authenticate,
     // async (preValidError: ValidError | undefined, formData: FormData) => {
-      //   const rs = await login(formData);
-      //   console.log('🚀 ~ rs:', rs);
-      //   if (!rs.success) return setValidError(rs);
-      
-      //   const { email, emailcheck } = rs.data;
-      //   redirect(
+    //   const rs = await login(formData);
+    //   console.log('🚀 ~ rs:', rs);
+    //   if (!rs.success) return setValidError(rs);
+
+    //   const { email, emailcheck } = rs.data;
+    //   redirect(
     //     `/login/error?error=CheckEmail&email=${email}&emailcheck=${emailcheck}`
     //   );
     // },
