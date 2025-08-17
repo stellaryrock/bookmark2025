@@ -159,8 +159,13 @@ export const sendEmailToResetPassword = async (
 };
 
 export const logout = async () => {
+<<<<<<< HEAD
   await signOut({ redirectTo: '/login' }); // QQQ ('/')
 };
 
 export const findMemberByEmail = async (email: string) =>
   prisma.member.findUnique({ where: { email } });
+=======
+  await signOut();
+};
+>>>>>>> 52ac2bd (fetch upstream)
