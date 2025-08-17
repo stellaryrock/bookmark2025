@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import z from 'zod';
 import { signIn, signOut } from '@/lib/auth';
 import prisma from '@/lib/db';
-import { validate, ValidSuccess } from '@/lib/validator';
+import { validate, ValidError, ValidSuccess } from '@/lib/validator';
 
 // export const runtime = 'nodejs';
 
