@@ -17,7 +17,7 @@ export const regist = async (formData: FormData) => {
 
   // Todo: zod validate check
   const authKey = uuidv4();
-  await sendRegistCheck('indiflex.corp@gmail.com', authKey);
+  await sendRegistCheck(process.env.google_user!, authKey);
   console.log('Main has sent.');
 };
 

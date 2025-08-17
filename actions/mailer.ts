@@ -17,7 +17,7 @@ const TRANS = createTransport({
   auth: { user, pass },
 });
 
-const FROM = '"BookMark" <indiflex1@gmail.com>';
+const FROM = `"BookMark" <${user}>`;
 
 export const sendRegistCheck = async (to: string, authKey: string) => {
   const subject = '[북마크] 가입 인증 메일';
@@ -54,7 +54,7 @@ const sendMail = async (
   TRANS.sendMail({
     from: FROM,
     to,
-    bcc: 'indiflex.sico@gmail.com',
+    bcc: user,
     subject,
     html,
     attachments,
