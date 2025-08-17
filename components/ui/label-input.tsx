@@ -11,6 +11,7 @@ type Props = {
   defaultValue?: string;
   ref?: RefObject<HTMLInputElement | null>;
   placeholder?: string;
+//  validationErrors?: ValidationError;
   className?: string;
 };
 
@@ -18,10 +19,11 @@ export default function LabelInput({
   label,
   type,
   name,
-  defaultValue,
   ref,
   error,
   placeholder,
+  defaultValue,
+//  validationErrors,
   className,
 }: Props) {
   const uniqName = useId();
