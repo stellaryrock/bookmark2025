@@ -85,6 +85,7 @@ export const {
             throw err;
           }
           // return '/login/error?error=NeedToSnsLogin&email=' + email;
+
           return compare(password || '', mbr.passwd);
         }
 
