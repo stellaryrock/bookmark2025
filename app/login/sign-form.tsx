@@ -3,8 +3,9 @@
 import { regist } from '@/actions/sign';
 import { Button } from '@/components/ui/button';
 import LabelInput from '@/components/ui/label-input';
-import z from 'zod';
-import { useEffect, useReducer, useRef, useState } from 'react';
+import { useActionState, useEffect, useReducer, useRef } from 'react';
+import { RegistError } from '@/lib/schema/regist';
+import { Spinner } from '@/components/ui/shadcn-io/spinner';
 
 type ToggleLoginProps = {
   toggleLogin: () => void;
@@ -24,29 +25,27 @@ export default function SignForm() {
   );
 }
 
-export type ValidationError = { errors: string[] } | undefined;
-type InputType = 'email' | 'password' | 'passwordConfirm' | 'nickname';
-type RegistError = Partial<Record<InputType, ValidationError>>;
 
 function RegistForm({ toggleLogin }: ToggleLoginProps) {
+  
   const emailRef = useRef<HTMLInputElement>(null);
 
-  const [errMessages, setErrMessages] = useState<RegistError>();
-
-  const register = async (formData: FormData) => {
+  const register = async (_prevState: RegistError, formData: FormData) => {
     const result = await regist(formData);
 
     if (result?.error.errors.length) alert(result?.error.errors[0]);
 
-    setErrMessages(result?.error.properties);
+    return result?.error.properties;
   };
 
+  const [ errMessages, registAction, isPending ] = useActionState(register, undefined);
+  
   useEffect(() => {
     emailRef.current?.focus();
   }, []);
 
   return (
-    <form action={register} className=''>
+    <form action={registAction}>
       <LabelInput
         name='email'
         label='email'
@@ -77,7 +76,7 @@ function RegistForm({ toggleLogin }: ToggleLoginProps) {
         placeholder='nickname...'
       />
       <Button type='submit' variant={'primary'} className='w-full mt-3'>
-        Sign up
+        { isPending ? <Spinner variant='circle' /> : "Sign up"}
       </Button>
 
       <div className='mt-3'>
