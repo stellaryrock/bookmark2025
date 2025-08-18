@@ -1,5 +1,6 @@
 'use client';
 
+<<<<<<< HEAD
 import { Button } from '../ui/button';
 import resource from './sns-login-props.json';
 import { login, Provider } from '@/actions/sign';
@@ -19,6 +20,25 @@ export default function LoginButton({ provider }: Props) {
       <Button onClick={loginAction} variant='outline' {...props["button"]}>
         <svg xmlns='http://www.w3.org/2000/svg' {...props["svg"]}>
           {props["paths"].map(({ d, fill }, idx) => (
+=======
+import { signIn } from 'next-auth/react';
+import { Button } from '../ui/button';
+import data from './ctrl+v.json';
+
+type Props = {
+  provider: 'google' | 'github' | 'kakao' | 'naver';
+};
+
+export default function LoginButton({ provider }: Props) {
+  const properties = data[provider];
+  const { button, svg, paths } = properties;
+
+  return (
+    <>
+      <Button onClick={() => signIn(provider)} variant='outline' {...button}>
+        <svg xmlns='http://www.w3.org/2000/svg' {...svg}>
+          {paths.map(({ d, fill }, idx) => (
+>>>>>>> 1ce3363 (login-button)
             <path key={idx} d={d} fill={fill} />
           ))}
         </svg>
@@ -26,4 +46,8 @@ export default function LoginButton({ provider }: Props) {
       </Button>
     </>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 1ce3363 (login-button)
