@@ -1,5 +1,6 @@
 import { login } from '@/actions/sign';
 import { Button } from '@/components/ui/button';
+import { signIn } from 'next-auth/react';
 
 export function KakaoLoginButton() {
   const loginKakao = async () => {
