@@ -16,6 +16,9 @@ const fileSchema = z
   .file()
   .max(10_000_000, { error: '10MB 보다 작은 파일만 업로드 할 수 있습니다.' })
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1ce3363 (login-button)
   .mime([
     'image/gif',
     'image/jpeg',
@@ -23,9 +26,12 @@ const fileSchema = z
     'image/svg+xml',
     'image/webp',
   ]);
+<<<<<<< HEAD
 =======
   .mime(['image/gif','image/jpeg', 'image/png', 'image/svg+xml', 'image/webp']);
 >>>>>>> a09034f (regist validation)
+=======
+>>>>>>> 1ce3363 (login-button)
 
 const authKey = z.uuidv4();
 
