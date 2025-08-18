@@ -1,8 +1,12 @@
+'use client';
+
 import { Button } from '@/components/ui/button';
+import { signIn } from 'next-auth/react';
 
 export function KakaoLoginButton() {
   return (
     <Button
+      onClick={() => signIn('kakao')}
       variant='outline'
       className='w-full gap-2 bg-[#FEE500] hover:bg-[#ecd800] text-black dark:text-white h-12'
     >

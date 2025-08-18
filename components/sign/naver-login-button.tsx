@@ -1,8 +1,12 @@
+'use client';
+
 import { Button } from '@/components/ui/button';
+import { signIn } from 'next-auth/react';
 
 export function NaverLoginButton() {
   return (
     <Button
+      onClick={() => signIn('naver')}
       variant='outline'
       className='w-full gap-2 bg-[#03C75A] hover:bg-[#02b155] text-white hover:text-white h-12'
     >

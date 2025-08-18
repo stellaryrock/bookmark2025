@@ -1,8 +1,14 @@
+'use client';
+
 import { Button } from '@/components/ui/button';
+import { signIn } from 'next-auth/react';
 
 export function GithubLoginButton() {
   return (
-    <Button className='w-full gap-2 rounded-md bg-[#181717] text-white hover:bg-black dark:hover:bg-gray-800 h-12'>
+    <Button
+      onClick={() => signIn('github')}
+      className='w-full gap-2 rounded-md bg-[#181717] text-white hover:bg-black dark:hover:bg-gray-800 h-12'
+    >
       <svg
         xmlns='http://www.w3.org/2000/svg'
         className='w-6 h-6'

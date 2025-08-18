@@ -44,7 +44,7 @@ export const {
   trustHost: true,
   jwt: { maxAge: 30 * 60 },
   callbacks: {
-    async signIn(auth){
+    async signIn(auth) {
       console.log(auth);
       return true;
     },
