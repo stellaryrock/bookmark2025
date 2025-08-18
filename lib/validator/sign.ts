@@ -12,28 +12,18 @@ const emailSchema = z.email({ error: '잘못된 이메일 형식입니다.' });
 const nicknameSchema = z.string().min(4, { error: '4자 이상 입력해주세요.' });
 
 // file-schema : zod.dev AI Powered by inkeep 참조
-const fileSchema = z
-  .file()
-  .max(10_000_000, { error: '10MB 보다 작은 파일만 업로드 할 수 있습니다.' })
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 1ce3363 (login-button)
-  .mime([
-    'image/gif',
-    'image/jpeg',
-    'image/png',
-    'image/svg+xml',
-    'image/webp',
-  ]);
-<<<<<<< HEAD
-=======
-  .mime(['image/gif','image/jpeg', 'image/png', 'image/svg+xml', 'image/webp']);
->>>>>>> a09034f (regist validation)
-=======
->>>>>>> 1ce3363 (login-button)
+// const fileSchema = z
+//   .file()
+//   .max(10_000_000, { error: '10MB 보다 작은 파일만 업로드 할 수 있습니다.' })
+//   .mime([
+//     'image/gif',
+//     'image/jpeg',
+//     'image/png',
+//     'image/svg+xml',
+//     'image/webp',
+//   ]);
 
-const authKey = z.uuidv4();
+// const authKey = z.uuidv4();
 
 export const registValidator = z
   .object({
@@ -47,11 +37,7 @@ export const registValidator = z
     '비밀번호가 일치하지 않습니다.'
   );
 
-<<<<<<< HEAD
 export type ValidationError = { errors: string[] } | undefined;
-=======
-type ValidationError = { errors: string[] } | undefined;
->>>>>>> a09034f (regist validation)
 export type Regist = z.infer<typeof registValidator>;
 export type RegistError =
   | Partial<Record<keyof Regist, ValidationError>>
