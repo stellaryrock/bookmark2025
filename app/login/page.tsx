@@ -1,12 +1,15 @@
 import { GithubLoginButton } from '@/components/sign/github-login-button';
 import { GoogleLoginButton } from '@/components/sign/google-login-button';
 import { KakaoLoginButton } from '@/components/sign/kakao-login-button';
+import LoginButton from '@/components/sign/login-button';
 import { NaverLoginButton } from '@/components/sign/naver-login-button';
 import { BookImages, MarkImages, PeopleImages } from './images';
 import SignForm from './sign-form';
 import SoMany from './so-many';
 
 export default function Login() {
+  const providers = ['google', 'github', 'kakao', 'naver'] as const;
+
   return (
     <div className='grid place-items-center h-full'>
       <div className='flex [&>div]:p-4 rounded-lg shadow-md border overflow-hidden'>
@@ -16,10 +19,9 @@ export default function Login() {
             <span className='ml-3 text-gray-500'>Sign with</span>
           </div>
           <div className='grid grid-cols-2 gap-2 my-2'>
-            <GoogleLoginButton />
-            <GithubLoginButton />
-            <NaverLoginButton />
-            <KakaoLoginButton />
+            {providers.map((p, idx) => (
+              <LoginButton key={idx} provider={p} />
+            ))}
           </div>
 
           <div className='text-center relative text-gray-600 before:content-[""] before:absolute before:left-0 before:top-[50%] before:bg-gray-200 before:h-[1px] before:w-[45%] after:content-[""] after:absolute after:right-0 after:top-[50%] after:bg-gray-200 after:h-[1px] after:w-[45%]'>
