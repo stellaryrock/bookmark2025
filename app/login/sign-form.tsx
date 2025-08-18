@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import LabelInput from '@/components/ui/label-input';
 import { Spinner } from '@/components/ui/shadcn-io/spinner';
 import { useActionState, useEffect, useReducer, useRef } from 'react';
-import { RegistError } from '@/lib/schema/regist';
+import { RegistError } from '@/lib/validator/sign';
 
 type ToggleLoginProps = {
   toggleLogin: () => void;
