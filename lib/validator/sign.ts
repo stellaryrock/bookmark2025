@@ -15,7 +15,13 @@ const nicknameSchema = z.string().min(4, { error: '4자 이상 입력해주세�
 const fileSchema = z
   .file()
   .max(10_000_000, { error: '10MB 보다 작은 파일만 업로드 할 수 있습니다.' })
-  .mime(['image/gif','image/jpeg', 'image/png', 'image/svg+xml', 'image/webp']);
+  .mime([
+    'image/gif',
+    'image/jpeg',
+    'image/png',
+    'image/svg+xml',
+    'image/webp',
+  ]);
 
 const authKey = z.uuidv4();
 
