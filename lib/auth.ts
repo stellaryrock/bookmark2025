@@ -62,6 +62,7 @@ export const {
   trustHost: true,
   jwt: { maxAge: 30 * 60 },
   callbacks: {
+<<<<<<< HEAD
     // SNS(login/regist), credential(login) ==> DB 읽어서 존재하면 로그인
     // 존재하지 않으면 가입(with authKey) => send email
     async signIn({ user, account }) {
@@ -111,6 +112,11 @@ export const {
       // sendRegistMail
 
       return false;
+=======
+    async signIn(auth) {
+      console.log(auth);
+      return true;
+>>>>>>> 1ce3363 (login-button)
     },
     async jwt({ token, user }) {
       if (user) {
