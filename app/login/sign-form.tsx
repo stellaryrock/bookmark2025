@@ -3,9 +3,9 @@
 import { regist } from '@/actions/sign';
 import { Button } from '@/components/ui/button';
 import LabelInput from '@/components/ui/label-input';
+import { Spinner } from '@/components/ui/shadcn-io/spinner';
 import { useActionState, useEffect, useReducer, useRef } from 'react';
 import { RegistError } from '@/lib/schema/regist';
-import { Spinner } from '@/components/ui/shadcn-io/spinner';
 
 type ToggleLoginProps = {
   toggleLogin: () => void;
@@ -25,9 +25,7 @@ export default function SignForm() {
   );
 }
 
-
 function RegistForm({ toggleLogin }: ToggleLoginProps) {
-  
   const emailRef = useRef<HTMLInputElement>(null);
 
   const register = async (_prevState: RegistError, formData: FormData) => {
@@ -38,8 +36,11 @@ function RegistForm({ toggleLogin }: ToggleLoginProps) {
     return result?.error.properties;
   };
 
-  const [ errMessages, registAction, isPending ] = useActionState(register, undefined);
-  
+  const [errMessages, registAction, isPending] = useActionState(
+    register,
+    undefined
+  );
+
   useEffect(() => {
     emailRef.current?.focus();
   }, []);
@@ -76,7 +77,7 @@ function RegistForm({ toggleLogin }: ToggleLoginProps) {
         placeholder='nickname...'
       />
       <Button type='submit' variant={'primary'} className='w-full mt-3'>
-        { isPending ? <Spinner variant='circle' /> : "Sign up"}
+        {isPending ? <Spinner variant='circle' /> : 'Sign up'}
       </Button>
 
       <div className='mt-3'>
