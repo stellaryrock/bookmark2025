@@ -62,6 +62,11 @@ export const {
   trustHost: true,
   jwt: { maxAge: 30 * 60 },
   callbacks: {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> cce9c54 (regist validation)
     // SNS(login/regist), credential(login) ==> DB 읽어서 존재하면 로그인
     // 존재하지 않으면 가입(with authKey) => send email
     async signIn({ user, account }) {
@@ -111,6 +116,44 @@ export const {
       // sendRegistMail
 
       return false;
+<<<<<<< HEAD
+=======
+=======
+    // DB 읽어서 존재하면 로그인
+    // 존재하지 않으면 가입(with authKey)
+    async signIn({user, account, profile}) {
+      const { name, email, image } = user;
+
+      if(!email) return false;
+
+      const mbr = await prisma.member.findUnique({
+        select: { id: true, nickname: true },
+        where: { email }
+      });
+
+      if(!mbr){
+        const newMbr = await prisma.member.create({
+          select: { id : true, nickname: true },
+          data :{
+            nickname: name || 'guest',
+            email,
+            image,
+          }
+        });  
+        
+        console.log('newMbr:', newMbr);
+      }
+
+      const emailcheck = uuidv4();
+
+      return true;
+>>>>>>> bd3514f (login-button)
+=======
+    async signIn(auth){
+      console.log(auth);
+      return true;
+>>>>>>> a09034f (regist validation)
+>>>>>>> cce9c54 (regist validation)
     },
     async jwt({ token, user }) {
       if (user) {

@@ -1,211 +1,116 @@
-'use client';
+'use server';
 
-import { authenticate, regist } from '@/actions/sign';
-import { Button } from '@/components/ui/button';
-import LabelInput from '@/components/ui/label-input';
-import { redirect, useSearchParams } from 'next/navigation';
-import {
-  FormEvent,
-  useActionState,
-  useEffect,
-  useReducer,
-  useRef,
-  useState,
-  useTransition,
-} from 'react';
-import { ValidError } from '@/lib/validator';
+import { hash } from 'bcryptjs';
+import { AuthError } from 'next-auth';
+import { v4 as uuidv4 } from 'uuid';
+import z from 'zod';
+import { signIn, signOut } from '@/lib/auth';
+import prisma from '@/lib/db';
+import { validate, ValidError, ValidSuccess } from '@/lib/validator';
 
-type ToggleLoginProps = {
-  toggleLogin: () => void;
-  email?: string | null;
+// export const runtime = 'nodejs';
+
+type Provider = 'google' | 'github' | 'naver' | 'kakao';
+
+export const login = async (provider: Provider, callback?: string) => {
+  await signIn(provider, { redirectTo: callback || '/bookcase' });
 };
 
-export default function SignForm() {
-  const [isLogin, toggleLogin] = useReducer((pre) => !pre, true);
-  const searchParams = useSearchParams();
-  const email = searchParams.get('email');
+export const loginNaver = async () => login('naver');
 
-  return (
-    <>
-      {isLogin ? (
-        <LoginForm toggleLogin={toggleLogin} email={email} />
-      ) : (
-        <RegistForm toggleLogin={toggleLogin} />
-      )}
-    </>
-  );
-}
-
-// QQQ
-const mock = {
-  email: 'jeonseongho@naver.com',
-  passwd: '111111',
-  passwd2: '111111',
-  nickname: 'Hongkildong',
-};
-
-function RegistForm({ toggleLogin }: ToggleLoginProps) {
-  const emailRef = useRef<HTMLInputElement>(null);
-  const [validError, setValidError] = useState<ValidError>();
-
-  const register = async (formData: FormData) => {
-    const rs = await regist(formData);
-    console.log('🚀 ~ rs:', rs);
-    if (!rs.success) return setValidError(rs);
-
-    const { email, emailcheck } = rs.data;
-    redirect(
-      `/login/error?error=CheckEmail&email=${email}&emailcheck=${emailcheck}`
-    );
-  };
-
-  // const [validError, register, isPending] = useActionState(
-  //   async (_preValidError: ValidError | undefined, formData: FormData) => {
-  //     const rs = await regist(formData);
-  //     if (!rs.success) return rs;
-  //     const { email, emailcheck } = rs.data;
-  //     redirect(
-  //       `/login/error?error=CheckEmail&email=${email}&emailcheck=${emailcheck}`
-  //     );
-  //   },
-  //   undefined
-  // );
-
-  const [isPending, startTransition] = useTransition();
-  const handleSumit = (evt: FormEvent<HTMLFormElement>) => {
-    evt.preventDefault();
-    startTransition(() => {
-      register(new FormData(evt.currentTarget));
+export const regist = async (formData: FormData) => {
+  const zobj = z
+    .object({
+      email: z.email(),
+      passwd: z.string().min(6),
+      passwd2: z.string().min(6),
+      nickname: z.string().min(3),
+    })
+    .refine(({ passwd, passwd2 }) => passwd === passwd2, {
+      path: ['passwd2'],
+      error: 'Password check is not matching!',
     });
-  };
+  const validator = validate<typeof zobj>(zobj, formData);
+  if (!validator.success) {
+    return validator;
+  }
 
-  useEffect(() => {
-    emailRef.current?.focus();
-  }, []);
+  const encPasswd = await hash(validator.data.passwd, 10);
+  const emailcheck = uuidv4();
+  const { passwd2: _, ...data } = {
+    ...validator.data,
+    passwd: encPasswd,
+    emailcheck,
+  }; // as z.infer<typeof zobj>;
+  await prisma.member.create({ data });
 
-  return (
-    // <form action={register} className=''>
-    <form onSubmit={handleSumit} className='flex flex-col gap-3'>
-      <LabelInput
-        label='email'
-        name='email'
-        type='email'
-        defaultValue={mock.email}
-        ref={emailRef}
-        error={validError}
-        placeholder='example@gmail.com'
-      />
-      <LabelInput
-        label='password'
-        name='passwd'
-        type='password'
-        defaultValue={mock.passwd}
-        error={validError}
-        placeholder='Your password...'
-      />
-      <LabelInput
-        label='password confirm'
-        name='passwd2'
-        type='password'
-        defaultValue={mock.passwd2}
-        error={validError}
-        placeholder='Confirm Your password...'
-      />
-      <LabelInput
-        label='nickname'
-        name='nickname'
-        type='text'
-        defaultValue={mock.nickname}
-        error={validError}
-        placeholder='nickname...'
-      />
-      <Button
-        type='submit'
-        variant={'primary'}
-        className='w-full mt-3'
-        disabled={isPending}
-      >
-        Sign up
-      </Button>
+  // await sendRegistCheck('indiflex.corp@gmail.com', authKey); // stream error
+  const { NEXT_PUBLIC_URL, INTERNAL_SECRET } = process.env;
+  await fetch(`${NEXT_PUBLIC_URL}/api/sendmail`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${INTERNAL_SECRET}`,
+    },
+    body: JSON.stringify({
+      email: data.email,
+      emailcheck,
+    }),
+  });
+  console.log('Mail has sent.');
 
-      <div className='mt-3'>
-        Already have account?
-        <Button
-          onClick={toggleLogin}
-          variant={'link'}
-          className='ml-2 text-blue-500'
-        >
-          Sign in
-        </Button>
-      </div>
-    </form>
-  );
+  return { success: true, data } as ValidSuccess<typeof data>;
+  // return validator; // formdata 그대로 반환 용
+};
+
+// Credential: from login page
+export async function authenticate(
+  prevState: ValidError | undefined,
+  formData: FormData
+) {
+  console.log('*****>>', formData.get('email'));
+  const zobj = z.object({
+    email: z.email(),
+    passwd: z.string().min(6),
+  });
+  const validator = validate(zobj, formData);
+  if (!validator.success) return validator;
+
+  try {
+    await signIn('credentials', formData);
+    // return validator;
+  } catch (error) {
+    console.log('🚀 sign.ts - authenticate - error:', error);
+    if (error instanceof AuthError) {
+      let typeErr;
+      switch (error.type) {
+        case 'AccessDenied':
+          typeErr = 'Invalid Password!';
+          break;
+        case 'OAuthAccountNotLinked':
+          typeErr = `You registed SNS Account(${formData.get('email')})`;
+          break;
+        case 'EmailSignInError': // email magic link
+          typeErr = error.message;
+          break;
+        case 'CredentialsSignin':
+          typeErr = 'Invalid Credentials!';
+          break;
+        default:
+          typeErr = error.message || 'Something went wrong!';
+      }
+      return {
+        success: false,
+        error: { email: { errors: [typeErr] } },
+      } as ValidError;
+    }
+    // throw error;
+  }
 }
 
-function LoginForm({ toggleLogin, email }: ToggleLoginProps) {
-  const emailRef = useRef<HTMLInputElement>(null);
-  const passwdRef = useRef<HTMLInputElement>(null);
+export const logout = async () => {
+  await signOut({ redirectTo: '/login' }); // QQQ ('/')
+};
 
-  const [validError, loginAction, _isPending] = useActionState(
-    authenticate,
-    // async (preValidError: ValidError | undefined, formData: FormData) => {
-    //   const rs = await login(formData);
-    //   console.log('🚀 ~ rs:', rs);
-    //   if (!rs.success) return setValidError(rs);
-
-    //   const { email, emailcheck } = rs.data;
-    //   redirect(
-    //     `/login/error?error=CheckEmail&email=${email}&emailcheck=${emailcheck}`
-    //   );
-    // },
-    undefined
-  );
-
-  useEffect(() => {
-    if (email) passwdRef.current?.focus();
-    else emailRef.current?.focus();
-  }, []);
-
-  return (
-    <form action={loginAction} className='flex flex-col gap-3'>
-      <LabelInput
-        label='email'
-        type='email'
-        name='email'
-        ref={emailRef}
-        defaultValue={email || ''}
-        error={validError}
-        placeholder='example@gmail.com'
-      />
-      <LabelInput
-        label='password'
-        type='password'
-        name='passwd'
-        ref={passwdRef}
-        error={validError}
-        placeholder='Your password...'
-      />
-      <div className='flex justify-between my-2'>
-        <label className='cursor-pointer hover:text-blue-600'>
-          <input type='checkbox' className='mr-1 translate-y-[1px]' />
-          Remember me
-        </label>
-        <a href='#'>Forgot password?</a>
-      </div>
-      <Button type='submit' variant={'primary'} className='w-full'>
-        Login with your account
-      </Button>
-
-      <div className='mt-3'>
-        Don&apos;t have account?
-        <Button
-          onClick={toggleLogin}
-          variant={'link'}
-          className='ml-2 text-blue-500'
-        >
-          Sign up
-        </Button>
-      </div>
-    </form>
-  );
-}
+export const findMemberByEmail = async (email: string) =>
+  prisma.member.findUnique({ where: { email } });
