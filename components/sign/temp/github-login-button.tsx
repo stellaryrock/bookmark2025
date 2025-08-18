@@ -1,5 +1,6 @@
 'use client';
 
+<<<<<<< HEAD:components/sign/temp/github-login-button.tsx
 <<<<<<< HEAD
 <<<<<<< HEAD
 import { login } from '@/actions/sign';
@@ -8,6 +9,8 @@ import { login } from '@/actions/sign';
 =======
 import { login } from '@/actions/sign';
 >>>>>>> 5754cf0 (login-button)
+=======
+>>>>>>> 1ce3363 (login-button):components/sign/github-login-button.tsx
 import { Button } from '@/components/ui/button';
 import { signIn } from 'next-auth/react';
 
@@ -22,6 +25,7 @@ export function GithubLoginButton() {
 
   return (
     <Button
+<<<<<<< HEAD:components/sign/temp/github-login-button.tsx
 <<<<<<< HEAD
 <<<<<<< HEAD
       onClick={loginGithub}
@@ -31,6 +35,9 @@ export function GithubLoginButton() {
 =======
       onClick={loginGithub}
 >>>>>>> 5754cf0 (login-button)
+=======
+      onClick={() => signIn('github')}
+>>>>>>> 1ce3363 (login-button):components/sign/github-login-button.tsx
       className='w-full gap-2 rounded-md bg-[#181717] text-white hover:bg-black dark:hover:bg-gray-800 h-12'
     >
       <svg
