@@ -10,7 +10,7 @@ import { validate, ValidError, ValidSuccess } from '@/lib/validator';
 
 // export const runtime = 'nodejs';
 
-type Provider = 'google' | 'github' | 'naver' | 'kakao';
+export type Provider = 'google' | 'github' | 'naver' | 'kakao';
 
 export const login = async (provider: Provider, callback?: string) => {
   await signIn(provider, { redirectTo: callback || '/bookcase' });

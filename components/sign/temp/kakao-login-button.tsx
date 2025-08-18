@@ -1,11 +1,4 @@
 import { login } from '@/actions/sign';
-<<<<<<< HEAD
-=======
-'use client';
-
->>>>>>> 1ce3363 (login-button):components/sign/kakao-login-button.tsx
-=======
->>>>>>> c0867b2 (login)
 import { Button } from '@/components/ui/button';
 
 export function KakaoLoginButton() {
@@ -16,19 +9,7 @@ export function KakaoLoginButton() {
 
   return (
     <Button
-<<<<<<< HEAD
-<<<<<<< HEAD:components/sign/temp/kakao-login-button.tsx
-<<<<<<< HEAD
       onClick={loginKakao}
-=======
-      formAction = {() => loginKakao()}
->>>>>>> 5754cf0 (login-button)
-=======
-      onClick={() => signIn('kakao')}
->>>>>>> 1ce3363 (login-button):components/sign/kakao-login-button.tsx
-=======
-      formAction = {() => loginKakao()}
->>>>>>> c0867b2 (login)
       variant='outline'
       className='w-full gap-2 bg-[#FEE500] hover:bg-[#ecd800] text-black dark:text-white h-12'
     >
