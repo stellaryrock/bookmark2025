@@ -26,12 +26,17 @@ const CircleFilled = ({
   ...props
 }: SpinnerVariantProps) => (
 <<<<<<< HEAD
+<<<<<<< HEAD
   <div className='relative' style={{ width: size, height: size }}>
     <div className='absolute inset-0 rotate-180'>
 =======
   <div className="relative" style={{ width: size, height: size }}>
     <div className="absolute inset-0 rotate-180">
 >>>>>>> 4c02530 (regist validation)
+=======
+  <div className='relative' style={{ width: size, height: size }}>
+    <div className='absolute inset-0 rotate-180'>
+>>>>>>> 5341838 (prettier format)
       <LoaderCircleIcon
         className={cn('animate-spin', className, 'text-foreground opacity-20')}
         size={size}
@@ -50,6 +55,7 @@ const Ellipsis = ({ size = 24, ...props }: SpinnerVariantProps) => {
   return (
     <svg
       height={size}
+<<<<<<< HEAD
 <<<<<<< HEAD
       viewBox='0 0 24 24'
       width={size}
@@ -89,34 +95,38 @@ const Ellipsis = ({ size = 24, ...props }: SpinnerVariantProps) => {
           values='12;6;12'
 =======
       viewBox="0 0 24 24"
+=======
+      viewBox='0 0 24 24'
+>>>>>>> 5341838 (prettier format)
       width={size}
-      xmlns="http://www.w3.org/2000/svg"
+      xmlns='http://www.w3.org/2000/svg'
       {...props}
     >
       <title>Loading...</title>
-      <circle cx="4" cy="12" fill="currentColor" r="2">
+      <circle cx='4' cy='12' fill='currentColor' r='2'>
         <animate
-          attributeName="cy"
-          begin="0;ellipsis3.end+0.25s"
-          calcMode="spline"
-          dur="0.6s"
-          id="ellipsis1"
-          keySplines=".33,.66,.66,1;.33,0,.66,.33"
-          values="12;6;12"
+          attributeName='cy'
+          begin='0;ellipsis3.end+0.25s'
+          calcMode='spline'
+          dur='0.6s'
+          id='ellipsis1'
+          keySplines='.33,.66,.66,1;.33,0,.66,.33'
+          values='12;6;12'
         />
       </circle>
-      <circle cx="12" cy="12" fill="currentColor" r="2">
+      <circle cx='12' cy='12' fill='currentColor' r='2'>
         <animate
-          attributeName="cy"
-          begin="ellipsis1.begin+0.1s"
-          calcMode="spline"
-          dur="0.6s"
-          keySplines=".33,.66,.66,1;.33,0,.66,.33"
-          values="12;6;12"
+          attributeName='cy'
+          begin='ellipsis1.begin+0.1s'
+          calcMode='spline'
+          dur='0.6s'
+          keySplines='.33,.66,.66,1;.33,0,.66,.33'
+          values='12;6;12'
         />
       </circle>
-      <circle cx="20" cy="12" fill="currentColor" r="2">
+      <circle cx='20' cy='12' fill='currentColor' r='2'>
         <animate
+<<<<<<< HEAD
           attributeName="cy"
           begin="ellipsis1.begin+0.2s"
           calcMode="spline"
@@ -125,6 +135,15 @@ const Ellipsis = ({ size = 24, ...props }: SpinnerVariantProps) => {
           keySplines=".33,.66,.66,1;.33,0,.66,.33"
           values="12;6;12"
 >>>>>>> 4c02530 (regist validation)
+=======
+          attributeName='cy'
+          begin='ellipsis1.begin+0.2s'
+          calcMode='spline'
+          dur='0.6s'
+          id='ellipsis3'
+          keySplines='.33,.66,.66,1;.33,0,.66,.33'
+          values='12;6;12'
+>>>>>>> 5341838 (prettier format)
         />
       </circle>
     </svg>
@@ -134,6 +153,7 @@ const Ellipsis = ({ size = 24, ...props }: SpinnerVariantProps) => {
 const Ring = ({ size = 24, ...props }: SpinnerVariantProps) => (
   <svg
     height={size}
+<<<<<<< HEAD
 <<<<<<< HEAD
     stroke='currentColor'
     viewBox='0 0 44 44'
@@ -188,46 +208,51 @@ const Ring = ({ size = 24, ...props }: SpinnerVariantProps) => (
 =======
     stroke="currentColor"
     viewBox="0 0 44 44"
+=======
+    stroke='currentColor'
+    viewBox='0 0 44 44'
+>>>>>>> 5341838 (prettier format)
     width={size}
-    xmlns="http://www.w3.org/2000/svg"
+    xmlns='http://www.w3.org/2000/svg'
     {...props}
   >
     <title>Loading...</title>
-    <g fill="none" fillRule="evenodd" strokeWidth="2">
-      <circle cx="22" cy="22" r="1">
+    <g fill='none' fillRule='evenodd' strokeWidth='2'>
+      <circle cx='22' cy='22' r='1'>
         <animate
-          attributeName="r"
-          begin="0s"
-          calcMode="spline"
-          dur="1.8s"
-          keySplines="0.165, 0.84, 0.44, 1"
-          keyTimes="0; 1"
-          repeatCount="indefinite"
-          values="1; 20"
+          attributeName='r'
+          begin='0s'
+          calcMode='spline'
+          dur='1.8s'
+          keySplines='0.165, 0.84, 0.44, 1'
+          keyTimes='0; 1'
+          repeatCount='indefinite'
+          values='1; 20'
         />
         <animate
-          attributeName="stroke-opacity"
-          begin="0s"
-          calcMode="spline"
-          dur="1.8s"
-          keySplines="0.3, 0.61, 0.355, 1"
-          keyTimes="0; 1"
-          repeatCount="indefinite"
-          values="1; 0"
+          attributeName='stroke-opacity'
+          begin='0s'
+          calcMode='spline'
+          dur='1.8s'
+          keySplines='0.3, 0.61, 0.355, 1'
+          keyTimes='0; 1'
+          repeatCount='indefinite'
+          values='1; 0'
         />
       </circle>
-      <circle cx="22" cy="22" r="1">
+      <circle cx='22' cy='22' r='1'>
         <animate
-          attributeName="r"
-          begin="-0.9s"
-          calcMode="spline"
-          dur="1.8s"
-          keySplines="0.165, 0.84, 0.44, 1"
-          keyTimes="0; 1"
-          repeatCount="indefinite"
-          values="1; 20"
+          attributeName='r'
+          begin='-0.9s'
+          calcMode='spline'
+          dur='1.8s'
+          keySplines='0.165, 0.84, 0.44, 1'
+          keyTimes='0; 1'
+          repeatCount='indefinite'
+          values='1; 20'
         />
         <animate
+<<<<<<< HEAD
           attributeName="stroke-opacity"
           begin="-0.9s"
           calcMode="spline"
@@ -237,6 +262,16 @@ const Ring = ({ size = 24, ...props }: SpinnerVariantProps) => (
           repeatCount="indefinite"
           values="1; 0"
 >>>>>>> 4c02530 (regist validation)
+=======
+          attributeName='stroke-opacity'
+          begin='-0.9s'
+          calcMode='spline'
+          dur='1.8s'
+          keySplines='0.3, 0.61, 0.355, 1'
+          keyTimes='0; 1'
+          repeatCount='indefinite'
+          values='1; 0'
+>>>>>>> 5341838 (prettier format)
         />
       </circle>
     </g>
@@ -247,6 +282,7 @@ const Bars = ({ size = 24, ...props }: SpinnerVariantProps) => (
   <svg
     height={size}
 <<<<<<< HEAD
+<<<<<<< HEAD
     viewBox='0 0 24 24'
     width={size}
     xmlns='http://www.w3.org/2000/svg'
@@ -255,6 +291,11 @@ const Bars = ({ size = 24, ...props }: SpinnerVariantProps) => (
     width={size}
     xmlns="http://www.w3.org/2000/svg"
 >>>>>>> 4c02530 (regist validation)
+=======
+    viewBox='0 0 24 24'
+    width={size}
+    xmlns='http://www.w3.org/2000/svg'
+>>>>>>> 5341838 (prettier format)
     {...props}
   >
     <title>Loading...</title>
@@ -283,12 +324,16 @@ const Bars = ({ size = 24, ...props }: SpinnerVariantProps) => (
     `}</style>
     <rect
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5341838 (prettier format)
       className='spinner-bar'
       fill='currentColor'
       height='22'
       width='6'
       x='1'
       y='1'
+<<<<<<< HEAD
     />
     <rect
       className='spinner-bar spinner-bars-2'
@@ -312,16 +357,19 @@ const Bars = ({ size = 24, ...props }: SpinnerVariantProps) => (
       width="6"
       x="1"
       y="1"
+=======
+>>>>>>> 5341838 (prettier format)
     />
     <rect
-      className="spinner-bar spinner-bars-2"
-      fill="currentColor"
-      height="22"
-      width="6"
-      x="9"
-      y="1"
+      className='spinner-bar spinner-bars-2'
+      fill='currentColor'
+      height='22'
+      width='6'
+      x='9'
+      y='1'
     />
     <rect
+<<<<<<< HEAD
       className="spinner-bar spinner-bars-3"
       fill="currentColor"
       height="22"
@@ -329,6 +377,14 @@ const Bars = ({ size = 24, ...props }: SpinnerVariantProps) => (
       x="17"
       y="1"
 >>>>>>> 4c02530 (regist validation)
+=======
+      className='spinner-bar spinner-bars-3'
+      fill='currentColor'
+      height='22'
+      width='6'
+      x='17'
+      y='1'
+>>>>>>> 5341838 (prettier format)
     />
   </svg>
 );
@@ -336,6 +392,7 @@ const Bars = ({ size = 24, ...props }: SpinnerVariantProps) => (
 const Infinite = ({ size = 24, ...props }: SpinnerVariantProps) => (
   <svg
     height={size}
+<<<<<<< HEAD
 <<<<<<< HEAD
     preserveAspectRatio='xMidYMid'
     viewBox='0 0 100 100'
@@ -347,17 +404,27 @@ const Infinite = ({ size = 24, ...props }: SpinnerVariantProps) => (
     width={size}
     xmlns="http://www.w3.org/2000/svg"
 >>>>>>> 4c02530 (regist validation)
+=======
+    preserveAspectRatio='xMidYMid'
+    viewBox='0 0 100 100'
+    width={size}
+    xmlns='http://www.w3.org/2000/svg'
+>>>>>>> 5341838 (prettier format)
     {...props}
   >
     <title>Loading...</title>
     <path
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5341838 (prettier format)
       d='M24.3 30C11.4 30 5 43.3 5 50s6.4 20 19.3 20c19.3 0 32.1-40 51.4-40 C88.6 30 95 43.3 95 50s-6.4 20-19.3 20C56.4 70 43.6 30 24.3 30z'
       fill='none'
       stroke='currentColor'
       strokeDasharray='205.271142578125 51.317785644531256'
       strokeLinecap='round'
       strokeWidth='10'
+<<<<<<< HEAD
 =======
       d="M24.3 30C11.4 30 5 43.3 5 50s6.4 20 19.3 20c19.3 0 32.1-40 51.4-40 C88.6 30 95 43.3 95 50s-6.4 20-19.3 20C56.4 70 43.6 30 24.3 30z"
       fill="none"
@@ -366,6 +433,8 @@ const Infinite = ({ size = 24, ...props }: SpinnerVariantProps) => (
       strokeLinecap="round"
       strokeWidth="10"
 >>>>>>> 4c02530 (regist validation)
+=======
+>>>>>>> 5341838 (prettier format)
       style={{
         transform: 'scale(0.8)',
         transformOrigin: '50px 50px',
@@ -373,11 +442,15 @@ const Infinite = ({ size = 24, ...props }: SpinnerVariantProps) => (
     >
       <animate
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 5341838 (prettier format)
         attributeName='stroke-dashoffset'
         dur='2s'
         keyTimes='0;1'
         repeatCount='indefinite'
         values='0;256.58892822265625'
+<<<<<<< HEAD
 =======
         attributeName="stroke-dashoffset"
         dur="2s"
@@ -385,6 +458,8 @@ const Infinite = ({ size = 24, ...props }: SpinnerVariantProps) => (
         repeatCount="indefinite"
         values="0;256.58892822265625"
 >>>>>>> 4c02530 (regist validation)
+=======
+>>>>>>> 5341838 (prettier format)
       />
     </path>
   </svg>
