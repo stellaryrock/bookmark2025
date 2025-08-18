@@ -11,9 +11,7 @@ const passwordSchema = z
 
 const emailSchema = z.email({ error: '잘못된 이메일 형식입니다.' });
 
-const nicknameSchema = z
-  .string()
-  .min(4, { error: '4자 이상 입력해주세요.' });
+const nicknameSchema = z.string().min(4, { error: '4자 이상 입력해주세요.' });
 
 const fileSchema = z
   .custom<File>((val) => val instanceof File, {
@@ -37,7 +35,9 @@ export const registSchema = z
     ({ password, passwordConfirm }) => password === passwordConfirm,
     '비밀번호가 일치하지 않습니다.'
   );
-  
-  type ValidationError = { errors: string[] } | undefined;
-  export type Regist = z.infer<typeof registSchema>
-  export type RegistError = Partial<Record<keyof Regist, ValidationError>> | undefined;
+
+type ValidationError = { errors: string[] } | undefined;
+export type Regist = z.infer<typeof registSchema>;
+export type RegistError =
+  | Partial<Record<keyof Regist, ValidationError>>
+  | undefined;
