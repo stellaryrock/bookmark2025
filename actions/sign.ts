@@ -23,6 +23,7 @@ export const regist = async (formData: FormData) => {
   if (result.success) {
     const authKey = uuidv4();
     await sendRegistCheck(process.env.google_user!, authKey);
+
     console.log('Mail has sent.');
   } else {
     return {
