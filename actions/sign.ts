@@ -7,6 +7,25 @@ import { hash } from 'bcryptjs';
 import { AuthError } from 'next-auth';
 import { v4 as uuidv4 } from 'uuid';
 import z from 'zod';
+<<<<<<< HEAD
+=======
+import { signIn, signOut } from '@/lib/auth';
+<<<<<<< HEAD
+import prisma from '@/lib/db';
+import { validate, ValidError, ValidSuccess } from '@/lib/validator';
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+import prisma from '@/lib/db';
+=======
+import { registSchema } from '@/lib/schema/regist';
+=======
+import { registValidator } from '@/lib/validator/sign';
+>>>>>>> a09034f (regist validation)
+import { sendRegistCheck } from './mailer';
+>>>>>>> f0f00db (regist form)
+>>>>>>> cce9c54 (regist validation)
+>>>>>>> 127be09 (regist validation)
 
 // export const runtime = 'nodejs';
 
@@ -59,8 +78,25 @@ export const regist = async (formData: FormData) => {
   });
   console.log('Mail has sent.');
 
+<<<<<<< HEAD
   return { success: true, data } as ValidSuccess<typeof data>;
   // return validator; // formdata 그대로 반환 용
+=======
+  const result = registValidator.safeParse(entries);
+
+  if (result.success) {
+    const authKey = uuidv4();
+    await sendRegistCheck(process.env.google_user!, authKey);
+
+    console.log('Mail has sent.');
+  } else {
+    return {
+      success: false,
+      error: z.treeifyError(result.error),
+    };
+  }
+>>>>>>> f0f00db (regist form)
+>>>>>>> cce9c54 (regist validation)
 };
 
 // Credential: from login page
