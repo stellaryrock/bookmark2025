@@ -37,7 +37,7 @@ export const registValidator = z
     '비밀번호가 일치하지 않습니다.'
   );
 
-type ValidationError = { errors: string[] } | undefined;
+export type ValidationError = { errors: string[] } | undefined;
 export type Regist = z.infer<typeof registValidator>;
 export type RegistError =
   | Partial<Record<keyof Regist, ValidationError>>

@@ -13,7 +13,7 @@ type Props = {
   placeholder?: string;
 //  validationErrors?: ValidationError;
   className?: string;
-};
+} & React.HTMLAttributes<HTMLInputElement>;
 
 export default function LabelInput({
   label,
