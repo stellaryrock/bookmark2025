@@ -2,21 +2,20 @@
 
 import { signIn } from 'next-auth/react';
 import { Button } from '../ui/button';
-import data from './ctrl+v.json';
+import resource from './sns-login-props.json';
 
 type Props = {
   provider: 'google' | 'github' | 'kakao' | 'naver';
 };
 
 export default function LoginButton({ provider }: Props) {
-  const properties = data[provider];
-  const { button, svg, paths } = properties;
+  const props = resource.data[provider];
 
   return (
     <>
-      <Button onClick={() => signIn(provider)} variant='outline' {...button}>
-        <svg xmlns='http://www.w3.org/2000/svg' {...svg}>
-          {paths.map(({ d, fill }, idx) => (
+      <Button onClick={() => signIn(provider)} variant='outline' {...props["button"]}>
+        <svg xmlns='http://www.w3.org/2000/svg' {...props["svg"]}>
+          {props["paths"].map(({ d, fill }, idx) => (
             <path key={idx} d={d} fill={fill} />
           ))}
         </svg>
