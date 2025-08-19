@@ -1,7 +1,15 @@
 'use client';
+<<<<<<< HEAD
 import { useState } from 'react';
 import Withdrawl from './withdrawl';
 import { Edit } from 'lucide-react';
+=======
+
+import { logout } from '@/actions/sign';
+import { useState } from 'react';
+import Edit from './edit';
+import Withdrawl from './withdrawl';
+>>>>>>> b8d05ce (my)
 
 export default function My() {
 
