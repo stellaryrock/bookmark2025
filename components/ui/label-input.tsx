@@ -1,4 +1,4 @@
-import { ValidationError } from '@/app/login/sign-form';
+import { ValidationError } from '@/lib/validator/sign';
 import { RefObject, useId } from 'react';
 import { cn } from '@/lib/utils';
 import { Input } from './input';
@@ -12,7 +12,7 @@ type Props = {
   placeholder?: string;
   validationErrors?: ValidationError;
   className?: string;
-};
+} & React.HTMLAttributes<HTMLInputElement>;
 
 export default function LabelInput({
   label,
