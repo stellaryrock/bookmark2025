@@ -17,11 +17,11 @@ export const MarkImages = [
   },
 ];
 
-export const BookImages = [
-  { src: 'https://cdn.simpleicons.org/javascript', alt: 'JavaScript' },
-  { src: 'https://cdn.simpleicons.org/typescript', alt: 'TypeScript' },
-  { src: 'https://cdn.simpleicons.org/react', alt: 'React' },
-  { src: 'https://cdn.simpleicons.org/nextdotjs', alt: 'Next.js' },
+export const BookImages: { src: string; alt: string }[] = [
+  { src: "https://cdn.simpleicons.org/javascript", alt: "JavaScript" },
+  { src: "https://cdn.simpleicons.org/typescript", alt: "TypeScript" },
+  { src: "https://cdn.simpleicons.org/react", alt: "React" },
+  { src: "https://cdn.simpleicons.org/nextdotjs", alt: "Next.js" },
 ];
 
 export const PeopleImages = [
