@@ -26,8 +26,4 @@ export default function LoginButton({ provider }: Props) {
       </Button>
     </>
   );
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 1ce3363 (login-button)
