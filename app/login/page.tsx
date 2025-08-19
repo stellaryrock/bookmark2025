@@ -21,6 +21,7 @@ export default function Login() {
             <NaverLoginButton />
             <KakaoLoginButton />
           </div>
+
           <div className='text-center relative text-gray-600 before:content-[""] before:absolute before:left-0 before:top-[50%] before:bg-gray-200 before:h-[1px] before:w-[45%] after:content-[""] after:absolute after:right-0 after:top-[50%] after:bg-gray-200 after:h-[1px] after:w-[45%]'>
             or
           </div>

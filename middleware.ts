@@ -4,6 +4,7 @@ import { auth } from './lib/auth';
 export async function middleware(req: NextRequest) {
   const session = await auth();
   const didLogin = !!session?.user;
+  console.log('🚀 ~ didLogin:', didLogin);
   if (!didLogin) {
     const callbackUrl = encodeURIComponent(req.nextUrl.pathname);
     return NextResponse.redirect(

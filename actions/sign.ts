@@ -8,8 +8,10 @@ import { sendRegistCheck } from './mailer';
 type Provider = 'google' | 'github' | 'naver' | 'kakao';
 
 export const login = async (provider: Provider, callback?: string) => {
-  signIn(provider, { redirectTo: callback || '/' });
+  await signIn(provider, { redirectTo: callback || '/' });
 };
+
+export const loginNaver = async () => login('naver');
 
 export const regist = async (formData: FormData) => {
   const entries = Object.entries(formData);

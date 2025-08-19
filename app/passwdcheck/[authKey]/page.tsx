@@ -26,10 +26,6 @@ export default function PasswdCheck({ params }: Props) {
       .safeParse(entries);
 
     if (!validator.success) {
-      //   if (formData.get('passwd') !== formData.get('passwd2')) {
-      //     return alert('패스워드가 일치하지 않습니다!');
-      //   }
-      // } else {
       const msgs = JSON.parse(validator.error.message);
       return alert(msgs[0].message);
     }
@@ -48,12 +44,14 @@ export default function PasswdCheck({ params }: Props) {
             label='New Password'
             name='passwd'
             type='password'
+            defaultValue={'123456'}
             placeholder='new password...'
           />
           <LabelInput
             label='Confirm Password'
             name='passwd2'
             type='password'
+            defaultValue={'123456'}
             placeholder='confirm password...'
           />
 
