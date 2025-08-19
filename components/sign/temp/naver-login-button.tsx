@@ -1,6 +1,5 @@
 import { loginNaver } from '@/actions/sign';
 import { Button } from '@/components/ui/button';
-import { signIn } from 'next-auth/react';
 
 export function NaverLoginButton() {
   return (
