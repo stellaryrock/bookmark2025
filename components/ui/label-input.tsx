@@ -12,7 +12,7 @@ type Props = {
   defaultValue?: string;
   placeholder?: string;
   className?: string;
-};
+} & React.HTMLAttributes<HTMLInputElement>;
 
 export default function LabelInput({
   label,
