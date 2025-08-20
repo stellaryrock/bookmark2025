@@ -1,4 +1,9 @@
+<<<<<<< HEAD:components/sign/temp/kakao-login-button.tsx
 import { login } from '@/actions/sign';
+=======
+'use client';
+
+>>>>>>> 1ce3363305bc246ab305d91d0a94910c1aa6d120:components/sign/kakao-login-button.tsx
 import { Button } from '@/components/ui/button';
 import { signIn } from 'next-auth/react';
 
@@ -10,7 +15,11 @@ export function KakaoLoginButton() {
 
   return (
     <Button
+<<<<<<< HEAD:components/sign/temp/kakao-login-button.tsx
       formAction = {() => loginKakao()}
+=======
+      onClick={() => signIn('kakao')}
+>>>>>>> 1ce3363305bc246ab305d91d0a94910c1aa6d120:components/sign/kakao-login-button.tsx
       variant='outline'
       className='w-full gap-2 bg-[#FEE500] hover:bg-[#ecd800] text-black dark:text-white h-12'
     >
