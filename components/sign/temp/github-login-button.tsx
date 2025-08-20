@@ -2,7 +2,6 @@
 
 import { login } from '@/actions/sign';
 import { Button } from '@/components/ui/button';
-import { signIn } from 'next-auth/react';
 
 export function GithubLoginButton() {
   const loginGithub = async () => {
@@ -11,11 +10,7 @@ export function GithubLoginButton() {
 
   return (
     <Button
-<<<<<<< HEAD
       onClick={loginGithub}
-=======
-      onClick={() => signIn('github')}
->>>>>>> 7cb87a8 (login-button)
       className='w-full gap-2 rounded-md bg-[#181717] text-white hover:bg-black dark:hover:bg-gray-800 h-12'
     >
       <svg

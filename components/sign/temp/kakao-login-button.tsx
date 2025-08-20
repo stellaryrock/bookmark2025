@@ -10,7 +10,11 @@ export function KakaoLoginButton() {
 
   return (
     <Button
+<<<<<<< HEAD
       onClick={loginKakao}
+=======
+      formAction = {() => loginKakao()}
+>>>>>>> 5754cf0 (login-button)
       variant='outline'
       className='w-full gap-2 bg-[#FEE500] hover:bg-[#ecd800] text-black dark:text-white h-12'
     >
