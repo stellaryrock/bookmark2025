@@ -1,18 +1,4 @@
-<<<<<<< HEAD
 import LoginButton from '@/components/sign/login-button';
-<<<<<<< HEAD
-=======
-import { GithubLoginButton } from '@/components/sign/github-login-button';
-import { GoogleLoginButton } from '@/components/sign/google-login-button';
-import { KakaoLoginButton } from '@/components/sign/kakao-login-button';
-import LoginButton from '@/components/sign/login-button';
-import { NaverLoginButton } from '@/components/sign/naver-login-button';
->>>>>>> 1ce3363 (login-button)
-=======
->>>>>>> d0a8150 (login)
-=======
-import LoginButton from '@/components/sign/login-button';
->>>>>>> b8d05ce (my)
 import { BookImages, MarkImages, PeopleImages } from './images';
 import SignForm from './sign-form';
 import SoMany from './so-many';
