@@ -6,6 +6,7 @@ type Props = {
   label: string;
   type?: string;
   name?: string;
+  defaultValue?: string;
   ref?: RefObject<HTMLInputElement | null>;
   placeholder?: string;
   className?: string;
@@ -15,6 +16,7 @@ export default function LabelInput({
   label,
   type,
   name,
+  defaultValue,
   ref,
   placeholder,
   className,
@@ -27,6 +29,7 @@ export default function LabelInput({
         name={name || uniqName}
         type={type || 'text'}
         ref={ref}
+        defaultValue={defaultValue || ''}
         placeholder={placeholder}
         className={cn('bg-gray-100 focus:bg-white font-normal', className)}
       />

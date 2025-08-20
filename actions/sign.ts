@@ -7,6 +7,8 @@ import { sendRegistCheck } from './mailer';
 
 type Provider = 'google' | 'github' | 'naver' | 'kakao';
 
+export const githubLogin = 
+export const loginNaver = async () => {login('naver')}
 export const login = async (provider: Provider, callback?: string) => {
   signIn(provider, { redirectTo: callback || '/' });
 };
