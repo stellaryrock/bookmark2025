@@ -1,8 +1,4 @@
 {
-  "description":{
-    "title": "sns-login-props.json",
-    "comment": "Google, Github, Kakao, Naver 에서 제공하는 공식 로그인 버튼의 속성 값을 복사해둠"
-  },
   "data": {
     "google": {
       "button": {
