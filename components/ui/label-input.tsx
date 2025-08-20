@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import { ValidationError } from '@/lib/validator/sign';
-=======
-import { ValidationError } from '@/app/login/sign-form';
->>>>>>> 1ce3363305bc246ab305d91d0a94910c1aa6d120
 import { RefObject, useId } from 'react';
 import { cn } from '@/lib/utils';
 import { Input } from './input';
@@ -37,10 +33,7 @@ export default function LabelInput({
           name={name || uniqName}
           type={type || 'text'}
           ref={ref}
-<<<<<<< HEAD
           defaultValue={defaultValue}
-=======
->>>>>>> 1ce3363305bc246ab305d91d0a94910c1aa6d120
           placeholder={placeholder}
           className={cn('bg-gray-100 focus:bg-white font-normal', className)}
         />

@@ -1,11 +1,7 @@
 'use client';
 
-<<<<<<< HEAD:components/sign/temp/google-login-button.tsx
 import { login } from '@/actions/sign';
-=======
->>>>>>> 1ce3363305bc246ab305d91d0a94910c1aa6d120:components/sign/google-login-button.tsx
 import { Button } from '@/components/ui/button';
-import { signIn } from 'next-auth/react';
 
 export function GoogleLoginButton() {
   const loginGoogle = async () => {
@@ -14,11 +10,7 @@ export function GoogleLoginButton() {
   
   return (
     <Button
-<<<<<<< HEAD:components/sign/temp/google-login-button.tsx
       onClick={() => login('google')}
-=======
-      onClick={() => signIn('google')}
->>>>>>> 1ce3363305bc246ab305d91d0a94910c1aa6d120:components/sign/google-login-button.tsx
       variant='outline'
       className='w-full gap-2 rounded-md border border-gray-300 bg-white text-gray-900 dark:text-white h-12'
     >

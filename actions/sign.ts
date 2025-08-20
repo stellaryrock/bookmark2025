@@ -13,7 +13,6 @@ export const login = async (provider: Provider, callback?: string) => {
   await signIn(provider, { redirectTo: callback || '/' });
 };
 
-<<<<<<< HEAD
 export const loginKakao = async () => {login('kakao')}
 export const loginGoogle = async () => {login('google')}
 export const loginGithub = async () => {login('github')}
@@ -22,11 +21,6 @@ export const loginNaver = async () => {login('naver')}
 export const regist = async (formData: FormData) => {
   const entries = Object.fromEntries(formData.entries());
 
-=======
-export const regist = async (formData: FormData) => {
-  const entries = Object.fromEntries(formData.entries());
-
->>>>>>> 1ce3363305bc246ab305d91d0a94910c1aa6d120
   const result = registValidator.safeParse(entries);
 
   if (result.success) {
