@@ -7,13 +7,16 @@ import { signIn, signOut } from '@/lib/auth';
 import { registValidator } from '@/lib/validator/sign';
 import { sendRegistCheck } from './mailer';
 
-type Provider = 'google' | 'github' | 'naver' | 'kakao';
+export type Provider = 'google' | 'github' | 'naver' | 'kakao';
 
-export const githubLogin = 
-export const loginNaver = async () => {login('naver')}
 export const login = async (provider: Provider, callback?: string) => {
-  signIn(provider, { redirectTo: callback || '/' });
+  await signIn(provider, { redirectTo: callback || '/' });
 };
+
+export const loginKakao = async () => {login('kakao')}
+export const loginGoogle = async () => {login('google')}
+export const loginGithub = async () => {login('github')}
+export const loginNaver = async () => {login('naver')}
 
 export const regist = async (formData: FormData) => {
   const entries = Object.fromEntries(formData.entries());
