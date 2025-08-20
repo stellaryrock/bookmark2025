@@ -7,7 +7,11 @@ import Google from 'next-auth/providers/google';
 import Kakao from 'next-auth/providers/kakao';
 import Naver from 'next-auth/providers/naver';
 import prisma from './db';
+<<<<<<< HEAD
 import z from 'zod';
+=======
+import {v4 as uuidv4 } from 'uuid';
+>>>>>>> bd3514f (login-button)
 
 
 export const {
@@ -63,6 +67,7 @@ export const {
   trustHost: true,
   jwt: { maxAge: 30 * 60 },
   callbacks: {
+<<<<<<< HEAD
     // SNS(login/regist), credential(login) ==> DB 읽어서 존재하면 로그인
     // 존재하지 않으면 가입(with authKey) => send email
     async signIn({ user, account }) {
@@ -112,6 +117,43 @@ export const {
       // sendRegistMail
 
       return false;
+=======
+    // DB 읽어서 존재하면 로그인
+    // 존재하지 않으면 가입(with authKey)
+    async signIn({user, account, profile}) {
+      const { name, email, image } = user;
+
+      if(!email) return false;
+      const mbr = 
+      await prisma.member.findUnique({
+        select: { id: true, nickname: true },
+        where: { email }
+      });
+
+      if(!mbr){
+        prisma.member.create({
+          select: { id: true, },
+          data: {
+            email,
+            image,
+            nickname: name || 'guest',  
+          }
+        });
+      }
+
+      const emailcheck = uuidv4();
+
+      const newMbr = prisma.member.create({
+        select: { id : true, nickname: true },
+        data :{
+          nickname: name || 'guest',
+          email,
+          image,
+        }
+      });
+      
+      return true;
+>>>>>>> bd3514f (login-button)
     },
     async jwt({ token, user }) {
       if (user) {
