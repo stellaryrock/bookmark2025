@@ -12,6 +12,8 @@ import z from 'zod';
 
 type Provider = 'google' | 'github' | 'naver' | 'kakao';
 
+export const githubLogin = 
+export const loginNaver = async () => {login('naver')}
 export const login = async (provider: Provider, callback?: string) => {
   await signIn(provider, { redirectTo: callback || '/bookcase' });
 };
@@ -122,7 +124,5 @@ export const logout = async () => {
   await signOut({ redirectTo: '/login' }); // QQQ ('/')
 };
 
-export const findMemberByEmail = async (email: string) => {
+export const findMemberByEmail = async (email: string) => 
   prisma.member.findUnique({ where: { email } });
-  await signOut();
-};
