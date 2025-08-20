@@ -53,34 +53,27 @@ export const {
       const { name, email, image } = user;
 
       if(!email) return false;
-      const mbr = 
-      await prisma.member.findUnique({
+
+      const mbr = await prisma.member.findUnique({
         select: { id: true, nickname: true },
         where: { email }
       });
 
       if(!mbr){
-        prisma.member.create({
-          select: { id: true, },
-          data: {
+        const newMbr = await prisma.member.create({
+          select: { id : true, nickname: true },
+          data :{
+            nickname: name || 'guest',
             email,
             image,
-            nickname: name || 'guest',  
           }
-        });
+        });  
+        
+        console.log('newMbr:', newMbr);
       }
 
       const emailcheck = uuidv4();
 
-      const newMbr = prisma.member.create({
-        select: { id : true, nickname: true },
-        data :{
-          nickname: name || 'guest',
-          email,
-          image,
-        }
-      });
-      
       return true;
     },
     async jwt({ token, user }) {
