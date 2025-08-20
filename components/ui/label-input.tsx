@@ -21,10 +21,10 @@ export default function LabelInput({
   label,
   type,
   name,
+  defaultValue,
   ref,
   focus,
   error,
-  defaultValue,
   placeholder,
   className,
 }: Props) {

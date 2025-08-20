@@ -6,9 +6,9 @@ import GitHub from 'next-auth/providers/github';
 import Google from 'next-auth/providers/google';
 import Kakao from 'next-auth/providers/kakao';
 import Naver from 'next-auth/providers/naver';
-import z from 'zod';
 import prisma from './db';
 import { validateObject } from './validator';
+import z from 'zod';
 
 export const {
   handlers: { GET, POST },
