@@ -16,14 +16,10 @@ export const login = async (provider: Provider, callback?: string) => {
   await signIn(provider, { redirectTo: callback || '/bookcase' });
 };
 
-<<<<<<< HEAD
-export const loginNaver = async () => login('naver');
-=======
 export const loginKakao = async () => {login('kakao')}
 export const loginGoogle = async () => {login('google')}
 export const loginGithub = async () => {login('github')}
 export const loginNaver = async () => {login('naver')}
->>>>>>> 5754cf0 (login-button)
 
 export const regist = async (formData: FormData) => {
   const zobj = z
