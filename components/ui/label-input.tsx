@@ -7,7 +7,10 @@ type Props = {
   label: string;
   type?: string;
   name?: string;
+<<<<<<< HEAD
   error?: ValidError;
+=======
+>>>>>>> bd3514f (login-button)
   defaultValue?: string;
   ref?: RefObject<HTMLInputElement | null>;
   placeholder?: string;
@@ -18,6 +21,7 @@ export default function LabelInput({
   label,
   type,
   name,
+  defaultValue,
   ref,
   error,
   defaultValue,
