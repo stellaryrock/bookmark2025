@@ -149,7 +149,7 @@ function LoginForm({ toggleLogin, email }: ToggleLoginProps) {
   const passwdRef = useRef<HTMLInputElement>(null);
   const rememberMeRef = useRef<HTMLInputElement>(null);
 
-  const [validError, loginAction, isPending] = useActionState(
+  const [validError, loginAction, _isPending] = useActionState(
     authenticate,
     undefined
   );

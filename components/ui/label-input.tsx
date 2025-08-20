@@ -7,9 +7,9 @@ type Props = {
   label: string;
   type?: string;
   name?: string;
-  ref?: RefObject<HTMLInputElement | null>;
   error?: ValidError;
   defaultValue?: string;
+  ref?: RefObject<HTMLInputElement | null>;
   placeholder?: string;
   className?: string;
 };

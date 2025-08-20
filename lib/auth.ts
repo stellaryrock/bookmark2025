@@ -6,10 +6,8 @@ import GitHub from 'next-auth/providers/github';
 import Google from 'next-auth/providers/google';
 import Kakao from 'next-auth/providers/kakao';
 import Naver from 'next-auth/providers/naver';
-import { v4 as uuidv4 } from 'uuid';
 import z from 'zod';
 import prisma from './db';
-import { validate } from './validator';
 
 export const {
   handlers: { GET, POST },
@@ -39,7 +37,7 @@ export const {
 
         const user = {
           email: credentials.email as string,
-          password: credentials.passwd,
+          password: credentials.passwd as string,
         };
 
         const validator = z
