@@ -1,9 +1,9 @@
 'use server';
 
-import { compare, hash, hashSync } from 'bcryptjs';
+import { hash } from 'bcryptjs';
 import { AuthError } from 'next-auth';
 import { v4 as uuidv4 } from 'uuid';
-import z, { success } from 'zod';
+import z from 'zod';
 import { signIn, signOut } from '@/lib/auth';
 import prisma from '@/lib/db';
 import { validate, ValidError, ValidSuccess } from '@/lib/validator';
