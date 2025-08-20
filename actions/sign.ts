@@ -8,6 +8,7 @@ import { AuthError } from 'next-auth';
 import { v4 as uuidv4 } from 'uuid';
 import z from 'zod';
 
+<<<<<<< HEAD
 // export const runtime = 'nodejs';
 
 export type Provider = 'google' | 'github' | 'naver' | 'kakao';
@@ -17,6 +18,18 @@ export const login = async (provider: Provider, callback?: string) => {
 };
 
 export const loginNaver = async () => login('naver');
+=======
+export type Provider = 'google' | 'github' | 'naver' | 'kakao';
+
+export const login = async (provider: Provider, callback?: string) => {
+  await signIn(provider, { redirectTo: callback || '/' });
+};
+
+export const loginKakao = async () => {login('kakao')}
+export const loginGoogle = async () => {login('google')}
+export const loginGithub = async () => {login('github')}
+export const loginNaver = async () => {login('naver')}
+>>>>>>> 5754cf0 (login-button)
 
 export const regist = async (formData: FormData) => {
   const zobj = z
