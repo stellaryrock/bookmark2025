@@ -29,6 +29,7 @@ export const login = async (provider: Provider, callback?: string) => {
   await signIn(provider, { redirectTo: callback || '/bookcase' });
 };
 
+<<<<<<< HEAD
 export const loginNaver = async () => login('naver');
 
 export const regist = async (formData: FormData) => {
@@ -47,6 +48,28 @@ export const regist = async (formData: FormData) => {
   if (!validator.success) {
     return validator;
   }
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+export const loginNaver = async () => login('naver');
+=======
+=======
+>>>>>>> c0867b2 (login)
+export const loginKakao = async () => {login('kakao')}
+export const loginGoogle = async () => {login('google')}
+export const loginGithub = async () => {login('github')}
+export const loginNaver = async () => {login('naver')}
+>>>>>>> 5754cf0 (login-button)
+
+export const regist = async (formData: FormData) => {
+<<<<<<< HEAD
+  const entries = Object.entries(formData);
+  console.log('🚀 ~ entries:', entries);
+  const email = formData.get('email');
+
+<<<<<<< HEAD
+  const result = registValidator.safeParse(entries);
+>>>>>>> a842f0c (login)
 
   const encPasswd = await hash(validator.data.passwd, 10);
   const emailcheck = uuidv4();
@@ -73,9 +96,14 @@ export const regist = async (formData: FormData) => {
   console.log('Mail has sent.');
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   return { success: true, data } as ValidSuccess<typeof data>;
   // return validator; // formdata 그대로 반환 용
 =======
+=======
+=======
+>>>>>>> c0867b2 (login)
+>>>>>>> a842f0c (login)
   const result = registValidator.safeParse(entries);
 
   if (result.success) {
