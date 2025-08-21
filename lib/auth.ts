@@ -42,25 +42,31 @@ export const {
   },
   pages: {
     signIn: '/login',
+    error: '/login/error',
   },
   trustHost: true,
   jwt: { maxAge: 30 * 60 },
   callbacks: {
-    // DB 읽어서 존재하면 로그인
+    // SNS(login/regist), credential(login) ==> DB 읽어서 존재하면 로그인
     // 존재하지 않으면 가입(with authKey) => send email
-    async signIn({ user, account, profile }) {
+    async signIn({ user, account }) {
       const { name, email, image } = user;
       if (!email) return false;
 
+      const isCredential = account?.provider === 'credential';
+
       const mbr = await prisma.member.findUnique({
-        select: { id: true, nickname: true },
         where: { email },
       });
+
       if (mbr) {
+        if (mbr.emailcheck)
+          return '/login/error?error=CheckEmail&email=' + email;
+        if (mbr.outdt) return '/login/error?error=WithdrawMember';
         return true;
       }
 
-      const emailcheck = uuidv4();
+      const emailcheck = isCredential ? uuidv4() : null;
       console.log('🚀 ~ emailcheck:', emailcheck);
 
       const newMbr = await prisma.member.create({
