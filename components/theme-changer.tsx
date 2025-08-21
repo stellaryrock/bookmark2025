@@ -3,7 +3,6 @@
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 import { MonitorIcon, MoonStarIcon, SunIcon } from 'lucide-react';
-import { Button } from './ui/button';
 
 const THEMES = ['light', 'system', 'dark'] as const;
 const THEME_ICON = {

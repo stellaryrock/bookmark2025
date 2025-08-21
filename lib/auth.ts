@@ -1,3 +1,4 @@
+import { findMemberByEmail } from '@/actions/sign';
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import GitHub from 'next-auth/providers/github';
@@ -55,13 +56,11 @@ export const {
 
       const isCredential = account?.provider === 'credential';
 
-      const mbr = await prisma.member.findUnique({
-        where: { email },
-      });
+      const mbr = await findMemberByEmail(email);
 
       if (mbr) {
         if (mbr.emailcheck)
-          return '/login/error?error=CheckEmail&email=' + email;
+          return `/login/error?error=CheckEmail&email=${email}&emailcheck=${mbr.emailcheck}`;
         if (mbr.outdt) return '/login/error?error=WithdrawMember';
         return true;
       }

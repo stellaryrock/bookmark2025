@@ -1,20 +1,38 @@
+import { findMemberByEmail } from '@/actions/sign';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import { use } from 'react';
+import prisma from '@/lib/db';
 
 type Props = {
   params: Promise<{ authKey: string }>;
+  searchParams: Promise<{ email: string }>;
 };
-export default function RegistCheck({ params }: Props) {
-  const authKey = use(params);
+export default async function RegistCheck({ params, searchParams }: Props) {
+  const { authKey } = await params;
+  const { email } = await searchParams;
 
-  // Todo: check the emailchek from db
-  if (authKey) {
-    redirect('/login');
+  const mbr = await findMemberByEmail(email);
+  if (authKey !== mbr?.emailcheck) {
+    redirect('/login/error?error=InvalidToken');
   }
 
+  // 일치한다면 emailcheck 지우고, 로그인으로 보내기!
+  await prisma.member.update({
+    data: { emailcheck: null },
+    where: { email },
+  });
+
   return (
-    <>
-      <h1 className='text-2xl'>인증 키가 올바르지 않습니다!</h1>
-    </>
+    <div className='grid place-items-center h-full'>
+      <div className='border p-5 text-center rounded-md'>
+        <h1 className='text-xl mb-5'>가입 승인 완료</h1>
+        <div className='flex justify-center items-center gap-2'>
+          <Button variant={'outline'} asChild={true}>
+            <Link href='/login'>Goto Login</Link>
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 }

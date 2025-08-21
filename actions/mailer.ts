@@ -25,7 +25,7 @@ export const sendRegistCheck = async (to: string, authKey: string) => {
     <div style="display: grid; place-items: center; height: 200px;">
       <h1>북마크 가입을 환영합니다</h1>
       <h3 style="margin: 10px 0;">가입을 완료하시려면 아래 링크를 클릭해 주세요</h3>
-      <a href="${process.env.NEXT_PUBLIC_URL}/registcheck/${authKey}">가입 인증</a>
+      <a href="${process.env.NEXT_PUBLIC_URL}/registcheck/${authKey}?email=${to}">가입 인증</a>
     </div>
   `;
 

@@ -3,7 +3,9 @@
 import { AuthError } from 'next-auth';
 import { v4 as uuidv4 } from 'uuid';
 import { signIn, signOut } from '@/lib/auth';
-import { sendRegistCheck } from './mailer';
+import prisma from '@/lib/db';
+
+// export const runtime = 'nodejs';
 
 type Provider = 'google' | 'github' | 'naver' | 'kakao';
 
@@ -16,11 +18,25 @@ export const loginNaver = async () => login('naver');
 export const regist = async (formData: FormData) => {
   const entries = Object.entries(formData);
   console.log('🚀 ~ entries:', entries);
+  const email = formData.get('email');
 
-  // Todo: zod validate check
-  const authKey = uuidv4();
-  await sendRegistCheck('indiflex.corp@gmail.com', authKey);
-  console.log('Main has sent.');
+  // Todo: zod validation checking!
+
+  const emailcheck = uuidv4();
+  // await sendRegistCheck('indiflex.corp@gmail.com', authKey); // stream error
+  const { NEXT_PUBLIC_URL, INTERNAL_SECRET } = process.env;
+  await fetch(`${NEXT_PUBLIC_URL}/api/sendmail`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${INTERNAL_SECRET}`,
+    },
+    body: JSON.stringify({
+      email,
+      emailcheck,
+    }),
+  });
+  console.log('Mail has sent.');
 };
 
 // Credential: from login page
@@ -52,3 +68,6 @@ export async function authenticate(
 export const logout = async () => {
   await signOut({ redirectTo: '/login' }); // QQQ ('/')
 };
+
+export const findMemberByEmail = async (email: string) =>
+  prisma.member.findUnique({ where: { email } });
