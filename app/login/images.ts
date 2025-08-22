@@ -22,15 +22,10 @@ export const BookImages: { src: string; alt: string }[] = [
   { src: "https://cdn.simpleicons.org/typescript", alt: "TypeScript" },
   { src: "https://cdn.simpleicons.org/react", alt: "React" },
   { src: "https://cdn.simpleicons.org/nextdotjs", alt: "Next.js" },
-<<<<<<< HEAD
-=======
-  { src: "https://cdn.simpleicons.org/vuedotjs", alt: "Vue.js" }
->>>>>>> b8d05ce (my)
 ];
 
 export const PeopleImages = [
   {
-<<<<<<< HEAD
     src: 'https://randomuser.me/api/portraits/women/68.jpg',
     alt: 'woman profile 68',
   },
@@ -45,21 +40,5 @@ export const PeopleImages = [
   {
     src: 'https://randomuser.me/api/portraits/men/75.jpg',
     alt: 'man profile 75',
-=======
-    src: "https://randomuser.me/api/portraits/women/68.jpg",
-    alt: "woman profile 68",
-  },
-  {
-    src: "https://randomuser.me/api/portraits/men/32.jpg",
-    alt: "man profile 32",
-  },
-  {
-    src: "https://randomuser.me/api/portraits/women/44.jpg",
-    alt: "woman profile 44",
-  },
-  {
-    src: "https://randomuser.me/api/portraits/men/75.jpg",
-    alt: "man profile 75",
->>>>>>> b8d05ce (my)
-  },
+  }
 ];
