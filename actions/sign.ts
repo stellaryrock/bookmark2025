@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import z from 'zod';
 import { signIn, signOut } from '@/lib/auth';
 import prisma from '@/lib/db';
-import { validate, ValidError, ValidSuccess } from '@/lib/validator';
+import { validate, ValidSuccess } from '@/lib/validator';
 
 // export const runtime = 'nodejs';
 
@@ -109,13 +109,8 @@ export async function authenticate(
 }
 
 export const logout = async () => {
-<<<<<<< HEAD
   await signOut({ redirectTo: '/login' }); // QQQ ('/')
 };
 
 export const findMemberByEmail = async (email: string) =>
   prisma.member.findUnique({ where: { email } });
-=======
-  await signOut();
-};
->>>>>>> 52ac2bd (fetch upstream)
