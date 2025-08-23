@@ -1,11 +1,11 @@
 'use client';
 
-// import { logout } from '@/actions/sign';
+import { logout } from '@/actions/sign';
 import { Button } from '@/components/ui/button';
 
 export default function My() {
   const signOut = async () => {
-    // await logout();
+    await logout();
   };
 
   return (

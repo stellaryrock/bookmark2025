@@ -2,6 +2,7 @@
 
 import { AuthError } from 'next-auth';
 import { v4 as uuidv4 } from 'uuid';
+import z from 'zod';
 import { signIn, signOut } from '@/lib/auth';
 import prisma from '@/lib/db';
 
@@ -10,19 +11,44 @@ import prisma from '@/lib/db';
 type Provider = 'google' | 'github' | 'naver' | 'kakao';
 
 export const login = async (provider: Provider, callback?: string) => {
-  await signIn(provider, { redirectTo: callback || '/' });
+  await signIn(provider, { redirectTo: callback || '/bookcase' });
 };
 
 export const loginNaver = async () => login('naver');
 
+// { passwd: { errors: [ 'Too small: expected string to have >=6 characters' ] },}
+export type ValidError = Record<string, { errors: string[] }>;
+
 export const regist = async (formData: FormData) => {
-  const entries = Object.entries(formData);
+  const entries = Object.fromEntries(formData.entries());
   console.log('🚀 ~ entries:', entries);
-  const email = formData.get('email');
 
   // Todo: zod validation checking!
+  const validator = z
+    .object({
+      email: z.email(),
+      passwd: z.string().min(6),
+      passwd2: z.string().min(6),
+      nickname: z.string().min(3),
+    })
+    .refine(({ passwd, passwd2 }) => passwd === passwd2, {
+      path: ['passwd2'],
+      error: 'Password check is not matching!',
+    })
+    .safeParse(entries);
 
+  if (!validator.success) {
+    return {
+      error: z.treeifyError(validator.error).properties,
+    };
+  }
+
+  const email = formData.get('email');
   const emailcheck = uuidv4();
+
+  const data = validator.data;
+  await prisma.member.create({ data });
+
   // await sendRegistCheck('indiflex.corp@gmail.com', authKey); // stream error
   const { NEXT_PUBLIC_URL, INTERNAL_SECRET } = process.env;
   await fetch(`${NEXT_PUBLIC_URL}/api/sendmail`, {
@@ -37,6 +63,8 @@ export const regist = async (formData: FormData) => {
     }),
   });
   console.log('Mail has sent.');
+
+  return { success: true, data };
 };
 
 // Credential: from login page
