@@ -1,22 +1,34 @@
 'use client';
 
-import { regist, ValidError } from '@/actions/sign';
+import { regist } from '@/actions/sign';
 import { Button } from '@/components/ui/button';
 import LabelInput from '@/components/ui/label-input';
-import z from 'zod';
-import { useEffect, useReducer, useRef, useState } from 'react';
+import { redirect, useSearchParams } from 'next/navigation';
+import {
+  FormEvent,
+  useActionState,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+  useTransition,
+} from 'react';
+import { ValidError } from '@/lib/validator';
 
 type ToggleLoginProps = {
   toggleLogin: () => void;
+  email?: string | null;
 };
 
 export default function SignForm() {
-  const [isLogin, toggleLogin] = useReducer((pre) => !pre, false); // QQQ
+  const [isLogin, toggleLogin] = useReducer((pre) => !pre, true);
+  const searchParams = useSearchParams();
+  const email = searchParams.get('email');
 
   return (
     <>
       {isLogin ? (
-        <LoginForm toggleLogin={toggleLogin} />
+        <LoginForm toggleLogin={toggleLogin} email={email} />
       ) : (
         <RegistForm toggleLogin={toggleLogin} />
       )}
@@ -26,7 +38,7 @@ export default function SignForm() {
 
 // QQQ
 const mock = {
-  email: 'aaa@gmail.com',
+  email: 'jeonseongho@naver.com',
   passwd: '111111',
   passwd2: '111112',
   nickname: 'Hongkildong',
@@ -39,7 +51,32 @@ function RegistForm({ toggleLogin }: ToggleLoginProps) {
   const register = async (formData: FormData) => {
     const rs = await regist(formData);
     console.log('🚀 ~ rs:', rs);
-    if (!rs.success) setValidError(rs.error);
+    if (!rs.success) return setValidError(rs);
+
+    const { email, emailcheck } = rs.data;
+    redirect(
+      `/login/error?error=CheckEmail&email=${email}&emailcheck=${emailcheck}`
+    );
+  };
+
+  // const [validError, register, isPending] = useActionState(
+  //   async (_preValidError: ValidError | undefined, formData: FormData) => {
+  //     const rs = await regist(formData);
+  //     if (!rs.success) return rs;
+  //     const { email, emailcheck } = rs.data;
+  //     redirect(
+  //       `/login/error?error=CheckEmail&email=${email}&emailcheck=${emailcheck}`
+  //     );
+  //   },
+  //   undefined
+  // );
+
+  const [isPending, startTransition] = useTransition();
+  const handleSumit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    startTransition(() => {
+      register(new FormData(evt.currentTarget));
+    });
   };
 
   useEffect(() => {
@@ -47,7 +84,8 @@ function RegistForm({ toggleLogin }: ToggleLoginProps) {
   }, []);
 
   return (
-    <form action={register} className=''>
+    // <form action={register} className=''>
+    <form onSubmit={handleSumit} className=''>
       <LabelInput
         label='email'
         name='email'
@@ -81,7 +119,12 @@ function RegistForm({ toggleLogin }: ToggleLoginProps) {
         error={validError}
         placeholder='nickname...'
       />
-      <Button type='submit' variant={'primary'} className='w-full mt-3'>
+      <Button
+        type='submit'
+        variant={'primary'}
+        className='w-full mt-3'
+        disabled={isPending}
+      >
         Sign up
       </Button>
 
@@ -99,12 +142,14 @@ function RegistForm({ toggleLogin }: ToggleLoginProps) {
   );
 }
 
-function LoginForm({ toggleLogin }: ToggleLoginProps) {
+function LoginForm({ toggleLogin, email }: ToggleLoginProps) {
   const emailRef = useRef<HTMLInputElement>(null);
+  const passwdRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     // console.log('***>>', emailRef.current);
-    emailRef.current?.focus();
+    if (email) passwdRef.current?.focus();
+    else emailRef.current?.focus();
   }, []);
 
   return (
@@ -113,11 +158,13 @@ function LoginForm({ toggleLogin }: ToggleLoginProps) {
         label='email'
         type='email'
         ref={emailRef}
+        defaultValue={email || ''}
         placeholder='example@gmail.com'
       />
       <LabelInput
         label='password'
         type='password'
+        ref={passwdRef}
         placeholder='Your password...'
       />
       <div className='flex justify-between my-2'>

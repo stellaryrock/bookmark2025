@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import z from 'zod';
 import { signIn, signOut } from '@/lib/auth';
 import prisma from '@/lib/db';
+import { validate, ValidError, ValidSuccess } from '@/lib/validator';
 
 // export const runtime = 'nodejs';
 
@@ -16,15 +17,8 @@ export const login = async (provider: Provider, callback?: string) => {
 
 export const loginNaver = async () => login('naver');
 
-// { passwd: { errors: [ 'Too small: expected string to have >=6 characters' ] },}
-export type ValidError = Record<string, { errors: string[] }>;
-
 export const regist = async (formData: FormData) => {
-  const entries = Object.fromEntries(formData.entries());
-  console.log('🚀 ~ entries:', entries);
-
-  // Todo: zod validation checking!
-  const validator = z
+  const zobj = z
     .object({
       email: z.email(),
       passwd: z.string().min(6),
@@ -34,19 +28,14 @@ export const regist = async (formData: FormData) => {
     .refine(({ passwd, passwd2 }) => passwd === passwd2, {
       path: ['passwd2'],
       error: 'Password check is not matching!',
-    })
-    .safeParse(entries);
-
+    });
+  const validator = validate<typeof zobj>(zobj, formData);
   if (!validator.success) {
-    return {
-      error: z.treeifyError(validator.error).properties,
-    };
+    return validator;
   }
 
-  const email = formData.get('email');
   const emailcheck = uuidv4();
-
-  const data = validator.data;
+  const { passwd2: _, ...data } = { ...validator.data, emailcheck }; // as z.infer<typeof zobj>;
   await prisma.member.create({ data });
 
   // await sendRegistCheck('indiflex.corp@gmail.com', authKey); // stream error
@@ -58,13 +47,14 @@ export const regist = async (formData: FormData) => {
       Authorization: `Bearer ${INTERNAL_SECRET}`,
     },
     body: JSON.stringify({
-      email,
+      email: data.email,
       emailcheck,
     }),
   });
   console.log('Mail has sent.');
 
-  return { success: true, data };
+  return { success: true, data } as ValidSuccess<typeof data>;
+  // return validator; // formdata 그대로 반환 용
 };
 
 // Credential: from login page
