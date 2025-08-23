@@ -1,8 +1,9 @@
 'use server';
 
+import { compare, hash, hashSync } from 'bcryptjs';
 import { AuthError } from 'next-auth';
 import { v4 as uuidv4 } from 'uuid';
-import z from 'zod';
+import z, { success } from 'zod';
 import { signIn, signOut } from '@/lib/auth';
 import prisma from '@/lib/db';
 import { validate, ValidError, ValidSuccess } from '@/lib/validator';
@@ -34,8 +35,13 @@ export const regist = async (formData: FormData) => {
     return validator;
   }
 
+  const encPasswd = await hash(validator.data.passwd, 10);
   const emailcheck = uuidv4();
-  const { passwd2: _, ...data } = { ...validator.data, emailcheck }; // as z.infer<typeof zobj>;
+  const { passwd2: _, ...data } = {
+    ...validator.data,
+    passwd: encPasswd,
+    emailcheck,
+  }; // as z.infer<typeof zobj>;
   await prisma.member.create({ data });
 
   // await sendRegistCheck('indiflex.corp@gmail.com', authKey); // stream error
@@ -59,27 +65,46 @@ export const regist = async (formData: FormData) => {
 
 // Credential: from login page
 export async function authenticate(
-  prevState: string | undefined,
+  prevState: ValidError | undefined,
   formData: FormData
 ) {
-  const email = formData.get('email');
-  const passwd = formData.get('passwd');
-  if (!email || !passwd) return 'Input the email & passwd, plz';
+  console.log('*****>>', formData.get('email'));
+  const zobj = z.object({
+    email: z.email(),
+    passwd: z.string().min(6),
+  });
+  const validator = validate(zobj, formData);
+  if (!validator.success) return validator;
 
   try {
     await signIn('credentials', formData);
+    // return validator;
   } catch (error) {
+    console.log('🚀 sign.ts - authenticate - error:', error);
     if (error instanceof AuthError) {
+      let typeErr;
       switch (error.type) {
-        case 'EmailSignInError':
-          return error.message;
+        case 'AccessDenied':
+          typeErr = 'Invalid Password!';
+          break;
+        case 'OAuthAccountNotLinked':
+          typeErr = `You registed SNS Account(${formData.get('email')})`;
+          break;
+        case 'EmailSignInError': // email magic link
+          typeErr = error.message;
+          break;
         case 'CredentialsSignin':
-          return 'Invalid Credentials!';
+          typeErr = 'Invalid Credentials!';
+          break;
         default:
-          return 'Something went wrong!';
+          typeErr = error.message || 'Something went wrong!';
       }
+      return {
+        success: false,
+        error: { email: { errors: [typeErr] } },
+      } as ValidError;
     }
-    throw error;
+    // throw error;
   }
 }
 

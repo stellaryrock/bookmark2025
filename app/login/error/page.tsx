@@ -32,7 +32,11 @@ export default function LoginError({ searchParams }: Props) {
         <h1 className='text-xl mb-5'>{getErrorMessage(error)}</h1>
         <div className='flex justify-center items-center gap-2'>
           <Button variant={'outline'} asChild={true}>
-            <Link href='/login'>Goto Login</Link>
+            {email ? (
+              <Link href={`/login?email=${email}`}>Goto Login</Link>
+            ) : (
+              <Link href='/login'>Goto Login</Link>
+            )}
           </Button>
           {email && emailcheck && error === 'CheckEmail' && (
             <SendEmailCheck email={email} emailcheck={emailcheck} />

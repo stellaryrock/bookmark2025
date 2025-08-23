@@ -26,17 +26,19 @@ export default function LabelInput({
 }: Props) {
   const uniqName = useId();
   return (
-    <label htmlFor={uniqName} className='text-sm font-semibold capitalize'>
-      {label}
-      <Input
-        id={uniqName}
-        name={name || uniqName}
-        type={type || 'text'}
-        ref={ref}
-        defaultValue={defaultValue}
-        placeholder={placeholder}
-        className={cn('bg-gray-100 focus:bg-white font-normal', className)}
-      />
+    <div>
+      <label htmlFor={uniqName} className='text-sm font-semibold capitalize'>
+        {label}
+        <Input
+          id={uniqName}
+          name={name || uniqName}
+          type={type || 'text'}
+          ref={ref}
+          defaultValue={defaultValue}
+          placeholder={placeholder}
+          className={cn('bg-gray-100 focus:bg-white font-normal', className)}
+        />
+      </label>
       {error &&
         name &&
         error.error[name] &&
@@ -45,6 +47,6 @@ export default function LabelInput({
             {err}
           </div>
         ))}
-    </label>
+    </div>
   );
 }
