@@ -9,10 +9,10 @@ type Props = {
   label: string;
   type?: string;
   name?: string;
-  ref?: RefObject<HTMLInputElement | null>;
-  focus?: boolean;
   error?: ValidError;
   defaultValue?: string;
+  ref?: RefObject<HTMLInputElement | null>;
+  focus?: boolean;
   placeholder?: string;
   className?: string;
 };
@@ -21,7 +21,6 @@ export default function LabelInput({
   label,
   type,
   name,
-  defaultValue,
   ref,
   focus,
   error,

@@ -7,8 +7,12 @@ import z from 'zod';
 import { redirect } from 'next/navigation';
 import { signIn, signOut } from '@/lib/auth';
 import prisma from '@/lib/db';
+<<<<<<< HEAD
 import { newToken } from '@/lib/utils';
 import { validate, ValidError, ValidSuccess } from '@/lib/validator';
+=======
+import { validate, ValidSuccess } from '@/lib/validator';
+>>>>>>> 526f5b4 (rebase & merge)
 
 // export const runtime = 'nodejs';
 
@@ -159,13 +163,8 @@ export const sendEmailToResetPassword = async (
 };
 
 export const logout = async () => {
-<<<<<<< HEAD
   await signOut({ redirectTo: '/login' }); // QQQ ('/')
 };
 
 export const findMemberByEmail = async (email: string) =>
   prisma.member.findUnique({ where: { email } });
-=======
-  await signOut();
-};
->>>>>>> 52ac2bd (fetch upstream)
