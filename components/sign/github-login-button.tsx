@@ -1,19 +1,12 @@
 'use client';
 
-<<<<<<< HEAD
 import { login } from '@/actions/sign';
-=======
->>>>>>> bd3514f (login-button)
 import { Button } from '@/components/ui/button';
 
 export function GithubLoginButton() {
   const loginGithub = async () => {
     login('github');
-<<<<<<< HEAD
   };
-=======
-  }
->>>>>>> bd3514f (login-button)
 
   return (
     <Button
