@@ -9,10 +9,7 @@ type Props = {
   label: string;
   type?: string;
   name?: string;
-<<<<<<< HEAD
   error?: ValidError;
-=======
->>>>>>> bd3514f (login-button)
   defaultValue?: string;
   ref?: RefObject<HTMLInputElement | null>;
   focus?: boolean;
@@ -43,7 +40,6 @@ export default function LabelInput({
   }, [ref, focus, err.errors]);
 
   return (
-<<<<<<< HEAD
     <div>
       <label htmlFor={uniqName} className='text-sm font-semibold capitalize'>
         {label}
@@ -63,18 +59,5 @@ export default function LabelInput({
         </div>
       ))}
     </div>
-=======
-    <label className='text-sm font-semibold capitalize'>
-      {label}
-      <Input
-        name={name || uniqName}
-        type={type || 'text'}
-        ref={ref}
-        defaultValue={defaultValue || ''}
-        placeholder={placeholder}
-        className={cn('bg-gray-100 focus:bg-white font-normal', className)}
-      />
-    </label>
->>>>>>> bd3514f (login-button)
   );
 }
