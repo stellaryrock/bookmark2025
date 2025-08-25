@@ -128,5 +128,9 @@ export const {
       }
       return session;
     },
+    async redirect({ url, baseUrl }) {
+      console.log("redirect:", baseUrl, url);
+      return baseUrl;
+    },
   },
 });
