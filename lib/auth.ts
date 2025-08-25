@@ -9,7 +9,6 @@ import Naver from 'next-auth/providers/naver';
 import prisma from './db';
 import z from 'zod';
 
-
 export const {
   handlers: { GET, POST },
   auth,
