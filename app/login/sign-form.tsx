@@ -142,22 +142,49 @@ function RegistForm({ toggleLogin }: ToggleLoginProps) {
   );
 }
 
+const LOCALSTORAGE_EMAIL = 'savedEmail';
+
 function LoginForm({ toggleLogin, email }: ToggleLoginProps) {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwdRef = useRef<HTMLInputElement>(null);
+  const rememberMeRef = useRef<HTMLInputElement>(null);
 
   const [validError, loginAction, isPending] = useActionState(
     authenticate,
     undefined
   );
 
+  const saveLocalStorage = () => {
+    const isChecked = rememberMeRef.current?.checked;
+    if (isChecked && emailRef.current?.value) {
+      localStorage.setItem(LOCALSTORAGE_EMAIL, emailRef.current?.value);
+    } else if (!isChecked && localStorage.getItem(LOCALSTORAGE_EMAIL)) {
+      localStorage.removeItem(LOCALSTORAGE_EMAIL);
+    }
+  };
+
+  const makeLogin = async (formData: FormData) => {
+    saveLocalStorage();
+    loginAction(formData);
+  };
+
   useEffect(() => {
-    if (email) passwdRef.current?.focus();
-    else emailRef.current?.focus();
+    if (email) {
+      passwdRef.current?.focus();
+    } else {
+      const savedEmail = localStorage.getItem(LOCALSTORAGE_EMAIL);
+      if (savedEmail) {
+        if (rememberMeRef.current) rememberMeRef.current.checked = true;
+        if (emailRef.current) emailRef.current.value = savedEmail;
+        passwdRef.current?.focus();
+      } else {
+        emailRef.current?.focus();
+      }
+    }
   }, [email]);
 
   return (
-    <form action={loginAction} className='flex flex-col gap-3'>
+    <form action={makeLogin} className='flex flex-col gap-3'>
       <LabelInput
         label='email'
         type='email'
@@ -177,7 +204,12 @@ function LoginForm({ toggleLogin, email }: ToggleLoginProps) {
       />
       <div className='flex justify-between my-2'>
         <label className='cursor-pointer hover:text-blue-600'>
-          <input type='checkbox' className='mr-1 translate-y-[1px]' />
+          <input
+            type='checkbox'
+            ref={rememberMeRef}
+            onChange={saveLocalStorage}
+            className='mr-1 translate-y-[1px]'
+          />
           Remember me
         </label>
         <a href='#'>Forgot password?</a>
