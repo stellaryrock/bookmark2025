@@ -148,23 +148,13 @@ function LoginForm({ toggleLogin, email }: ToggleLoginProps) {
 
   const [validError, loginAction, isPending] = useActionState(
     authenticate,
-    // async (preValidError: ValidError | undefined, formData: FormData) => {
-    //   const rs = await login(formData);
-    //   console.log('🚀 ~ rs:', rs);
-    //   if (!rs.success) return setValidError(rs);
-
-    //   const { email, emailcheck } = rs.data;
-    //   redirect(
-    //     `/login/error?error=CheckEmail&email=${email}&emailcheck=${emailcheck}`
-    //   );
-    // },
     undefined
   );
 
   useEffect(() => {
     if (email) passwdRef.current?.focus();
     else emailRef.current?.focus();
-  }, []);
+  }, [email]);
 
   return (
     <form action={loginAction} className='flex flex-col gap-3'>
@@ -202,8 +192,9 @@ function LoginForm({ toggleLogin, email }: ToggleLoginProps) {
           onClick={toggleLogin}
           variant={'link'}
           className='ml-2 text-blue-500'
+          disabled={isPending}
         >
-          Sign up
+          {isPending ? 'Signing up...' : 'Sign up'}
         </Button>
       </div>
     </form>

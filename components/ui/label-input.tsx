@@ -25,6 +25,7 @@ export default function LabelInput({
   className,
 }: Props) {
   const uniqName = useId();
+  const err = error && name ? error.error[name] : { errors: [], value: '' };
   return (
     <div>
       <label htmlFor={uniqName} className='text-sm font-semibold capitalize'>
@@ -34,19 +35,16 @@ export default function LabelInput({
           name={name || uniqName}
           type={type || 'text'}
           ref={ref}
-          defaultValue={defaultValue}
+          defaultValue={defaultValue || err?.value?.toString()}
           placeholder={placeholder}
           className={cn('bg-gray-100 focus:bg-white font-normal', className)}
         />
       </label>
-      {error &&
-        name &&
-        error.error[name] &&
-        error.error[name].errors?.map((err) => (
-          <div key={err} className='text-red-500 text-sm mb-1'>
-            {err}
-          </div>
-        ))}
+      {err?.errors?.map((e) => (
+        <div key={e} className='text-red-500 text-sm mb-1'>
+          {e}
+        </div>
+      ))}
     </div>
   );
 }

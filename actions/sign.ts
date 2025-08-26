@@ -1,9 +1,9 @@
 'use server';
 
-import { compare, hash, hashSync } from 'bcryptjs';
+import { hash } from 'bcryptjs';
 import { AuthError } from 'next-auth';
 import { v4 as uuidv4 } from 'uuid';
-import z, { success } from 'zod';
+import z from 'zod';
 import { signIn, signOut } from '@/lib/auth';
 import prisma from '@/lib/db';
 import { validate, ValidError, ValidSuccess } from '@/lib/validator';
@@ -68,14 +68,12 @@ export async function authenticate(
   prevState: ValidError | undefined,
   formData: FormData
 ) {
-  console.log('*****>>', formData.get('email'));
   const zobj = z.object({
     email: z.email(),
     passwd: z.string().min(6),
   });
   const validator = validate(zobj, formData);
   if (!validator.success) return validator;
-
   try {
     await signIn('credentials', formData);
     // return validator;
@@ -88,7 +86,7 @@ export async function authenticate(
           typeErr = 'Invalid Password!';
           break;
         case 'OAuthAccountNotLinked':
-          typeErr = `You registed SNS Account(${formData.get('email')})`;
+          typeErr = `Already registed SNS Account)`;
           break;
         case 'EmailSignInError': // email magic link
           typeErr = error.message;
@@ -101,7 +99,10 @@ export async function authenticate(
       }
       return {
         success: false,
-        error: { email: { errors: [typeErr] } },
+        error: {
+          email: { errors: [typeErr], value: validator.data.email },
+          passwd: { errors: [], value: validator.data.passwd },
+        },
       } as ValidError;
     }
     // throw error;
