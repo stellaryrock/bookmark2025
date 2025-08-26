@@ -1,6 +1,6 @@
 'use server';
 
-import { hash } from 'bcryptjs';
+import { compare, hash } from 'bcryptjs';
 import { AuthError } from 'next-auth';
 import { v4 as uuidv4 } from 'uuid';
 import z from 'zod';
@@ -62,6 +62,36 @@ export const regist = async (formData: FormData) => {
   return { success: true, data } as ValidSuccess<typeof data>;
   // return validator; // formdata 그대로 반환 용
 };
+
+export const passwdCheck = async (formData: FormData) => {
+  const zobj = z
+    .object({
+      email: z.email(),
+      passwd: z.string().min(6),
+      passwd2: z.string().min(6)
+    })
+    .refine(({passwd, passwd2}) => passwd === passwd2, {
+      path: ['passwd2'],
+      error: '비밀번호가 일치하지 않습니다.'
+    });
+  
+  const validator = validate<typeof zobj>(zobj, formData);
+  if(!validator.success){
+    return validator;
+  }
+
+  const passwdcheck = uuidv4();
+  const { passwd , passwd2 : _passwd2, ...data} = {
+    ...validator.data,
+    passwdcheck
+  }
+
+  const mbr = await findMemberByEmail(data.email);
+  
+  const isValid = await compare(passwd || '', mbr.passwd);
+  
+  return { success: true, data } as ValidSuccess<typeof data>
+}
 
 // Credential: from login page
 export async function authenticate(
