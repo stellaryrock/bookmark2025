@@ -12,7 +12,6 @@ const emailSchema = z.email({ error: '잘못된 이메일 형식입니다.' });
 const nicknameSchema = z.string().min(4, { error: '4자 이상 입력해주세요.' });
 
 // file-schema : zod.dev AI Powered by inkeep 참조
-<<<<<<< HEAD
 // const fileSchema = z
 //   .file()
 //   .max(10_000_000, { error: '10MB 보다 작은 파일만 업로드 할 수 있습니다.' })
@@ -23,18 +22,6 @@ const nicknameSchema = z.string().min(4, { error: '4자 이상 입력해주세�
 //     'image/svg+xml',
 //     'image/webp',
 //   ]);
-=======
-const fileSchema = z
-  .file()
-  .max(10_000_000, { error: '10MB 보다 작은 파일만 업로드 할 수 있습니다.' })
-  .mime([
-    'image/gif',
-    'image/jpeg',
-    'image/png',
-    'image/svg+xml',
-    'image/webp',
-  ])
->>>>>>> e9fac2b (rebase & merge)
 
 // const authKey = z.uuidv4();
 
