@@ -10,7 +10,8 @@ create table Member (
   email varchar(128) not null,
   passwd varchar(255) null,
   image varchar(255) null,
-  emailAuth varchar(256) null comment 'email 인증 키',
+  isadmin tinyint(1) not null default 0,
+  emailcheck varchar(256) null,
   outdt varchar(10) null,
   descript varchar(512) null,
   UNIQUE KEY `uniq_Member_email` (`email`)
