@@ -97,7 +97,7 @@ function RegistForm({ toggleLogin }: ToggleLoginProps) {
         placeholder='example@gmail.com'
       />
       <LabelInput
-        name='password'
+        name='passwd'
         label='password'
         type='password'
         defaultValue={mock.passwd}
