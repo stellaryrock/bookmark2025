@@ -10,6 +10,7 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(
       new URL(`/api/auth/signin?callbackUrl=${callbackUrl}`, req.url)
     );
+    // return NextResponse.redirect(new URL('/login', req.nextUrl));
   }
 
   return NextResponse.next();
