@@ -13,7 +13,7 @@ import {
   useReducer,
   useRef,
   useState,
-  useTransition,
+  useTransition
 } from 'react';
 
 type ToggleLoginProps = {
@@ -143,13 +143,15 @@ function LoginForm({ toggleLogin, email }: ToggleLoginProps) {
   useEffect(() => {
     if (email) {
       passwdRef.current?.focus();
-    } else {
+    }
+    else {
       const savedEmail = localStorage.getItem(LOCALSTORAGE_EMAIL);
-      if (savedEmail) {
-        if (rememberMeRef.current) rememberMeRef.current.checked = true;
-        if (emailRef.current) emailRef.current.value = savedEmail;
+      if(savedEmail) {
+        if(rememberMeRef.current) rememberMeRef.current.checked = true;
+        if(emailRef.current) emailRef.current.value = savedEmail;
         passwdRef.current?.focus();
-      } else {
+      }
+      else {
         emailRef.current?.focus();
       }
     }

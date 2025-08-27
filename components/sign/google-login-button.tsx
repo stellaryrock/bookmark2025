@@ -6,8 +6,8 @@ import { Button } from '@/components/ui/button';
 export function GoogleLoginButton() {
   const loginGoogle = async () => {
     login('google');
-  }
-  
+  };
+
   return (
     <Button
       onClick={loginGoogle}

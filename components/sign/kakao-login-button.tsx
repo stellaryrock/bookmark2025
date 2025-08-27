@@ -4,21 +4,12 @@ import { Button } from '@/components/ui/button';
 export function KakaoLoginButton() {
   const loginKakao = async () => {
     'use server';
-<<<<<<< HEAD
     await login('kakao');
   };
 
   return (
     <Button
       onClick={loginKakao}
-=======
-    login('kakao')
-  }
-
-  return (
-    <Button
-      formAction = {()=> loginKakao()}
->>>>>>> bd3514f (login-button)
       variant='outline'
       className='w-full gap-2 bg-[#FEE500] hover:bg-[#ecd800] text-black dark:text-white h-12'
     >
