@@ -12,8 +12,6 @@ import z from 'zod';
 
 type Provider = 'google' | 'github' | 'naver' | 'kakao';
 
-export const githubLogin = 
-export const loginNaver = async () => {login('naver')}
 export const login = async (provider: Provider, callback?: string) => {
   await signIn(provider, { redirectTo: callback || '/bookcase' });
 };
@@ -88,7 +86,7 @@ export async function authenticate(
           typeErr = 'Invalid Password!';
           break;
         case 'OAuthAccountNotLinked':
-          typeErr = `Already registed SNS Account)`;
+          typeErr = `Already SNS Account(${formData.get('email')})`;
           break;
         case 'EmailSignInError': // email magic link
           typeErr = error.message;
