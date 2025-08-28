@@ -7,11 +7,10 @@ import { hash } from 'bcryptjs';
 import { AuthError } from 'next-auth';
 import { v4 as uuidv4 } from 'uuid';
 import z from 'zod';
-<<<<<<< HEAD
 
 // export const runtime = 'nodejs';
 
-export type Provider = 'google' | 'github' | 'naver' | 'kakao';
+type Provider = 'google' | 'github' | 'naver' | 'kakao';
 
 export const login = async (provider: Provider, callback?: string) => {
   await signIn(provider, { redirectTo: callback || '/bookcase' });
@@ -62,39 +61,6 @@ export const regist = async (formData: FormData) => {
 
   return { success: true, data } as ValidSuccess<typeof data>;
   // return validator; // formdata 그대로 반환 용
-=======
-import { signIn, signOut } from '@/lib/auth';
-import { registValidator } from '@/lib/validator/sign';
-import { sendRegistCheck } from './mailer';
-
-export type Provider = 'google' | 'github' | 'naver' | 'kakao';
-
-export const login = async (provider: Provider, callback?: string) => {
-  await signIn(provider, { redirectTo: callback || '/' });
-};
-
-export const loginKakao = async () => {login('kakao')}
-export const loginGoogle = async () => {login('google')}
-export const loginGithub = async () => {login('github')}
-export const loginNaver = async () => {login('naver')}
-
-export const regist = async (formData: FormData) => {
-  const entries = Object.fromEntries(formData.entries());
-
-  const result = registValidator.safeParse(entries);
-
-  if (result.success) {
-    const authKey = uuidv4();
-    await sendRegistCheck(process.env.google_user!, authKey);
-
-    console.log('Mail has sent.');
-  } else {
-    return {
-      success: false,
-      error: z.treeifyError(result.error),
-    };
-  }
->>>>>>> d0a8150b75c45a1ea5269c7f28c757e076420b99
 };
 
 // Credential: from login page
@@ -120,7 +86,7 @@ export async function authenticate(
           typeErr = 'Invalid Password!';
           break;
         case 'OAuthAccountNotLinked':
-          typeErr = `Already SNS Account(${formData.get('email')})`;
+          typeErr = `Already registed SNS Account)`;
           break;
         case 'EmailSignInError': // email magic link
           typeErr = error.message;
@@ -144,13 +110,8 @@ export async function authenticate(
 }
 
 export const logout = async () => {
-<<<<<<< HEAD
   await signOut({ redirectTo: '/login' }); // QQQ ('/')
 };
 
 export const findMemberByEmail = async (email: string) =>
   prisma.member.findUnique({ where: { email } });
-=======
-  await signOut();
-};
->>>>>>> d0a8150b75c45a1ea5269c7f28c757e076420b99

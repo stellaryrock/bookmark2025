@@ -87,8 +87,8 @@ function RegistForm({ toggleLogin }: ToggleLoginProps) {
     // <form action={register} className=''>
     <form onSubmit={handleSumit} className='flex flex-col gap-3'>
       <LabelInput
-        label='email'
         name='email'
+        label='email'
         type='email'
         defaultValue={mock.email}
         ref={emailRef}
@@ -96,16 +96,16 @@ function RegistForm({ toggleLogin }: ToggleLoginProps) {
         placeholder='example@gmail.com'
       />
       <LabelInput
-        label='password'
         name='passwd'
+        label='password'
         type='password'
         defaultValue={mock.passwd}
         error={validError}
         placeholder='Your password...'
       />
       <LabelInput
-        label='password confirm'
         name='passwd2'
+        label='password confirm'
         type='password'
         defaultValue={mock.passwd2}
         error={validError}
@@ -149,7 +149,7 @@ function LoginForm({ toggleLogin, email }: ToggleLoginProps) {
   const passwdRef = useRef<HTMLInputElement>(null);
   const rememberMeRef = useRef<HTMLInputElement>(null);
 
-  const [validError, loginAction, isPending] = useActionState(
+  const [validError, loginAction, _isPending] = useActionState(
     authenticate,
     undefined
   );

@@ -15,7 +15,6 @@ export default function My() {
         <h1 className='text-3xl'>
           내 정보
         </h1>
-<<<<<<< HEAD
         <button onClick={()=>logout()}>
           로그아웃
         </button>
@@ -35,26 +34,6 @@ export default function My() {
           </div>
         </div>
       </div>
-      
-=======
-        <button>
-          로그아웃
-        </button>
-      </div>
-      <div className="grid grid-cols-[1fr_3fr]">
-        <div className='flex flex-col items-center'>
-          <div className='p-3'>
-            <button onClick={()=>setTabIndex(0)}>정보 수정</button>
-          </div>
-          <div className='p-3'>
-            <button onClick={()=>setTabIndex(1)}>회원 탈퇴</button>
-          </div>
-        </div>
-        <div className='my-5'>
-          {tabIndex ? <Withdrawl /> : <Edit />}
-        </div>
-      </div>
->>>>>>> d0a8150b75c45a1ea5269c7f28c757e076420b99
     </div>    
   );
 }
