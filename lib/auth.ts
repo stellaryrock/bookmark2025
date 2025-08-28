@@ -128,10 +128,6 @@ export const {
         session.user.isadmin = !!token.isadmin;
       }
       return session;
-    },
-    async redirect({ url, baseUrl }) {
-      console.log("redirect:", baseUrl, url);
-      return baseUrl;
-    },
+    }
   },
 });
