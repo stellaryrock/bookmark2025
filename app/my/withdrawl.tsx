@@ -2,6 +2,7 @@ export default function Withdrawl(){
 
   return (
     <>
+<<<<<<< HEAD
       <form action="" className="">
         <div className="flex flex-col">
           <label>
@@ -24,6 +25,9 @@ export default function Withdrawl(){
           </button>
         </div>
       </form>
+=======
+      Withdrawl
+>>>>>>> d0a8150b75c45a1ea5269c7f28c757e076420b99
     </>
   )
 }

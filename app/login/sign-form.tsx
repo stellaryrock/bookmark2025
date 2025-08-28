@@ -8,12 +8,11 @@ import { redirect, useSearchParams } from 'next/navigation';
 import {
   FormEvent,
   useActionState,
-  //  useActionState,
   useEffect,
   useReducer,
   useRef,
   useState,
-  useTransition
+  useTransition,
 } from 'react';
 
 type ToggleLoginProps = {
@@ -88,8 +87,8 @@ function RegistForm({ toggleLogin }: ToggleLoginProps) {
     // <form action={register} className=''>
     <form onSubmit={handleSumit} className='flex flex-col gap-3'>
       <LabelInput
-        name='email'
         label='email'
+        name='email'
         type='email'
         defaultValue={mock.email}
         ref={emailRef}
@@ -97,16 +96,16 @@ function RegistForm({ toggleLogin }: ToggleLoginProps) {
         placeholder='example@gmail.com'
       />
       <LabelInput
-        name='passwd'
         label='password'
+        name='passwd'
         type='password'
         defaultValue={mock.passwd}
         error={validError}
         placeholder='Your password...'
       />
       <LabelInput
-        name='passwd2'
         label='password confirm'
+        name='passwd2'
         type='password'
         defaultValue={mock.passwd2}
         error={validError}
@@ -172,20 +171,17 @@ function LoginForm({ toggleLogin, email }: ToggleLoginProps) {
   useEffect(() => {
     if (email) {
       passwdRef.current?.focus();
-    }
-    else {
+    } else {
       const savedEmail = localStorage.getItem(LOCALSTORAGE_EMAIL);
-      if(savedEmail) {
-        if(rememberMeRef.current) rememberMeRef.current.checked = true;
-        if(emailRef.current) emailRef.current.value = savedEmail;
+      if (savedEmail) {
+        if (rememberMeRef.current) rememberMeRef.current.checked = true;
+        if (emailRef.current) emailRef.current.value = savedEmail;
         passwdRef.current?.focus();
-      }
-      else {
+      } else {
         emailRef.current?.focus();
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [email]);
 
   return (
     <form action={makeLogin} className='flex flex-col gap-3'>
