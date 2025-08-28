@@ -18,10 +18,10 @@ export const MarkImages = [
 ];
 
 export const BookImages: { src: string; alt: string }[] = [
-  { src: "https://cdn.simpleicons.org/javascript", alt: "JavaScript" },
-  { src: "https://cdn.simpleicons.org/typescript", alt: "TypeScript" },
-  { src: "https://cdn.simpleicons.org/react", alt: "React" },
-  { src: "https://cdn.simpleicons.org/nextdotjs", alt: "Next.js" },
+  { src: 'https://cdn.simpleicons.org/javascript', alt: 'JavaScript' },
+  { src: 'https://cdn.simpleicons.org/typescript', alt: 'TypeScript' },
+  { src: 'https://cdn.simpleicons.org/react', alt: 'React' },
+  { src: 'https://cdn.simpleicons.org/nextdotjs', alt: 'Next.js' },
 ];
 
 export const PeopleImages = [
@@ -40,5 +40,5 @@ export const PeopleImages = [
   {
     src: 'https://randomuser.me/api/portraits/men/75.jpg',
     alt: 'man profile 75',
-  }
+  },
 ];

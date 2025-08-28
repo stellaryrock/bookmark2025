@@ -128,6 +128,6 @@ export const {
         session.user.isadmin = !!token.isadmin;
       }
       return session;
-    }
+    },
   },
 });

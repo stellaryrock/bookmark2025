@@ -1,6 +1,6 @@
+import { RefObject, useId } from 'react';
 import { cn } from '@/lib/utils';
 import { ValidError } from '@/lib/validator';
-import { RefObject, useId } from 'react';
 import { Input } from './input';
 
 type Props = {
@@ -25,8 +25,7 @@ export default function LabelInput({
   className,
 }: Props) {
   const uniqName = useId();
-  const err = error && name ? error.error[name]
-                            : {errors: [], value: ''};
+  const err = error && name ? error.error[name] : { errors: [], value: '' };
   return (
     <div>
       <label htmlFor={uniqName} className='text-sm font-semibold capitalize'>
@@ -36,7 +35,7 @@ export default function LabelInput({
           name={name || uniqName}
           type={type || 'text'}
           ref={ref}
-          defaultValue={ defaultValue || err.value?.toString() }
+          defaultValue={defaultValue || err.value?.toString()}
           placeholder={placeholder}
           className={cn('bg-gray-100 focus:bg-white font-normal', className)}
         />

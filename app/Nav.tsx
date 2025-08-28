@@ -1,9 +1,9 @@
 import ThemeChanger from '@/components/theme-changer';
-import { auth } from '@/lib/auth';
-import defaultProfile from "@/public/default-profile.jpg";
-import { SquareLibraryIcon } from 'lucide-react';
+import defaultProfile from '@/public/default-profile.jpg';
 import Image from 'next/image';
 import Link from 'next/link';
+import { SquareLibraryIcon } from 'lucide-react';
+import { auth } from '@/lib/auth';
 
 export default async function Nav() {
   const session = await auth();
