@@ -83,10 +83,10 @@ export async function authenticate(
       let typeErr;
       switch (error.type) {
         case 'AccessDenied':
-          typeErr = 'Invalid Password!';
+          typeErr = 'Did not match Email & Password!';
           break;
         case 'OAuthAccountNotLinked':
-          typeErr = `Already registed SNS Account)`;
+          typeErr = `Already registed SNS Account`;
           break;
         case 'EmailSignInError': // email magic link
           typeErr = error.message;

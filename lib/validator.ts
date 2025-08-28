@@ -15,12 +15,19 @@ export const validate = <T extends z.ZodObject>(
   formData: FormData
 ) => {
   const ent = Object.fromEntries(formData.entries());
-  const validator = zobj.safeParse(ent);
+  return validateObject<T>(zobj, ent);
+};
+
+export const validateObject = <T extends z.ZodObject>(
+  zobj: z.ZodObject,
+  obj: Record<string, FormDataEntryValue | string>
+) => {
+  const validator = zobj.safeParse(obj);
   if (!validator.success) {
     //  error: {email: {errors: ['xxx']}}
     const error = z.treeifyError(validator.error)
       .properties as ValidError['error'];
-    for (const [prop, value] of Object.entries(ent)) {
+    for (const [prop, value] of Object.entries(obj)) {
       if (prop.startsWith('$')) continue;
       if (!error[prop]) error[prop] = { errors: [], value };
       else error[prop].value = value;

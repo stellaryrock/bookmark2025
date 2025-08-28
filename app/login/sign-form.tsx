@@ -165,7 +165,8 @@ function LoginForm({ toggleLogin, email }: ToggleLoginProps) {
 
   const makeLogin = async (formData: FormData) => {
     saveLocalStorage();
-    loginAction(formData);
+    await loginAction(formData);
+    console.log('**>>', validError);
   };
 
   useEffect(() => {
@@ -181,7 +182,8 @@ function LoginForm({ toggleLogin, email }: ToggleLoginProps) {
         emailRef.current?.focus();
       }
     }
-  }, [email]);
+    console.log('111>>', validError);
+  }, [email, validError]);
 
   return (
     <form action={makeLogin} className='flex flex-col gap-3'>

@@ -31,7 +31,7 @@ export default async function Nav() {
           />
         </Link>
       ) : (
-        <Link href='/api/auth/signin'>Login</Link>
+        <Link href='/login'>Login</Link>
       )}
     </div>
   );

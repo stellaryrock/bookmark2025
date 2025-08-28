@@ -1,0 +1,8 @@
+{
+   "editor.codeActionsOnSave": {
+    "source.organizeImports.biome": "never",
+    "source.fixAll.biome": "never",
+    "source.sortImports": "never",
+  },
+  "biome.enabled": false,
+}
