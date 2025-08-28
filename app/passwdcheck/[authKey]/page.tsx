@@ -2,8 +2,8 @@
 
 import { Button } from '@/components/ui/button';
 import LabelInput from '@/components/ui/label-input';
-import z from 'zod';
 import { use } from 'react';
+import z from 'zod';
 
 type Props = {
   params: Promise<{ authKey: string }>;
