@@ -1,8 +1,9 @@
 import ThemeChanger from '@/components/theme-changer';
+import { auth } from '@/lib/auth';
+import defaultProfile from "@/public/default-profile.jpg";
+import { SquareLibraryIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { SquareLibraryIcon } from 'lucide-react';
-import { auth } from '@/lib/auth';
 
 export default async function Nav() {
   const session = await auth();
@@ -23,8 +24,8 @@ export default async function Nav() {
       {didLogin ? (
         <Link href='/my'>
           <Image
-            src={session.user?.image || ''}
-            alt={session.user?.name || ''}
+            src={session.user?.image || defaultProfile}
+            alt={session.user?.name || 'default profile'}
             width={40}
             height={40}
             className='rounded-full'
