@@ -1,17 +1,9 @@
-<<<<<<< HEAD
 import { loginNaver } from '@/actions/sign';
-=======
-import { login } from '@/actions/sign';
->>>>>>> bd3514f (login-button)
 import { Button } from '@/components/ui/button';
 
 export function NaverLoginButton() {
   return (
-<<<<<<< HEAD
     <form action={loginNaver}>
-=======
-    <form action={()=>login('naver')}>
->>>>>>> bd3514f (login-button)
       <Button
         variant='outline'
         className='w-full gap-2 bg-[#03C75A] hover:bg-[#02b155] text-white hover:text-white h-12'
