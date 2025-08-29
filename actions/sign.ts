@@ -1,16 +1,16 @@
 'use server';
 
+import { signIn, signOut } from '@/lib/auth';
+import prisma from '@/lib/db';
+import { validate, ValidError, ValidSuccess } from '@/lib/validator';
 import { hash } from 'bcryptjs';
 import { AuthError } from 'next-auth';
 import { v4 as uuidv4 } from 'uuid';
 import z from 'zod';
-import { signIn, signOut } from '@/lib/auth';
-import prisma from '@/lib/db';
-import { validate, ValidError, ValidSuccess } from '@/lib/validator';
 
 // export const runtime = 'nodejs';
 
-type Provider = 'google' | 'github' | 'naver' | 'kakao';
+export type Provider = 'google' | 'github' | 'naver' | 'kakao';
 
 export const login = async (provider: Provider, callback?: string) => {
   await signIn(provider, { redirectTo: callback || '/bookcase' });

@@ -4,8 +4,9 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider          = "mysql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 model Book {
@@ -114,3 +115,4 @@ model Talk {
   @@index([mark], map: "fk_Talk_mark")
   @@index([member], map: "fk_Talk_member")
 }
+
