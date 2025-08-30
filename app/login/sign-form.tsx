@@ -7,6 +7,7 @@ import { ValidError } from '@/lib/validator';
 import { redirect, useSearchParams } from 'next/navigation';
 import {
   FormEvent,
+  RefObject,
   useActionState,
   useEffect,
   useReducer,
@@ -45,13 +46,28 @@ const mock = {
 };
 
 function RegistForm({ toggleLogin }: ToggleLoginProps) {
-  const emailRef = useRef<HTMLInputElement>(null);
+  
+  const refs = {
+    email : useRef<HTMLInputElement>(null),
+    passwd : useRef<HTMLInputElement>(null),
+    passwd2 : useRef<HTMLInputElement>(null),
+    nickname : useRef<HTMLInputElement>(null)
+  } as Record<string, RefObject<HTMLInputElement>>
+
   const [validError, setValidError] = useState<ValidError>();
 
   const register = async (formData: FormData) => {
     const rs = await regist(formData);
     console.log('🚀 ~ rs:', rs);
-    if (!rs.success) return setValidError(rs);
+    
+    if (!rs.success) {
+      // email nickname passwd passwd2 순서
+      // Todo : email passwd passwd2 nickname 순서로 포커스 주기        
+      const inputName = Object.keys(rs.error)[0]
+      refs[inputName].current?.focus();
+      
+      return setValidError(rs);
+    }
 
     const { email, emailcheck } = rs.data;
     redirect(
@@ -80,7 +96,8 @@ function RegistForm({ toggleLogin }: ToggleLoginProps) {
   };
 
   useEffect(() => {
-    emailRef.current?.focus();
+    refs.email.current?.focus();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -91,7 +108,7 @@ function RegistForm({ toggleLogin }: ToggleLoginProps) {
         label='email'
         type='email'
         defaultValue={mock.email}
-        ref={emailRef}
+        ref={refs.email}
         error={validError}
         placeholder='example@gmail.com'
       />
@@ -100,6 +117,7 @@ function RegistForm({ toggleLogin }: ToggleLoginProps) {
         label='password'
         type='password'
         defaultValue={mock.passwd}
+        ref={refs.passwd}
         error={validError}
         placeholder='Your password...'
       />
@@ -108,6 +126,7 @@ function RegistForm({ toggleLogin }: ToggleLoginProps) {
         label='password confirm'
         type='password'
         defaultValue={mock.passwd2}
+        ref={refs.passwd2}
         error={validError}
         placeholder='Confirm Your password...'
       />
@@ -116,6 +135,7 @@ function RegistForm({ toggleLogin }: ToggleLoginProps) {
         name='nickname'
         type='text'
         defaultValue={mock.nickname}
+        ref={refs.nickname}
         error={validError}
         placeholder='nickname...'
       />
