@@ -1,12 +1,14 @@
 'use client';
 
 import { logout } from '@/actions/sign';
+import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import Edit from './edit';
 import Withdrawl from './withdrawl';
 
 export default function My() {
-  const [tabIndex, setTabIndex] = useState(0);
+  const session = useSession();
+  const [tabIndex, setTabIndex] = useState<number>(0);
 
   return (
     <div className=''>
@@ -24,7 +26,7 @@ export default function My() {
               <button onClick={() => setTabIndex(1)}>회원 탈퇴</button>
             </div>
           </div>
-          <div className='my-5'>{tabIndex ? <Withdrawl /> : <Edit />}</div>
+          <div className='my-5'>{tabIndex ? <Withdrawl email={session.data?.user.email} /> : <Edit />}</div>
         </div>
       </div>
     </div>

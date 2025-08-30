@@ -1,7 +1,23 @@
-export default function Withdrawl() {
+import { withdraw } from "@/actions/sign";
+import { redirect } from "next/navigation";
+
+type Props = {
+  email: string | null | undefined;
+}
+
+export default function Withdrawl({ email } : Props) {
+
+  const withdrawAction = (formData: FormData) => {
+    if(!email){
+      redirect('/login');
+    }
+    formData.append('email', email);
+    withdraw(formData);
+  }
+
   return (
     <>
-      <form action='' className=''>
+      <form action={withdrawAction} className=''>
         <div className='flex flex-col'>
           <label>
             <input type='radio' name='option' value='A' />
@@ -22,7 +38,7 @@ export default function Withdrawl() {
             <input type='checkbox' />
             탈퇴 동의
           </label>
-          <button type='submit' className='border-2 p-2 rounded-md text-red'>
+          <button type="submit" className='border-2 p-2 rounded-md text-red'>
             회원 탈퇴
           </button>
         </div>

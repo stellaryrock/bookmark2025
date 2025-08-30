@@ -83,7 +83,7 @@ export async function authenticate(
       let typeErr;
       switch (error.type) {
         case 'AccessDenied':
-          typeErr = 'Invalid Password!';
+          typeErr = error.message;
           break;
         case 'OAuthAccountNotLinked':
           typeErr = `Already registed SNS Account)`;
@@ -92,7 +92,7 @@ export async function authenticate(
           typeErr = error.message;
           break;
         case 'CredentialsSignin':
-          typeErr = 'Invalid Credentials!';
+          typeErr = error.message || 'Not match email or password!';
           break;
         default:
           typeErr = error.message || 'Something went wrong!';
@@ -115,3 +115,14 @@ export const logout = async () => {
 
 export const findMemberByEmail = async (email: string) =>
   prisma.member.findUnique({ where: { email } });
+
+export const withdraw = async (formData: FormData) => {
+  const ent = Object.fromEntries(formData.entries());
+  console.log("🚀 ~ withdraw ~ ent:", ent);
+  
+  // Todo: update db, outdt
+  // await prisma.member.update({
+  //   where: { email },
+  //   data: { outdt: '1' }
+  // });
+}
