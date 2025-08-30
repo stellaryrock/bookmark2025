@@ -36,16 +36,7 @@ export default function SignForm() {
   );
 }
 
-// QQQ
-const mock = {
-  email: 'jeonseongho@naver.com',
-  passwd: '111111',
-  passwd2: '111111',
-  nickname: 'Hongkildong',
-};
-
 function RegistForm({ toggleLogin }: ToggleLoginProps) {
-  const emailRef = useRef<HTMLInputElement>(null);
   const [validError, setValidError] = useState<ValidError>();
 
   const register = async (formData: FormData) => {
@@ -59,18 +50,6 @@ function RegistForm({ toggleLogin }: ToggleLoginProps) {
     );
   };
 
-  // const [validError, register, isPending] = useActionState(
-  //   async (_preValidError: ValidError | undefined, formData: FormData) => {
-  //     const rs = await regist(formData);
-  //     if (!rs.success) return rs;
-  //     const { email, emailcheck } = rs.data;
-  //     redirect(
-  //       `/login/error?error=CheckEmail&email=${email}&emailcheck=${emailcheck}`
-  //     );
-  //   },
-  //   undefined
-  // );
-
   const [isPending, startTransition] = useTransition();
   const handleSumit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -79,19 +58,13 @@ function RegistForm({ toggleLogin }: ToggleLoginProps) {
     });
   };
 
-  useEffect(() => {
-    emailRef.current?.focus();
-  }, []);
-
   return (
-    // <form action={register} className=''>
     <form onSubmit={handleSumit} className='flex flex-col gap-3'>
       <LabelInput
         label='email'
         name='email'
         type='email'
-        defaultValue={mock.email}
-        ref={emailRef}
+        focus={true}
         error={validError}
         placeholder='example@gmail.com'
       />
@@ -99,7 +72,6 @@ function RegistForm({ toggleLogin }: ToggleLoginProps) {
         label='password'
         name='passwd'
         type='password'
-        defaultValue={mock.passwd}
         error={validError}
         placeholder='Your password...'
       />
@@ -107,7 +79,6 @@ function RegistForm({ toggleLogin }: ToggleLoginProps) {
         label='password confirm'
         name='passwd2'
         type='password'
-        defaultValue={mock.passwd2}
         error={validError}
         placeholder='Confirm Your password...'
       />
@@ -115,7 +86,6 @@ function RegistForm({ toggleLogin }: ToggleLoginProps) {
         label='nickname'
         name='nickname'
         type='text'
-        defaultValue={mock.nickname}
         error={validError}
         placeholder='nickname...'
       />
@@ -182,8 +152,7 @@ function LoginForm({ toggleLogin, email }: ToggleLoginProps) {
         emailRef.current?.focus();
       }
     }
-    console.log('111>>', validError);
-  }, [email, validError]);
+  }, [email]);
 
   return (
     <form action={makeLogin} className='flex flex-col gap-3'>

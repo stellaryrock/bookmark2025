@@ -63,8 +63,6 @@ export const {
   trustHost: true,
   jwt: { maxAge: 30 * 60 },
   callbacks: {
-    // SNS(login/regist), credential(login) ==> DB 읽어서 존재하면 로그인
-    // 존재하지 않으면 가입(with authKey) => send email
     async signIn({ user, account }) {
       console.log('🚀 auth.ts > signIn - user:', user);
       const { name, email, image, passwd } = user;
@@ -72,10 +70,12 @@ export const {
 
       const isCredential = account?.provider === 'credentials';
       const mbr = await findMemberByEmail(email);
+      console.log('🚀 ~ mbr:', mbr);
 
       if (mbr) {
         if (mbr.emailcheck)
           return `/login/error?error=CheckEmail&email=${email}&emailcheck=${mbr.emailcheck}`;
+
         if (mbr.outdt) return '/login/error?error=WithdrawMember';
 
         // password check
@@ -85,11 +85,12 @@ export const {
             err.type = 'OAuthAccountNotLinked';
             throw err;
           }
-          // return '/login/error?error=NeedToSnsLogin&email=' + email;
 
           const pwMatched = await compare(passwd || '', mbr.passwd);
           if (!pwMatched) {
-            return false;
+            const err = new AuthError('Not Matched Email or Password!');
+            err.type = 'CredentialsSignin';
+            throw err;
           }
         }
 

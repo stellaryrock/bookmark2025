@@ -35,10 +35,8 @@ export default function PasswdCheck({ params }: Props) {
 
   return (
     <div className='grid place-items-center h-full'>
-      <div>
-        <h1 className='text-2xl mb-5 text-center font-semibold'>
-          Change Password
-        </h1>
+      <div className='w-96'>
+        <h1 className='text-2xl mb-5 font-semibold'>Change Password</h1>
         <form action={changePasswd} className='flex flex-col gap-5'>
           <LabelInput
             label='New Password'

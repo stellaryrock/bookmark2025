@@ -1,11 +1,13 @@
 'use server';
 
+import { SendEmailReqBody } from '@/app/api/sendmail/route';
 import { hash } from 'bcryptjs';
 import { AuthError } from 'next-auth';
-import { v4 as uuidv4 } from 'uuid';
 import z from 'zod';
+import { redirect } from 'next/navigation';
 import { signIn, signOut } from '@/lib/auth';
 import prisma from '@/lib/db';
+import { newToken } from '@/lib/utils';
 import { validate, ValidError, ValidSuccess } from '@/lib/validator';
 
 // export const runtime = 'nodejs';
@@ -36,7 +38,7 @@ export const regist = async (formData: FormData) => {
   }
 
   const encPasswd = await hash(validator.data.passwd, 10);
-  const emailcheck = uuidv4();
+  const emailcheck = newToken();
   const { passwd2: _, ...data } = {
     ...validator.data,
     passwd: encPasswd,
@@ -44,7 +46,19 @@ export const regist = async (formData: FormData) => {
   }; // as z.infer<typeof zobj>;
   await prisma.member.create({ data });
 
-  // await sendRegistCheck('indiflex.corp@gmail.com', authKey); // stream error
+  await sendEmailByFetch(data, emailcheck);
+  console.log('Mail has sent.');
+
+  return { success: true, data } as ValidSuccess<typeof data>;
+  // return validator; // formdata 그대로 반환 용
+};
+
+async function sendEmailByFetch({
+  email,
+  emailcheck,
+  nickname,
+  emailType,
+}: SendEmailReqBody) {
   const { NEXT_PUBLIC_URL, INTERNAL_SECRET } = process.env;
   await fetch(`${NEXT_PUBLIC_URL}/api/sendmail`, {
     method: 'POST',
@@ -53,19 +67,17 @@ export const regist = async (formData: FormData) => {
       Authorization: `Bearer ${INTERNAL_SECRET}`,
     },
     body: JSON.stringify({
-      email: data.email,
+      email,
       emailcheck,
+      nickname,
+      emailType,
     }),
   });
-  console.log('Mail has sent.');
-
-  return { success: true, data } as ValidSuccess<typeof data>;
-  // return validator; // formdata 그대로 반환 용
-};
+}
 
 // Credential: from login page
 export async function authenticate(
-  prevState: ValidError | undefined,
+  _prevState: ValidError | undefined,
   formData: FormData
 ) {
   const zobj = z.object({
@@ -83,7 +95,7 @@ export async function authenticate(
       let typeErr;
       switch (error.type) {
         case 'AccessDenied':
-          typeErr = 'Did not match Email & Password!';
+          typeErr = error.message;
           break;
         case 'OAuthAccountNotLinked':
           typeErr = `Already registed SNS Account`;
@@ -92,7 +104,9 @@ export async function authenticate(
           typeErr = error.message;
           break;
         case 'CredentialsSignin':
-          typeErr = 'Invalid Credentials!';
+          typeErr =
+            error.message.split('Read more')[0] ||
+            'Not match Email or Password!';
           break;
         default:
           typeErr = error.message || 'Something went wrong!';
@@ -108,6 +122,41 @@ export async function authenticate(
     // throw error;
   }
 }
+
+export const sendEmailToResetPassword = async (
+  _: ValidError | undefined,
+  formData: FormData
+) => {
+  const zobj = z.object({ email: z.email() });
+  const validator = validate(zobj, formData);
+  if (!validator.success) return validator;
+
+  // update & read member
+  const emailcheck = newToken();
+  const { email } = validator.data;
+  const { nickname } = await prisma.member.update({
+    where: { email },
+    select: { nickname: true },
+    data: { emailcheck },
+  });
+
+  if (!nickname) {
+    return {
+      success: false,
+      error: { email: { errors: ['Not Exists Email!'], value: email } },
+    } as ValidError;
+  }
+
+  // send email
+  await sendEmailByFetch({
+    email,
+    emailcheck,
+    nickname,
+    emailType: 'ResetPassword',
+  });
+
+  redirect('/login/error?error=CheckResetPasswordEmail');
+};
 
 export const logout = async () => {
   await signOut({ redirectTo: '/login' }); // QQQ ('/')

@@ -11,7 +11,7 @@ export type ValidSuccess<T> = {
 };
 
 export const validate = <T extends z.ZodObject>(
-  zobj: z.ZodObject,
+  zobj: T,
   formData: FormData
 ) => {
   const ent = Object.fromEntries(formData.entries());
@@ -19,7 +19,7 @@ export const validate = <T extends z.ZodObject>(
 };
 
 export const validateObject = <T extends z.ZodObject>(
-  zobj: z.ZodObject,
+  zobj: T,
   obj: Record<string, FormDataEntryValue | string>
 ) => {
   const validator = zobj.safeParse(obj);
