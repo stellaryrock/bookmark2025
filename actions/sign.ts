@@ -47,16 +47,12 @@ export const regist = async (formData: FormData) => {
   await prisma.member.create({ data });
 
   const { email, nickname } = data;
-<<<<<<< HEAD
-  await sendEmailByFetch({ email, nickname, emailcheck, emailType: 'Regist' });
-=======
   await sendEmailByFetch({
     email,
     nickname,
     emailcheck,
     emailType: 'Regist',
   });
->>>>>>> e324e1e (passwdcheck)
   console.log('Mail has sent.');
 
   return { success: true, data } as ValidSuccess<typeof data>;
