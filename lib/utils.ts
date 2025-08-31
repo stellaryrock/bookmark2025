@@ -19,3 +19,7 @@ export const dynamicCss = [
   'translate-x-[-120px]',
   'translate-x-[-140px]',
 ];
+
+export function newToken() {
+  return v4();
+}

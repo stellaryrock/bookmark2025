@@ -6,9 +6,9 @@ import GitHub from 'next-auth/providers/github';
 import Google from 'next-auth/providers/google';
 import Kakao from 'next-auth/providers/kakao';
 import Naver from 'next-auth/providers/naver';
+import z from 'zod';
 import prisma from './db';
 import { validateObject } from './validator';
-import z from 'zod';
 
 export const {
   handlers: { GET, POST },
@@ -73,10 +73,13 @@ export const {
       console.log('🚀 ~ mbr:', mbr);
 
       if (mbr) {
-        if (mbr.emailcheck)
+        if (mbr.emailcheck) {
           return `/login/error?error=CheckEmail&email=${email}&emailcheck=${mbr.emailcheck}`;
+        }
 
-        if (mbr.outdt) return '/login/error?error=WithdrawMember';
+        if (mbr.outdt) {
+          return '/login/error?error=WithdrawMember';
+        }
 
         // password check
         if (isCredential) {
@@ -88,7 +91,7 @@ export const {
 
           const pwMatched = await compare(passwd || '', mbr.passwd);
           if (!pwMatched) {
-            const err = new AuthError('Not Matched Email or Password!');
+            const err = new AuthError('Not Mathced Email or Password!');
             err.type = 'CredentialsSignin';
             throw err;
           }
@@ -137,6 +140,6 @@ export const {
         session.user.isadmin = !!token.isadmin;
       }
       return session;
-    }
+    },
   },
 });

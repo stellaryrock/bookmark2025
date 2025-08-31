@@ -3,7 +3,6 @@
 import { authenticate, regist } from '@/actions/sign';
 import { Button } from '@/components/ui/button';
 import LabelInput from '@/components/ui/label-input';
-import { ValidError } from '@/lib/validator';
 import { redirect, useSearchParams } from 'next/navigation';
 import {
   FormEvent,
@@ -13,8 +12,9 @@ import {
   useReducer,
   useRef,
   useState,
-  useTransition
+  useTransition,
 } from 'react';
+import { ValidError } from '@/lib/validator';
 
 type ToggleLoginProps = {
   toggleLogin: () => void;
@@ -65,7 +65,11 @@ function RegistForm({ toggleLogin }: ToggleLoginProps) {
         label='email'
         name='email'
         type='email'
+<<<<<<< HEAD
         focus={true}
+=======
+        defaultValue={mock.email}
+>>>>>>> e324e1e (passwdcheck)
         error={validError}
         placeholder='example@gmail.com'
       />
@@ -143,15 +147,13 @@ function LoginForm({ toggleLogin, email }: ToggleLoginProps) {
   useEffect(() => {
     if (email) {
       passwdRef.current?.focus();
-    }
-    else {
+    } else {
       const savedEmail = localStorage.getItem(LOCALSTORAGE_EMAIL);
-      if(savedEmail) {
-        if(rememberMeRef.current) rememberMeRef.current.checked = true;
-        if(emailRef.current) emailRef.current.value = savedEmail;
+      if (savedEmail) {
+        if (rememberMeRef.current) rememberMeRef.current.checked = true;
+        if (emailRef.current) emailRef.current.value = savedEmail;
         passwdRef.current?.focus();
-      }
-      else {
+      } else {
         emailRef.current?.focus();
       }
     }
@@ -163,7 +165,7 @@ function LoginForm({ toggleLogin, email }: ToggleLoginProps) {
         label='email'
         type='email'
         name='email'
-        ref={emailRef}
+        focus={true}
         defaultValue={email || ''}
         error={validError}
         placeholder='example@gmail.com'

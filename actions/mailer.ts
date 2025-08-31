@@ -37,6 +37,7 @@ export const sendPasswordReset = async (
   authKey: string,
   nickname?: string
 ) => {
+<<<<<<< HEAD
   const subject = '[Bookmark] Reset Password';
   const html = `
     <div style="display: grid; place-items: center; height: 200px;">
@@ -44,6 +45,15 @@ export const sendPasswordReset = async (
       <h2>Hello, ${nickname}</h2>
       <h3 style="margin: 10px 0;">Click the link below to reset your password.</h3>
       <a href="${process.env.NEXT_PUBLIC_URL}/passwdcheck/${authKey}">Reset Password</a>
+=======
+  const subject = '[북마크] 패스워드 찾기';
+  const html = `
+    <div style="display: grid; place-items: center; height: 200px;">
+      <h1>패스워드 찾기</h1>
+      <h2>Hello, ${nickname}</h2>
+      <h3 style="margin: 10px 0;">아래 링크를 클릭하면 암호를 설정할 수 있습니다.</h3>
+      <a href="${process.env.NEXT_PUBLIC_URL}/passwdcheck/${authKey}">암호 변경</a>
+>>>>>>> e324e1e (passwdcheck)
     </div>
   `;
 
