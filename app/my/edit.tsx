@@ -9,6 +9,7 @@ import { redirect } from 'next/navigation';
 export default function Edit() {
   const session = useSession();
   const user = session.data?.user;
+  console.log(user);
 
   const confirmPasswdCheck = () => {
     const chk = confirm('비밀번호를 변경하시겠습니까?');
@@ -22,7 +23,7 @@ export default function Edit() {
         <LabelInput
           label={'이름'}
           name='name'
-          defaultValue={user?.name ?? ''}
+          defaultValue={user?.nickname ?? ''}
         />
         <LabelInput
           label={'이메일'}

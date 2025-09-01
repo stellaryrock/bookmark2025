@@ -6,11 +6,11 @@ export async function middleware(req: NextRequest) {
   const didLogin = !!session?.user;
   console.log('🚀 middleware :: didLogin:', didLogin);
   if (!didLogin) {
-    const callbackUrl = encodeURIComponent(req.nextUrl.pathname);
-    return NextResponse.redirect(
-      new URL(`/api/auth/signin?callbackUrl=${callbackUrl}`, req.url)
-    );
-    // return NextResponse.redirect(new URL('/login', req.nextUrl));
+    // const callbackUrl = encodeURIComponent(req.nextUrl.pathname);
+    // return NextResponse.redirect(
+    //   new URL(`/api/auth/signin?callbackUrl=${callbackUrl}`, req.url)
+    // );
+    return NextResponse.redirect(new URL('/login', req.nextUrl));
   }
 
   return NextResponse.next();

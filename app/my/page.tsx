@@ -26,7 +26,13 @@ export default function My() {
               <button onClick={() => setTabIndex(1)}>회원 탈퇴</button>
             </div>
           </div>
-          <div className='my-5'>{tabIndex ? <Withdrawl email={session.data?.user.email} /> : <Edit />}</div>
+          <div className='my-5'>
+            {tabIndex ? (
+              <Withdrawl email={session.data?.user.email} />
+            ) : (
+              <Edit />
+            )}
+          </div>
         </div>
       </div>
     </div>

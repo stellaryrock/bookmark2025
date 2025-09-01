@@ -38,6 +38,7 @@ export const {
         const user = {
           email: credentials.email as string,
           password: credentials.passwd as string,
+          nickname: 'guest',
         };
 
         const validator = z
@@ -117,6 +118,7 @@ export const {
         token.id = user.id;
         token.email = user.email;
         token.name = user.name;
+        token.nickname = user.nickname;
       }
       return token;
     },
@@ -126,6 +128,7 @@ export const {
         session.user.email = token.email!;
         session.user.name = token.name;
         session.user.isadmin = !!token.isadmin;
+        session.user.nickname = token.nickname as string;
       }
       return session;
     },

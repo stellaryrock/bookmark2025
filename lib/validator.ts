@@ -10,21 +10,21 @@ export type ValidSuccess<T> = {
   data: T;
 };
 
-export const validate = <T extends z.ZodObject>(
-  zobj: z.ZodObject,
-  formData: FormData
+export const validateObj = <T extends z.ZodObject>(
+  zobj: T,
+  obj: Record<string, FormDataEntryValue | string>
 ) => {
-  const ent = Object.fromEntries(formData.entries());
-  const validator = zobj.safeParse(ent);
+  const validator = zobj.safeParse(obj);
   if (!validator.success) {
-    //  error: {email: {errors: ['xxx']}}
     const error = z.treeifyError(validator.error)
       .properties as ValidError['error'];
-    for (const [prop, value] of Object.entries(ent)) {
+
+    for (const [prop, value] of Object.entries(obj)) {
       if (prop.startsWith('$')) continue;
       if (!error[prop]) error[prop] = { errors: [], value };
       else error[prop].value = value;
     }
+
     return {
       success: false,
       error,
@@ -33,4 +33,12 @@ export const validate = <T extends z.ZodObject>(
 
   const data = validator.data as z.infer<T>;
   return { success: true, data } as ValidSuccess<typeof data>;
+};
+
+export const validate = <T extends z.ZodObject>(
+  zobj: T,
+  formData: FormData
+) => {
+  const ent = Object.fromEntries(formData.entries());
+  return validateObj<T>(zobj, ent);
 };

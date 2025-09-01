@@ -1,36 +1,46 @@
-'use client';
-
+import { findMemberByEmail, logout } from '@/actions/sign';
 import { Button } from '@/components/ui/button';
 import LabelInput from '@/components/ui/label-input';
+import prisma from '@/lib/db';
+import { validate } from '@/lib/validator';
+import { hash } from 'bcryptjs';
+import { redirect } from 'next/navigation';
 import z from 'zod';
-import { use } from 'react';
 
 type Props = {
   params: Promise<{ authKey: string }>;
+  searchParams: Promise<{ email: string }>;
 };
 
-export default function PasswdCheck({ params }: Props) {
-  const { authKey } = use(params);
+export default async function PasswdCheck({ params, searchParams }: Props) {
+  const { authKey } = await params;
+  const { email } = await searchParams;
 
-  // Todo: member.emailcheck와 authKey비교
-  // 일치하지 않으면 메시지 보이기
+  const mbr = await findMemberByEmail(email);
+  if (authKey !== mbr?.emailcheck) {
+    redirect('/login/error?error=InvalidToken');
+  }
 
+  // 비밀번호 변경
   const changePasswd = async (formData: FormData) => {
-    const entries = Object.fromEntries(formData.entries());
-    const validator = z
-      .object({
-        passwd: z.string().min(6, '패스워드는 6글자 이상만 가능합니다!'),
-        passwd2: z.string().min(6, '패스워드는 6글자 이상만 가능합니다!'),
-      })
-      .refine(({ passwd, passwd2 }) => passwd === passwd2, '일치하지 않습니다!')
-      .safeParse(entries);
+    'use server';
+    const zobj = z.object({
+      passwd: z.string().min(6, '6자 이상 입력해주세요.'),
+      passwd2: z.string().min(6, '6자 이상 입력해주세요.'),
+    });
 
+    const validator = validate(zobj, formData);
     if (!validator.success) {
-      const msgs = JSON.parse(validator.error.message);
-      return alert(msgs[0].message);
+      return;
     }
 
-    // Todo: update Member set passwd... & goto login
+    const encPassword = await hash(validator.data.passwd, 10);
+    await prisma.member.update({
+      data: { emailcheck: null, passwd: encPassword },
+      where: { email },
+    });
+
+    await logout();
   };
 
   return (
@@ -55,7 +65,7 @@ export default function PasswdCheck({ params }: Props) {
             placeholder='confirm password...'
           />
 
-          <Button type='submit' variant={'destructive'} className='w-full'>
+          <Button type='submit' variant={'link'} className='w-full'>
             Change Password
           </Button>
         </form>

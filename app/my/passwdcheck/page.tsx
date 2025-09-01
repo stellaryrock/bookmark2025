@@ -1,6 +1,6 @@
 'use client';
 
-import { passwdCheck } from '@/actions/sign';
+import { checkPassword } from '@/actions/sign';
 import { Button } from '@/components/ui/button';
 import LabelInput from '@/components/ui/label-input';
 import { useSession } from 'next-auth/react';
@@ -16,14 +16,16 @@ export default function PasswdCheck() {
 
   const checkPasswd = async (formData: FormData) => {
     formData.append('email', data?.user.email ?? '');
-    const rs = await passwdCheck(formData);
+    formData.append('nickname', data?.user.nickname ?? '');
+    const rs = await checkPassword(formData);
     if (!rs.success) {
       return setValidError(rs);
     }
+    console.log(rs);
+    const { email, emailcheck } = rs.data;
 
-    const { email, passwdcheck } = rs.data;
     redirect(
-      `/login/error?error=CheckEmail&email=${email}&emailcheck=${passwdcheck}`
+      `/login/error?error=CheckEmail&email=${email}&emailcheck=${emailcheck}`
     );
   };
 

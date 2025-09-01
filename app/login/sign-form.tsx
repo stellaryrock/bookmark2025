@@ -3,7 +3,6 @@
 import { authenticate, regist } from '@/actions/sign';
 import { Button } from '@/components/ui/button';
 import LabelInput from '@/components/ui/label-input';
-import { ValidError } from '@/lib/validator';
 import { redirect, useSearchParams } from 'next/navigation';
 import {
   FormEvent,
@@ -15,6 +14,7 @@ import {
   useState,
   useTransition,
 } from 'react';
+import { ValidError } from '@/lib/validator';
 
 type ToggleLoginProps = {
   toggleLogin: () => void;
@@ -46,26 +46,25 @@ const mock = {
 };
 
 function RegistForm({ toggleLogin }: ToggleLoginProps) {
-  
   const refs = {
-    email : useRef<HTMLInputElement>(null),
-    passwd : useRef<HTMLInputElement>(null),
-    passwd2 : useRef<HTMLInputElement>(null),
-    nickname : useRef<HTMLInputElement>(null)
-  } as Record<string, RefObject<HTMLInputElement>>
+    email: useRef<HTMLInputElement>(null),
+    passwd: useRef<HTMLInputElement>(null),
+    passwd2: useRef<HTMLInputElement>(null),
+    nickname: useRef<HTMLInputElement>(null),
+  } as Record<string, RefObject<HTMLInputElement>>;
 
   const [validError, setValidError] = useState<ValidError>();
 
   const register = async (formData: FormData) => {
     const rs = await regist(formData);
     console.log('🚀 ~ rs:', rs);
-    
+
     if (!rs.success) {
       // email nickname passwd passwd2 순서
-      // Todo : email passwd passwd2 nickname 순서로 포커스 주기        
-      const inputName = Object.keys(rs.error)[0]
+      // Todo : email passwd passwd2 nickname 순서로 포커스 주기
+      const inputName = Object.keys(rs.error)[0];
       refs[inputName].current?.focus();
-      
+
       return setValidError(rs);
     }
 
@@ -97,7 +96,7 @@ function RegistForm({ toggleLogin }: ToggleLoginProps) {
 
   useEffect(() => {
     refs.email.current?.focus();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

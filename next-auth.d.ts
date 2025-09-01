@@ -6,10 +6,12 @@ declare module 'next-auth' {
   interface Session {
     user: {
       isadmin?: boolean;
+      nickname: string;
     } & DefaultSession['user'];
   }
 
   interface User {
+    nickname: string;
     password?: string; // (: callbacks > signIn에서 password 비교)
     isadmin?: boolean;
   }

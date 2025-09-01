@@ -32,13 +32,17 @@ export const sendRegistCheck = async (to: string, authKey: string) => {
   sendMail(to, subject, html);
 };
 
-export const sendPasswordReset = async (to: string, authKey: string) => {
+export const sendPasswordReset = async (
+  to: string,
+  authKey: string,
+  nickname?: string
+) => {
   const subject = '[북마크] 패스워드 찾기';
   const html = `
     <div style="display: grid; place-items: center; height: 200px;">
       <h1>패스워드 찾기</h1>
-      <h3 style="margin: 10px 0;">아래 링크를 클릭하면 암호를 설정할 수 있습니다.</h3>
-      <a href="${process.env.NEXT_PUBLIC_URL}/passwdcheck/${authKey}">암호 변경</a>
+      <h3 style="margin: 10px 0;">${nickname ?? 'guest'}님, 아래 링크를 클릭하면 암호를 설정할 수 있습니다.</h3>
+      <a href="${process.env.NEXT_PUBLIC_URL}/passwdcheck/${authKey}?email=${to}">암호 변경</a>
     </div>
   `;
 

@@ -214,7 +214,8 @@ export const {
     strategy: 'jwt',
   },
   pages: {
-    // signIn: '/login',
+    signIn: '/login',
+    error: '/login/error'
   },
   providers: [Google, GitHub, Naver, Kakao],
 });

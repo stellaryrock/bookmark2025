@@ -1,19 +1,18 @@
-import { withdraw } from "@/actions/sign";
-import { redirect } from "next/navigation";
+import { withdraw } from '@/actions/sign';
+import { redirect } from 'next/navigation';
 
 type Props = {
   email: string | null | undefined;
-}
+};
 
-export default function Withdrawl({ email } : Props) {
-
+export default function Withdrawl({ email }: Props) {
   const withdrawAction = (formData: FormData) => {
-    if(!email){
+    if (!email) {
       redirect('/login');
     }
     formData.append('email', email);
     withdraw(formData);
-  }
+  };
 
   return (
     <>
@@ -38,7 +37,7 @@ export default function Withdrawl({ email } : Props) {
             <input type='checkbox' />
             탈퇴 동의
           </label>
-          <button type="submit" className='border-2 p-2 rounded-md text-red'>
+          <button type='submit' className='border-2 p-2 rounded-md text-red'>
             회원 탈퇴
           </button>
         </div>

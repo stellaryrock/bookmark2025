@@ -1,12 +1,13 @@
 'use server';
 
+import { SendEmailReqBody } from '@/app/api/sendmail/route';
+import { compare, hash } from 'bcryptjs';
+import { AuthError } from 'next-auth';
+import z from 'zod';
 import { signIn, signOut } from '@/lib/auth';
 import prisma from '@/lib/db';
+import { newToken } from '@/lib/utils';
 import { validate, ValidError, ValidSuccess } from '@/lib/validator';
-import { hash } from 'bcryptjs';
-import { AuthError } from 'next-auth';
-import { v4 as uuidv4 } from 'uuid';
-import z from 'zod';
 
 // export const runtime = 'nodejs';
 
@@ -36,7 +37,7 @@ export const regist = async (formData: FormData) => {
   }
 
   const encPasswd = await hash(validator.data.passwd, 10);
-  const emailcheck = uuidv4();
+  const emailcheck = newToken();
   const { passwd2: _, ...data } = {
     ...validator.data,
     passwd: encPasswd,
@@ -45,6 +46,68 @@ export const regist = async (formData: FormData) => {
   await prisma.member.create({ data });
 
   // await sendRegistCheck('indiflex.corp@gmail.com', authKey); // stream error
+  await sendEmailByFetch({ ...data, emailType: 'Regist' });
+  console.log('Mail has sent.');
+
+  return { success: true, data } as ValidSuccess<typeof data>;
+  // return validator; // formdata 그대로 반환 용
+};
+
+export async function checkPassword(formData: FormData) {
+  const zobj = z
+    .object({
+      email: z.email(),
+      nickname: z.string(),
+      passwd: z.string().min(6, '6자 이상 입력해주세요.'),
+      passwd2: z.string().min(6, '6자 이상 입력해주세요.'),
+    })
+    .refine(({ passwd, passwd2 }) => passwd === passwd2, {
+      path: ['passwd2'],
+      error: '비밀번호가 일치하지 않습니다.',
+    });
+
+  const validator = validate(zobj, formData);
+
+  if (!validator.success) {
+    return validator;
+  }
+
+  const emailcheck = newToken();
+  const { passwd2: _passwd2, ...data } = {
+    ...validator.data,
+    emailcheck,
+    isValid: false,
+  };
+
+  const mbr = await findMemberByEmail(data.email);
+
+  if (mbr && mbr.passwd) {
+    const isValid = await compare(data.passwd || '', mbr.passwd);
+
+    if (isValid) {
+      data.isValid = isValid;
+
+      await prisma.member.update({
+        data: { emailcheck },
+        where: { email: validator.data.email },
+      });
+    }
+  }
+
+  sendEmailByFetch({ ...data, emailType: 'ResetPassword' });
+
+  return {
+    success: true,
+    data,
+  } as ValidSuccess<typeof data>;
+}
+
+async function sendEmailByFetch({
+  email,
+  emailcheck,
+  nickname,
+  emailType,
+}: SendEmailReqBody) {
   const { NEXT_PUBLIC_URL, INTERNAL_SECRET } = process.env;
   await fetch(`${NEXT_PUBLIC_URL}/api/sendmail`, {
     method: 'POST',
@@ -53,15 +116,13 @@ export const regist = async (formData: FormData) => {
       Authorization: `Bearer ${INTERNAL_SECRET}`,
     },
     body: JSON.stringify({
-      email: data.email,
+      email,
       emailcheck,
+      nickname,
+      emailType,
     }),
   });
-  console.log('Mail has sent.');
-
-  return { success: true, data } as ValidSuccess<typeof data>;
-  // return validator; // formdata 그대로 반환 용
-};
+}
 
 // Credential: from login page
 export async function authenticate(
@@ -118,11 +179,11 @@ export const findMemberByEmail = async (email: string) =>
 
 export const withdraw = async (formData: FormData) => {
   const ent = Object.fromEntries(formData.entries());
-  console.log("🚀 ~ withdraw ~ ent:", ent);
-  
+  console.log('🚀 ~ withdraw ~ ent:', ent);
+
   // Todo: update db, outdt
   // await prisma.member.update({
   //   where: { email },
   //   data: { outdt: '1' }
   // });
-}
+};
