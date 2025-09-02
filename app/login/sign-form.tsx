@@ -3,10 +3,10 @@
 import { authenticate, regist } from '@/actions/sign';
 import { Button } from '@/components/ui/button';
 import LabelInput from '@/components/ui/label-input';
+import { ValidError } from '@/lib/validator';
 import { redirect, useSearchParams } from 'next/navigation';
 import {
   FormEvent,
-  RefObject,
   useActionState,
   useEffect,
   useReducer,
@@ -14,7 +14,6 @@ import {
   useState,
   useTransition,
 } from 'react';
-import { ValidError } from '@/lib/validator';
 
 type ToggleLoginProps = {
   toggleLogin: () => void;
@@ -37,54 +36,19 @@ export default function SignForm() {
   );
 }
 
-// QQQ
-const mock = {
-  email: 'jeonseongho@naver.com',
-  passwd: '111111',
-  passwd2: '111111',
-  nickname: 'Hongkildong',
-};
-
 function RegistForm({ toggleLogin }: ToggleLoginProps) {
-  const refs = {
-    email: useRef<HTMLInputElement>(null),
-    passwd: useRef<HTMLInputElement>(null),
-    passwd2: useRef<HTMLInputElement>(null),
-    nickname: useRef<HTMLInputElement>(null),
-  } as Record<string, RefObject<HTMLInputElement>>;
-
   const [validError, setValidError] = useState<ValidError>();
 
   const register = async (formData: FormData) => {
     const rs = await regist(formData);
     console.log('🚀 ~ rs:', rs);
-
-    if (!rs.success) {
-      // email nickname passwd passwd2 순서
-      // Todo : email passwd passwd2 nickname 순서로 포커스 주기
-      const inputName = Object.keys(rs.error)[0];
-      refs[inputName].current?.focus();
-
-      return setValidError(rs);
-    }
+    if (!rs.success) return setValidError(rs);
 
     const { email, emailcheck } = rs.data;
     redirect(
       `/login/error?error=CheckEmail&email=${email}&emailcheck=${emailcheck}`
     );
   };
-
-  // const [validError, register, isPending] = useActionState(
-  //   async (_preValidError: ValidError | undefined, formData: FormData) => {
-  //     const rs = await regist(formData);
-  //     if (!rs.success) return rs;
-  //     const { email, emailcheck } = rs.data;
-  //     redirect(
-  //       `/login/error?error=CheckEmail&email=${email}&emailcheck=${emailcheck}`
-  //     );
-  //   },
-  //   undefined
-  // );
 
   const [isPending, startTransition] = useTransition();
   const handleSumit = (evt: FormEvent<HTMLFormElement>) => {
@@ -94,38 +58,27 @@ function RegistForm({ toggleLogin }: ToggleLoginProps) {
     });
   };
 
-  useEffect(() => {
-    refs.email.current?.focus();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
-    // <form action={register} className=''>
     <form onSubmit={handleSumit} className='flex flex-col gap-3'>
       <LabelInput
-        name='email'
         label='email'
+        name='email'
         type='email'
-        defaultValue={mock.email}
-        ref={refs.email}
+        focus={true}
         error={validError}
         placeholder='example@gmail.com'
       />
       <LabelInput
-        name='passwd'
         label='password'
+        name='passwd'
         type='password'
-        defaultValue={mock.passwd}
-        ref={refs.passwd}
         error={validError}
         placeholder='Your password...'
       />
       <LabelInput
-        name='passwd2'
         label='password confirm'
+        name='passwd2'
         type='password'
-        defaultValue={mock.passwd2}
-        ref={refs.passwd2}
         error={validError}
         placeholder='Confirm Your password...'
       />
@@ -133,8 +86,6 @@ function RegistForm({ toggleLogin }: ToggleLoginProps) {
         label='nickname'
         name='nickname'
         type='text'
-        defaultValue={mock.nickname}
-        ref={refs.nickname}
         error={validError}
         placeholder='nickname...'
       />
@@ -184,7 +135,8 @@ function LoginForm({ toggleLogin, email }: ToggleLoginProps) {
 
   const makeLogin = async (formData: FormData) => {
     saveLocalStorage();
-    loginAction(formData);
+    await loginAction(formData);
+    console.log('**>>', validError);
   };
 
   useEffect(() => {

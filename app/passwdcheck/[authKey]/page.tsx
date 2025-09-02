@@ -1,11 +1,11 @@
 import { findMemberByEmail, logout } from '@/actions/sign';
 import { Button } from '@/components/ui/button';
 import LabelInput from '@/components/ui/label-input';
+import { hash } from 'bcryptjs';
+import z from 'zod';
+import { redirect } from 'next/navigation';
 import prisma from '@/lib/db';
 import { validate } from '@/lib/validator';
-import { hash } from 'bcryptjs';
-import { redirect } from 'next/navigation';
-import z from 'zod';
 
 type Props = {
   params: Promise<{ authKey: string }>;
@@ -21,7 +21,6 @@ export default async function PasswdCheck({ params, searchParams }: Props) {
     redirect('/login/error?error=InvalidToken');
   }
 
-  // 비밀번호 변경
   const changePasswd = async (formData: FormData) => {
     'use server';
     const zobj = z.object({
@@ -45,10 +44,8 @@ export default async function PasswdCheck({ params, searchParams }: Props) {
 
   return (
     <div className='grid place-items-center h-full'>
-      <div>
-        <h1 className='text-2xl mb-5 text-center font-semibold'>
-          Change Password
-        </h1>
+      <div className='w-96'>
+        <h1 className='text-2xl mb-5 font-semibold'>Change Password</h1>
         <form action={changePasswd} className='flex flex-col gap-5'>
           <LabelInput
             label='New Password'
@@ -65,7 +62,7 @@ export default async function PasswdCheck({ params, searchParams }: Props) {
             placeholder='confirm password...'
           />
 
-          <Button type='submit' variant={'link'} className='w-full'>
+          <Button type='submit' variant={'destructive'} className='w-full'>
             Change Password
           </Button>
         </form>

@@ -8,6 +8,7 @@ import Kakao from 'next-auth/providers/kakao';
 import Naver from 'next-auth/providers/naver';
 import z from 'zod';
 import prisma from './db';
+import { validateObject } from './validator';
 
 export const {
   handlers: { GET, POST },
@@ -23,33 +24,32 @@ export const {
     Credentials({
       name: 'Email',
       credentials: {
-        email: {
-          label: 'Email',
-          type: 'email',
-          placeholder: 'example@example.com',
-        },
-        passwd: { label: 'Password', type: 'password' },
+        email: {},
+        passwd: {},
       },
       async authorize(credentials) {
         console.log('🚀 auth.ts - credentials:', credentials);
         if (!credentials || !credentials.email || !credentials.passwd)
           return null;
 
-        const user = {
-          email: credentials.email as string,
-          password: credentials.passwd as string,
-          nickname: 'guest',
-        };
+        const zobj = z.object({
+          email: z.email(),
+          passwd: z.string().min(6),
+        });
+        const validator = validateObject(
+          zobj,
+          credentials as Record<string, string>
+        );
 
-        const validator = z
-          .object({
-            email: z.email(),
-            password: z.string().min(6),
-          })
-          .safeParse(user);
-        if (!validator.success) return null;
+        if (!validator.success) {
+          console.log(
+            '🚀 auth.ts - credential - validator.error:',
+            validator.error
+          );
+          return null;
+        }
 
-        return user;
+        return validator.data;
       },
     }),
   ],
@@ -63,42 +63,45 @@ export const {
   trustHost: true,
   jwt: { maxAge: 30 * 60 },
   callbacks: {
-    // SNS(login/regist), credential(login) ==> DB 읽어서 존재하면 로그인
-    // 존재하지 않으면 가입(with authKey) => send email
     async signIn({ user, account }) {
-      const { name, email, image, password } = user;
+      console.log('🚀 auth.ts > signIn - user:', user);
+      const { name, email, image, passwd } = user;
       if (!email) return false;
 
       const isCredential = account?.provider === 'credentials';
       const mbr = await findMemberByEmail(email);
+      console.log('🚀 ~ mbr:', mbr);
 
       if (mbr) {
         if (mbr.emailcheck)
           return `/login/error?error=CheckEmail&email=${email}&emailcheck=${mbr.emailcheck}`;
+
         if (mbr.outdt) return '/login/error?error=WithdrawMember';
 
         // password check
         if (isCredential) {
-          console.log('🚀 ~ mbr.passwd:', mbr.passwd, password, !mbr.passwd);
           if (!mbr.passwd) {
             const err = new AuthError(`You registed SNS Account(${email})`);
             err.type = 'OAuthAccountNotLinked';
             throw err;
           }
-          // return '/login/error?error=NeedToSnsLogin&email=' + email;
 
-          return compare(password || '', mbr.passwd);
+          const pwMatched = await compare(passwd || '', mbr.passwd);
+          if (!pwMatched) {
+            const err = new AuthError('Not Matched Email or Password!');
+            err.type = 'CredentialsSignin';
+            throw err;
+          }
         }
 
+        user.id = String(mbr.id);
+        user.name = mbr.nickname;
+        user.isadmin = mbr.isadmin;
+        user.image = mbr.image;
         return true;
       }
 
-      // password check
-      if (isCredential) {
-        return '/login/error?error=NotFound';
-      }
-
-      // regist by SNS
+      // if not exists ==> regist by SNS
       const newMbr = await prisma.member.create({
         select: { id: true, nickname: true },
         data: {
@@ -109,26 +112,29 @@ export const {
       });
       console.log('🚀 ~ newMbr:', newMbr);
 
-      // sendRegistMail
-
-      return false;
+      return true;
     },
+
     async jwt({ token, user }) {
+      // console.log('🚀 auth.ts > jwt:', token, user, account);
       if (user) {
         token.id = user.id;
         token.email = user.email;
         token.name = user.name;
-        token.nickname = user.nickname;
+        token.image = user.image;
+        token.isadmin = user.isadmin;
       }
       return token;
     },
+
     async session({ session, token }) {
+      // console.log('🚀 auth.ts > session:', session, token);
       if (token) {
         session.user.id = token.id as string;
         session.user.email = token.email!;
         session.user.name = token.name;
+        session.user.image = token.image?.toString();
         session.user.isadmin = !!token.isadmin;
-        session.user.nickname = token.nickname as string;
       }
       return session;
     },

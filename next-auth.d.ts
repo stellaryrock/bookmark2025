@@ -12,7 +12,7 @@ declare module 'next-auth' {
 
   interface User {
     nickname: string;
-    password?: string; // (: callbacks > signIn에서 password 비교)
+    passwd?: string; // (: callbacks > signIn에서 password 비교)
     isadmin?: boolean;
   }
 }

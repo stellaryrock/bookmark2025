@@ -126,7 +126,7 @@ async function sendEmailByFetch({
 
 // Credential: from login page
 export async function authenticate(
-  prevState: ValidError | undefined,
+  _prevState: ValidError | undefined,
   formData: FormData
 ) {
   const zobj = z.object({

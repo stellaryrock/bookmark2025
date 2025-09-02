@@ -15,6 +15,8 @@ type Props = {
 
 const getErrorMessage = (error: string) => {
   if (error === 'CheckEmail') return 'Check your regist email for approve!';
+  if (error === 'CheckResetPasswordEmail')
+    return 'Check your email to reset password!';
   if (error === 'NotMatchPassword') return 'Your are wrong password!';
   if (error === 'NotFound') return 'Not exists email address!';
   if (error === 'InvalidToken') return 'Invalid aprove token!';
