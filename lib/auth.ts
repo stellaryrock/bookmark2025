@@ -1,6 +1,6 @@
 import { findMemberByEmail } from '@/actions/sign';
 import { compare } from 'bcryptjs';
-import NextAuth, { AuthError } from 'next-auth';
+import NextAuth, { AuthError, User } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import GitHub from 'next-auth/providers/github';
 import Google from 'next-auth/providers/google';
@@ -35,6 +35,7 @@ export const {
         const zobj = z.object({
           email: z.email(),
           passwd: z.string().min(6),
+          nickname: z.string(),
         });
         const validator = validateObject(
           zobj,
@@ -49,7 +50,7 @@ export const {
           return null;
         }
 
-        return validator.data;
+        return validator.data as User;
       },
     }),
   ],
