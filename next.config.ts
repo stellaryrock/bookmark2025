@@ -7,6 +7,8 @@ const nextConfig: NextConfig = {
       { hostname: 'avatars.githubusercontent.com' },
       { hostname: 'phinf.pstatic.net' },
       { hostname: '*.kakaocdn.net' },
+      { hostname: 'localhost' },
+      { hostname: '*.topician.com' },
     ],
   },
 };

@@ -25,7 +25,6 @@ export default function ForgotPassword() {
             label='Email'
             name='email'
             type='email'
-            defaultValue={'jeonseongho@naver.com'}
             error={validError}
             placeholder='email@bookmark.com'
           />

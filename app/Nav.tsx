@@ -1,4 +1,5 @@
 import ThemeChanger from '@/components/theme-changer';
+import ProfileDummy from '@/public/profile_dummy.png';
 import Image from 'next/image';
 import Link from 'next/link';
 import { SquareLibraryIcon } from 'lucide-react';
@@ -23,8 +24,8 @@ export default async function Nav() {
       {didLogin ? (
         <Link href='/my'>
           <Image
-            src={session.user?.image || ''}
-            alt={session.user?.name || ''}
+            src={session.user?.image || ProfileDummy}
+            alt={session.user?.name || 'dummy'}
             width={40}
             height={40}
             className='rounded-full'

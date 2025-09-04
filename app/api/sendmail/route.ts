@@ -32,7 +32,12 @@ export async function POST(req: Request) {
       data: { emailcheck: newEmailcheck },
       where: { email },
     });
-    await sendRegistCheck(email, newEmailcheck);
+
+    if (emailType === 'ResetPassword') {
+      await sendPasswordReset(email, newEmailcheck, nickname);
+    } else {
+      await sendRegistCheck(email, newEmailcheck);
+    }
   } else {
     const authorization = req.headers.get('authorization');
     if (authorization !== `Bearer ${process.env.INTERNAL_SECRET}`)

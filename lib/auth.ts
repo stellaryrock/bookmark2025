@@ -102,6 +102,7 @@ export const {
         user.isadmin = mbr.isadmin;
         user.image = mbr.image;
         return true;
+        //return '/bookcase';
       }
 
       // if not exists ==> regist by SNS

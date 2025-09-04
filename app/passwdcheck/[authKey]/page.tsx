@@ -1,63 +1,39 @@
-'use client';
-
-import { Button } from '@/components/ui/button';
-import LabelInput from '@/components/ui/label-input';
-import z from 'zod';
-import { use } from 'react';
+import { findMemberByEmailcheck } from '@/actions/sign';
+import Link from 'next/link';
+import ChangePassword from './change-pasword';
 
 type Props = {
   params: Promise<{ authKey: string }>;
 };
 
-export default function PasswdCheck({ params }: Props) {
-  const { authKey } = use(params);
+export default async function PasswdCheck({ params }: Props) {
+  const { authKey } = await params;
 
   // Todo: member.emailcheck와 authKey비교
   // 일치하지 않으면 메시지 보이기
-
-  const changePasswd = async (formData: FormData) => {
-    const entries = Object.fromEntries(formData.entries());
-    const validator = z
-      .object({
-        passwd: z.string().min(6, '패스워드는 6글자 이상만 가능합니다!'),
-        passwd2: z.string().min(6, '패스워드는 6글자 이상만 가능합니다!'),
-      })
-      .refine(({ passwd, passwd2 }) => passwd === passwd2, '일치하지 않습니다!')
-      .safeParse(entries);
-
-    if (!validator.success) {
-      const msgs = JSON.parse(validator.error.message);
-      return alert(msgs[0].message);
-    }
-
-    // Todo: update Member set passwd... & goto login
-  };
+  // const mbr = await findMemberByEmailcheck(authKey);
+  const mbr = await findMemberByEmailcheck(authKey);
+  if (!mbr) {
+    return (
+      <>
+        <div className='grid place-items-center h-full'>
+          <div className='border p-5 rounded-md space-y-3 text-center'>
+            <h1 className='text-3xl text-red-500'>Not Valid Token</h1>
+            <h3 className='text-xl text-red-500'>Check your email again!</h3>
+            Goto <Link href='/login'>Login</Link>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   return (
     <div className='grid place-items-center h-full'>
       <div className='w-96'>
         <h1 className='text-2xl mb-5 font-semibold'>Change Password</h1>
-        <form action={changePasswd} className='flex flex-col gap-5'>
-          <LabelInput
-            label='New Password'
-            name='passwd'
-            type='password'
-            defaultValue={'123456'}
-            placeholder='new password...'
-          />
-          <LabelInput
-            label='Confirm Password'
-            name='passwd2'
-            type='password'
-            defaultValue={'123456'}
-            placeholder='confirm password...'
-          />
-
-          <Button type='submit' variant={'destructive'} className='w-full'>
-            Change Password
-          </Button>
-        </form>
+        <h3 className='text-3xl'>{mbr?.nickname}</h3>
       </div>
+      <ChangePassword email={mbr?.email} />
     </div>
   );
 }

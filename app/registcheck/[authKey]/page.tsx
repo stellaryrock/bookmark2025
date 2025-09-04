@@ -11,6 +11,7 @@ type Props = {
 export default async function RegistCheck({ params, searchParams }: Props) {
   const { authKey } = await params;
   const { email } = await searchParams;
+  console.log(authKey);
 
   const mbr = await findMemberByEmail(email);
   if (authKey !== mbr?.emailcheck) {

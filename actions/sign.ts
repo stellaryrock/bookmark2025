@@ -93,7 +93,10 @@ export async function authenticate(
   const validator = validate(zobj, formData);
   if (!validator.success) return validator;
   try {
-    await signIn('credentials', formData);
+    await signIn('credentials', {
+      ...validator.data,
+      redirectTo: '/bookcase',
+    });
     // return validator;
   } catch (error) {
     console.log('🚀 sign.ts - authenticate - error:', error);
@@ -124,8 +127,9 @@ export async function authenticate(
           passwd: { errors: [], value: validator.data.passwd },
         },
       } as ValidError;
+    } else {
+      throw error;
     }
-    // throw error;
   }
 }
 
@@ -170,3 +174,40 @@ export const logout = async () => {
 
 export const findMemberByEmail = async (email: string) =>
   prisma.member.findUnique({ where: { email } });
+
+export const findMemberByEmailcheck = async (emailcheck: string) =>
+  prisma.member.findFirst({
+    select: { email: true, nickname: true },
+    where: { emailcheck },
+  });
+
+export const changePasswd = async (
+  _: ValidError | undefined,
+  formData: FormData
+) => {
+  const zobj = z
+    .object({
+      email: z.email(),
+      passwd: z.string().min(6, '패스워드는 6글자 이상만 가능합니다!'),
+      passwd2: z.string().min(6, '패스워드는 6글자 이상만 가능합니다!'),
+    })
+    .refine(({ passwd, passwd2 }) => passwd === passwd2, {
+      path: ['passwd2'],
+      error: '일치하지 않습니다!',
+    });
+
+  const validator = validate(zobj, formData);
+
+  if (!validator.success) {
+    return validator;
+  }
+
+  const { email, passwd } = validator.data;
+  const encPasswd = await hash(passwd, 10);
+  await prisma.member.update({
+    where: { email },
+    data: { passwd: encPasswd, emailcheck: null },
+  });
+
+  redirect('/login/error?error=ChangedPassword');
+};

@@ -3,6 +3,7 @@
 import { authenticate, regist } from '@/actions/sign';
 import { Button } from '@/components/ui/button';
 import LabelInput from '@/components/ui/label-input';
+import Link from 'next/link';
 import { redirect, useSearchParams } from 'next/navigation';
 import {
   FormEvent,
@@ -65,11 +66,7 @@ function RegistForm({ toggleLogin }: ToggleLoginProps) {
         label='email'
         name='email'
         type='email'
-<<<<<<< HEAD
         focus={true}
-=======
-        defaultValue={mock.email}
->>>>>>> e324e1e (passwdcheck)
         error={validError}
         placeholder='example@gmail.com'
       />
@@ -141,7 +138,7 @@ function LoginForm({ toggleLogin, email }: ToggleLoginProps) {
   const makeLogin = async (formData: FormData) => {
     saveLocalStorage();
     await loginAction(formData);
-    console.log('**>>', validError);
+    redirect('/bookcase');
   };
 
   useEffect(() => {
@@ -188,7 +185,7 @@ function LoginForm({ toggleLogin, email }: ToggleLoginProps) {
           />
           Remember me
         </label>
-        <a href='#'>Forgot password?</a>
+        <Link href='/passwdcheck'>Forgot password?</Link>
       </div>
       <Button type='submit' variant={'primary'} className='w-full'>
         Login with your account
