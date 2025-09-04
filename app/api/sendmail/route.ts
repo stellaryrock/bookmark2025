@@ -12,6 +12,17 @@ export type SendEmailReqBody = {
   emailType: 'Regist' | 'ResetPassword';
 };
 
+async function sendEmail({
+  email,
+  emailcheck,
+  emailType,
+  nickname,
+}: SendEmailReqBody) {
+  if (emailType === 'ResetPassword')
+    await sendPasswordReset(email, emailcheck, nickname);
+  if (emailType === 'Regist') await sendRegistCheck(email, emailcheck);
+}
+
 export async function POST(req: Request) {
   const {
     email,
@@ -20,6 +31,8 @@ export async function POST(req: Request) {
     nickname,
     emailType = 'Regist',
   }: SendEmailReqBody = await req.json();
+
+  const reqBody = { emailcheck, email, emailType, nickname };
 
   // resend...
   if (oldEmailcheck) {
@@ -32,16 +45,14 @@ export async function POST(req: Request) {
       data: { emailcheck: newEmailcheck },
       where: { email },
     });
-    await sendRegistCheck(email, newEmailcheck);
+
+    sendEmail({ ...reqBody, emailcheck: newEmailcheck });
   } else {
     const authorization = req.headers.get('authorization');
     if (authorization !== `Bearer ${process.env.INTERNAL_SECRET}`)
       throw new Error('InvalidToken');
-    if (emailType === 'ResetPassword') {
-      await sendPasswordReset(email, emailcheck, nickname);
-    } else {
-      await sendRegistCheck(email, emailcheck);
-    }
+
+    sendEmail(reqBody);
   }
 
   return NextResponse.json({ email, message: 'Email Resent.' });

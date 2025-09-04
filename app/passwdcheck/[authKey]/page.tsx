@@ -51,14 +51,12 @@ export default async function PasswdCheck({ params, searchParams }: Props) {
             label='New Password'
             name='passwd'
             type='password'
-            defaultValue={'123456'}
             placeholder='new password...'
           />
           <LabelInput
             label='Confirm Password'
             name='passwd2'
             type='password'
-            defaultValue={'123456'}
             placeholder='confirm password...'
           />
 

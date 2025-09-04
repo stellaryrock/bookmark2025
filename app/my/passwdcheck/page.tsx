@@ -1,38 +1,37 @@
-'use client';
-
 import { checkPassword } from '@/actions/sign';
 import { Button } from '@/components/ui/button';
 import LabelInput from '@/components/ui/label-input';
 import { useSession } from 'next-auth/react';
 import { redirect } from 'next/navigation';
-import { useState } from 'react';
+import { useActionState } from 'react';
 import { ValidError } from '@/lib/validator';
 
 export default function PasswdCheck() {
   const { data } = useSession();
-  const [validError, setValidError] = useState<ValidError | undefined>(
+
+  const [validError, checkPasswdAction, isPending] = useActionState(
+    checkPasswd,
     undefined
   );
 
-  const checkPasswd = async (formData: FormData) => {
+  async function checkPasswd(_: ValidError | undefined, formData: FormData) {
     formData.append('email', data?.user.email ?? '');
     formData.append('nickname', data?.user.nickname ?? '');
     const rs = await checkPassword(formData);
     if (!rs.success) {
-      return setValidError(rs);
+      return rs;
     }
-    console.log(rs);
     const { email, emailcheck } = rs.data;
 
     redirect(
-      `/login/error?error=CheckEmail&email=${email}&emailcheck=${emailcheck}`
+      `/login/error?error=CheckResetPasswordEmail&email=${email}&emailcheck=${emailcheck}`
     );
-  };
+  }
 
   return (
     <>
       <div className='w-1/3 mx-auto'>
-        <form action={checkPasswd} className='flex flex-col gap-4'>
+        <form action={checkPasswdAction} className='flex flex-col gap-4'>
           <LabelInput
             label={'현재 비밀번호'}
             name='passwd'
@@ -46,7 +45,9 @@ export default function PasswdCheck() {
             error={validError}
           />
           <div className='flex justify-end'>
-            <Button type='submit'>확인</Button>
+            <Button disabled={isPending} type='submit'>
+              확인
+            </Button>
           </div>
         </form>
       </div>

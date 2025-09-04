@@ -40,9 +40,15 @@ export default function LoginError({ searchParams }: Props) {
               <Link href='/login'>Goto Login</Link>
             )}
           </Button>
-          {email && emailcheck && error === 'CheckEmail' && (
-            <SendEmailCheck email={email} emailcheck={emailcheck} />
-          )}
+          {email &&
+            emailcheck &&
+            (error === 'CheckEmail' || error === 'CheckResetEmail') && (
+              <SendEmailCheck
+                email={email}
+                emailcheck={emailcheck}
+                emailType={error === 'CheckEmail' ? 'Regist' : 'ResetPassword'}
+              />
+            )}
         </div>
       </div>
     </div>
