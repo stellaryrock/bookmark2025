@@ -10,6 +10,11 @@ export default function My() {
   const session = useSession();
   const [tabIndex, setTabIndex] = useState<number>(0);
 
+  const TABS = [
+    <Edit key={0} />,
+    <Withdrawl key={1} email={session.data?.user.email} />,
+  ];
+
   return (
     <div className=''>
       <div className='flex justify-between items-end p-5 border-b-2'>
@@ -26,13 +31,7 @@ export default function My() {
               <button onClick={() => setTabIndex(1)}>회원 탈퇴</button>
             </div>
           </div>
-          <div className='my-5'>
-            {tabIndex ? (
-              <Withdrawl email={session.data?.user.email} />
-            ) : (
-              <Edit />
-            )}
-          </div>
+          <div className='my-5'>{TABS[tabIndex]}</div>
         </div>
       </div>
     </div>

@@ -1,3 +1,5 @@
+'use client';
+
 import { checkPassword } from '@/actions/sign';
 import { Button } from '@/components/ui/button';
 import LabelInput from '@/components/ui/label-input';
