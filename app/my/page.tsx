@@ -10,10 +10,8 @@ export default function My() {
   const session = useSession();
   const [tabIndex, setTabIndex] = useState<number>(0);
 
-  const TABS = [
-    <Edit key={0} />,
-    <Withdrawl key={1} email={session.data?.user.email} />,
-  ];
+  const TABS = [Edit, Withdrawl];
+  const ActiveTab = TABS[tabIndex];
 
   return (
     <div className=''>
@@ -22,7 +20,7 @@ export default function My() {
         <button onClick={() => logout()}>로그아웃</button>
       </div>
       <div className='flex justify-center'>
-        <div className='grid grid-cols-[1fr_3fr] w-1/2'>
+        <div className='grid grid-cols-[1fr_3fr] w-1/2 p-3'>
           <div className='flex flex-col items-center'>
             <div className='p-3'>
               <button onClick={() => setTabIndex(0)}>정보 수정</button>
@@ -31,7 +29,9 @@ export default function My() {
               <button onClick={() => setTabIndex(1)}>회원 탈퇴</button>
             </div>
           </div>
-          <div className='my-5'>{TABS[tabIndex]}</div>
+          <div>
+            <ActiveTab email={session.data?.user.email} />
+          </div>
         </div>
       </div>
     </div>

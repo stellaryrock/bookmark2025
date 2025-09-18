@@ -1,6 +1,7 @@
 import { findMemberByEmail } from '@/actions/sign';
 import { compare } from 'bcryptjs';
 import NextAuth, { AuthError, User } from 'next-auth';
+import { JWT } from 'next-auth/jwt';
 import Credentials from 'next-auth/providers/credentials';
 import GitHub from 'next-auth/providers/github';
 import Google from 'next-auth/providers/google';
@@ -96,7 +97,7 @@ export const {
         }
 
         user.id = String(mbr.id);
-        user.name = mbr.nickname;
+        user.nickname = mbr.nickname;
         user.isadmin = mbr.isadmin;
         user.image = mbr.image;
         return true;
@@ -116,24 +117,26 @@ export const {
       return true;
     },
 
-    async jwt({ token, user }) {
-      // console.log('🚀 auth.ts > jwt:', token, user, account);
-      if (user) {
-        token.id = user.id;
-        token.email = user.email;
-        token.name = user.name;
-        token.image = user.image;
-        token.isadmin = user.isadmin;
+    async jwt({ token, user, trigger, session }) {
+      const userData = trigger === 'update' ? session : user;
+
+      if (userData) {
+        token.id = userData.id;
+        token.email = userData.email;
+        token.name = userData.name;
+        token.nickname = userData.nickname;
+        token.image = userData.image;
+        token.isadmin = userData.isadmin;
       }
       return token;
     },
 
     async session({ session, token }) {
-      // console.log('🚀 auth.ts > session:', session, token);
       if (token) {
         session.user.id = token.id as string;
         session.user.email = token.email!;
         session.user.name = token.name;
+        session.user.nickname = (token as JWT).nickname;
         session.user.image = token.image?.toString();
         session.user.isadmin = !!token.isadmin;
       }
