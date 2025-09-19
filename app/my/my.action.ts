@@ -2,8 +2,15 @@
 
 import z from 'zod';
 import { redirect } from 'next/navigation';
+import { signOut } from '@/lib/auth';
 import prisma from '@/lib/db';
 import { validate, ValidError } from '@/lib/validator';
+
+export const logout = async () => signOut();
+
+export const withdraw = async (formData: FormData) => {
+  console.log('🚀 ~ withdraw ~ formData:', formData);
+};
 
 export const updateProfile = async (
   _: ValidError | undefined,
@@ -15,7 +22,7 @@ export const updateProfile = async (
   const zobj = z.object({
     nickname: z.string(),
     email: z.email(),
-    image: z.string(),
+    // image: z.string().nullable(),
     // image: z
     //   .file()
     //   .max(10_000_000, {
@@ -36,13 +43,13 @@ export const updateProfile = async (
     return validator;
   }
 
-  const { email, nickname, image } = validator.data;
+  const { email, nickname } = validator.data;
 
   const updatedMbr = await prisma.member.update({
     where: { email },
     data: {
       nickname,
-      image,
+      //image,
     },
   });
 

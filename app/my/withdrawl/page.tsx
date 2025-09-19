@@ -1,22 +1,9 @@
 import { withdraw } from '@/actions/sign';
-import { redirect } from 'next/navigation';
 
-type Props = {
-  email: string | null | undefined;
-};
-
-export default function Withdrawl({ email }: Props) {
-  const withdrawAction = (formData: FormData) => {
-    if (!email) {
-      redirect('/login');
-    }
-    formData.append('email', email);
-    withdraw(formData);
-  };
-
+export default function Withdrawl() {
   return (
     <>
-      <form action={withdrawAction} className=''>
+      <form action={withdraw} className=''>
         <div className='flex flex-col'>
           <label>
             <input type='radio' name='option' value='A' />
